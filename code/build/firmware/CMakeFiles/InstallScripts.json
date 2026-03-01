@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/pablo/devel/vkr/code/build/firmware/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

@@ -1,117 +1,7 @@
-#include "stm32f4xx.h"
-
-namespace ROBOT {
-
-/// ROBOT CLASSES
-class Motor {
-	public:
-	void set_voltage(float voltage);
-};
-
-class IMU {
-	public:
-	void get_linear_acceleration();
-	void get_angular_velocity();
-};
-
-class Encoder {
-	void get_current_velocity();
-};
-
-class MotionQueue {
-public:
-	MotionCommand GetNextCommand();
-};
-
-class MotionCommand {
-public:
-	float linear_velocity;
-	float angular_velocity;
-};
-
-class ControlEffort {
-public:
-	float left_motor_voltage;
-	float right_motor_voltage;
-};
-
-class RobotState {
-	public:
-	float current_linear_speed;
-	float current_angular_speed;
-};
-
-class Robot {
-public:
-	Robot(IMU &imu,
-		Motor &l_motor,
-		Encoder &l_encoder,
-		Motor &r_motor,
-		Encoder &r_encoder);
-
-	RobotState FetchCurrentRobotState();
-	void TransferToNewState(const ControlEffort &control_effort);
-
-	IMU &imu;
-	Motor &l_motor;
-	Encoder &l_encoder;
-	Motor &r_motor;
-	Encoder &r_encoder;
-};
-
-}
-
-namespace Math {
-// MATH
-
-class PID {
-public:
-	calculate_voltage();
-
-	bool isInAntiWindUpMode;
-};
-
-	PID pid;
-
-class RobotMathModelling {
-public:
-	// Классом поттому что сложная модель вероятно будет иметь внутренний стейт
-	ControlEffort GetEffortForMotionCommand(const RobotState &robot_state, const MotionCommand &motion_command);
-};
-
-ControlEffort GetEffortForMotionCommandFinal(const RobotState &robot_state, const MotionCommand &motion_command) {
-	// расчёт управления
-	ControllEffort primitive_controll_effort =  RobotMathModelling::GetEffortForMotionCommand(robot_state, motion_command); // потом будет реальный класс 
-	
-	// теперь нивелируем агрехи модели пидом
-	ControllEffort adjusted_by_pid = PID(primitive_controll_effort);
-
-	// Ограничиваем тягу если реально робот её не вытянет
-
-	// возвращает true если нужно перевести pid в защиту(фактически если изменилось напряжение в управлении)
-	Math::pid.isInAntiWindUpMode = get_safe_effort(&final_effort);
-
-	return final_effort;
-}
-}
-
-RobotState Robot::FetchCurrentRobotState() {
-	RobotState state = filter_kalman(/*передать даанные и вообще продумать*/);
-
-	return state;
-}
-
-float Robot::fetchCurrentCoefficientOfFriction () {
-
-}
-
-void Robot::TransferToNewState(const ControlEffort &control_effort) {
-	// дальше на моторы подаём напряжение
-	l_motor.set_voltage(control_effort.left_motor_voltage);
-	r_motor.set_voltage(control_effort.right_motor_voltage);
-}
+//#include "stm32f4xx.h"
 
 int main(void) {
+	/*
     // 0. HAL Init (обязательно первым!)
     HAL_Init();
     SystemClock_Config();  // Ваш clock config
@@ -178,5 +68,6 @@ int main(void) {
             GPIOC->BSRR = GPIO_BSRR_BR13;  // Error: LED OFF constantly
         }
     }
+	*/
 }
 

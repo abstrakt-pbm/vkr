@@ -1,0 +1,40 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "arm-none-eabi",
+      "displayName": "ARM Cortex-M4 F411",
+      "description": "STM32F411CEU6 4WD Robot",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/firmware",
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/toolchain-arm.cmake",
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    },
+    {
+      "name": "arm-debug",
+      "inherits": "arm-none-eabi",
+      "displayName": "ARM Debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "release",
+      "configurePreset": "arm-none-eabi",
+      "displayName": "Release Build",
+      "jobs": 4
+    },
+    {
+      "name": "debug",
+      "configurePreset": "arm-debug",
+      "displayName": "Debug Build",
+      "jobs": 4
+    }
+  ]
+}
+

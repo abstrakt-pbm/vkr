@@ -1,0 +1,3 @@
+/home/pablo/devel/vkr/code/build/firmware/CMakeFiles/firmware.elf.dir
+/home/pablo/devel/vkr/code/build/firmware/CMakeFiles/edit_cache.dir
+/home/pablo/devel/vkr/code/build/firmware/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,7 @@
+# ninja log v7
+1	49	1772393268926996614	CMakeFiles/firmware.elf.dir/src/main.cpp.obj	b5e6cb97e4b015db
+1	48	1772393307150821002	build.ninja	3d3f0444c159f8dc
+1	48	1772393307150821002	/home/pablo/devel/vkr/code/build/firmware/cmake_install.cmake	3d3f0444c159f8dc
+1	50	1772393307150821002	build.ninja	3d3f0444c159f8dc
+1	50	1772393307150821002	/home/pablo/devel/vkr/code/build/firmware/cmake_install.cmake	3d3f0444c159f8dc
+0	456	1772393307165820933	firmware.elf	1021994a4e507461
