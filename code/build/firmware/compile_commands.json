@@ -1,8 +1,26 @@
 [
 {
   "directory": "/home/pablo/devel/vkr/code/build/firmware",
-  "command": "/usr/bin/arm-none-eabi-g++ -I/home/pablo/devel/vkr/code/inc -I/home/pablo/devel/vkr/code/inc/math -I/home/pablo/devel/vkr/code/inc/robot -I/home/pablo/devel/vkr/code/inc/stm32 -I/home/pablo/devel/vkr/code/inc/stm32/CMSIS -I/home/pablo/devel/vkr/code/inc/stm32/CMSIS/Core -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -std=c++17 -fno-rtti -fno-exceptions -O3 -DNDEBUG -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -std=c++17 -fno-rtti -fno-exceptions -o CMakeFiles/firmware.elf.dir/src/main.cpp.obj -c /home/pablo/devel/vkr/code/src/main.cpp",
-  "file": "/home/pablo/devel/vkr/code/src/main.cpp",
-  "output": "/home/pablo/devel/vkr/code/build/firmware/CMakeFiles/firmware.elf.dir/src/main.cpp.obj"
+  "command": "/usr/bin/arm-none-eabi-g++ -I/home/pablo/devel/vkr/code/math/inc -I/home/pablo/devel/vkr/code/stm32 -I/home/pablo/devel/vkr/code/math/.. -I/home/pablo/devel/vkr/code/stm32/Drivers/CMSIS/Include -I/home/pablo/devel/vkr/code/stm32/Drivers/CMSIS/Device/ST/STM32F4xx/Include -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -std=c++17 -fno-rtti -fno-exceptions -O3 -DNDEBUG -o CMakeFiles/firmware.elf.dir/main.cpp.obj -c /home/pablo/devel/vkr/code/main.cpp",
+  "file": "/home/pablo/devel/vkr/code/main.cpp",
+  "output": "/home/pablo/devel/vkr/code/build/firmware/CMakeFiles/firmware.elf.dir/main.cpp.obj"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/firmware",
+  "command": "/usr/bin/arm-none-eabi-g++ -I/home/pablo/devel/vkr/code/math/inc -I/home/pablo/devel/vkr/code/math/.. -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -std=c++17 -fno-rtti -fno-exceptions -O3 -DNDEBUG -o math/CMakeFiles/math.dir/math.cpp.obj -c /home/pablo/devel/vkr/code/math/math.cpp",
+  "file": "/home/pablo/devel/vkr/code/math/math.cpp",
+  "output": "/home/pablo/devel/vkr/code/build/firmware/math/CMakeFiles/math.dir/math.cpp.obj"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/firmware",
+  "command": "/usr/bin/arm-none-eabi-gcc -I/home/pablo/devel/vkr/code/stm32/Drivers/CMSIS/Include -I/home/pablo/devel/vkr/code/stm32/Drivers/CMSIS/Device/ST/STM32F4xx/Include -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -O3 -DNDEBUG -o stm32/CMakeFiles/stm32.dir/startup_stm32f411xe.s.obj -c /home/pablo/devel/vkr/code/stm32/startup_stm32f411xe.s",
+  "file": "/home/pablo/devel/vkr/code/stm32/startup_stm32f411xe.s",
+  "output": "/home/pablo/devel/vkr/code/build/firmware/stm32/CMakeFiles/stm32.dir/startup_stm32f411xe.s.obj"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/firmware",
+  "command": "/usr/bin/arm-none-eabi-gcc -I/home/pablo/devel/vkr/code/stm32/Drivers/CMSIS/Include -I/home/pablo/devel/vkr/code/stm32/Drivers/CMSIS/Device/ST/STM32F4xx/Include -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -O3 -DNDEBUG -o stm32/CMakeFiles/stm32.dir/system_stm32f4xx.c.obj -c /home/pablo/devel/vkr/code/stm32/system_stm32f4xx.c",
+  "file": "/home/pablo/devel/vkr/code/stm32/system_stm32f4xx.c",
+  "output": "/home/pablo/devel/vkr/code/build/firmware/stm32/CMakeFiles/stm32.dir/system_stm32f4xx.c.obj"
 }
 ]

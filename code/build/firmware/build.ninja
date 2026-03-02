@@ -47,15 +47,15 @@ cmake_ninja_workdir = /home/pablo/devel/vkr/code/build/firmware/
 #############################################
 # Order-only phony target for firmware.elf
 
-build cmake_object_order_depends_target_firmware.elf: phony || .
+build cmake_object_order_depends_target_firmware.elf: phony || cmake_object_order_depends_target_math cmake_object_order_depends_target_stm32
 
-build CMakeFiles/firmware.elf.dir/src/main.cpp.obj: CXX_COMPILER__firmware.2eelf_unscanned_Release /home/pablo/devel/vkr/code/src/main.cpp || cmake_object_order_depends_target_firmware.elf
+build CMakeFiles/firmware.elf.dir/main.cpp.obj: CXX_COMPILER__firmware.2eelf_unscanned_Release /home/pablo/devel/vkr/code/main.cpp || cmake_object_order_depends_target_firmware.elf
   CONFIG = Release
-  DEP_FILE = CMakeFiles/firmware.elf.dir/src/main.cpp.obj.d
-  FLAGS = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -std=c++17 -fno-rtti -fno-exceptions -O3 -DNDEBUG -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -std=c++17 -fno-rtti -fno-exceptions
-  INCLUDES = -I/home/pablo/devel/vkr/code/inc -I/home/pablo/devel/vkr/code/inc/math -I/home/pablo/devel/vkr/code/inc/robot -I/home/pablo/devel/vkr/code/inc/stm32 -I/home/pablo/devel/vkr/code/inc/stm32/CMSIS -I/home/pablo/devel/vkr/code/inc/stm32/CMSIS/Core
+  DEP_FILE = CMakeFiles/firmware.elf.dir/main.cpp.obj.d
+  FLAGS = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -std=c++17 -fno-rtti -fno-exceptions -O3 -DNDEBUG
+  INCLUDES = -I/home/pablo/devel/vkr/code/math/inc -I/home/pablo/devel/vkr/code/stm32 -I/home/pablo/devel/vkr/code/math/.. -I/home/pablo/devel/vkr/code/stm32/Drivers/CMSIS/Include -I/home/pablo/devel/vkr/code/stm32/Drivers/CMSIS/Device/ST/STM32F4xx/Include
   OBJECT_DIR = CMakeFiles/firmware.elf.dir
-  OBJECT_FILE_DIR = CMakeFiles/firmware.elf.dir/src
+  OBJECT_FILE_DIR = CMakeFiles/firmware.elf.dir
   TARGET_SUPPORT_DIR = CMakeFiles/firmware.elf.dir
 
 
@@ -66,12 +66,14 @@ build CMakeFiles/firmware.elf.dir/src/main.cpp.obj: CXX_COMPILER__firmware.2eelf
 #############################################
 # Link the executable firmware.elf
 
-build firmware.elf: CXX_EXECUTABLE_LINKER__firmware.2eelf_Release CMakeFiles/firmware.elf.dir/src/main.cpp.obj
+build firmware.elf: CXX_EXECUTABLE_LINKER__firmware.2eelf_Release CMakeFiles/firmware.elf.dir/main.cpp.obj | math/libmath.a stm32/libstm32.a || math/libmath.a stm32/libstm32.a
   CONFIG = Release
-  FLAGS = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -std=c++17 -fno-rtti -fno-exceptions -O3 -DNDEBUG
-  LINK_FLAGS = -specs=nano.specs -lc -lm -Wl,--gc-sections -mcpu=cortex-m4 -mthumb -T/home/pablo/devel/vkr/code/STM32F411CEUx.ld -Wl,--gc-sections
+  FLAGS = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -std=c++17 -fno-rtti -fno-exceptions -O3 -DNDEBUG
+  LINK_FLAGS = -specs=nano.specs -lc -lm -lnosys -Wl,--gc-sections -T /home/pablo/devel/vkr/code/STM32F411CEUx.ld
+  LINK_LIBRARIES = math/libmath.a  stm32/libstm32.a  -lc_nano  -lm  -lnosys  -lgcc  -lc_nano  -lgcc  -lc_nano
+  LINK_PATH = -L/usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard   -L/usr/arm-none-eabi/lib/thumb/v7e-m+fp/hard   -L/usr/lib/gcc/arm-none-eabi/9.3.0   -L/usr/arm-none-eabi/lib
   OBJECT_DIR = CMakeFiles/firmware.elf.dir
-  POST_BUILD = cd /home/pablo/devel/vkr/code/build/firmware && arm-none-eabi-objcopy -O ihex /home/pablo/devel/vkr/code/build/firmware/firmware.elf firmware.hex && arm-none-eabi-objcopy -O binary /home/pablo/devel/vkr/code/build/firmware/firmware.elf firmware.bin && arm-none-eabi-size /home/pablo/devel/vkr/code/build/firmware/firmware.elf
+  POST_BUILD = :
   PRE_LINK = :
   TARGET_FILE = firmware.elf
   TARGET_PDB = firmware.elf.dbg
@@ -102,7 +104,154 @@ build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
 build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 
 # =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /home/pablo/devel/vkr/code/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for STATIC_LIBRARY target math
+
+
+#############################################
+# Order-only phony target for math
+
+build cmake_object_order_depends_target_math: phony || .
+
+build math/CMakeFiles/math.dir/math.cpp.obj: CXX_COMPILER__math_unscanned_Release /home/pablo/devel/vkr/code/math/math.cpp || cmake_object_order_depends_target_math
+  CONFIG = Release
+  DEP_FILE = math/CMakeFiles/math.dir/math.cpp.obj.d
+  FLAGS = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -std=c++17 -fno-rtti -fno-exceptions -O3 -DNDEBUG
+  INCLUDES = -I/home/pablo/devel/vkr/code/math/inc -I/home/pablo/devel/vkr/code/math/..
+  OBJECT_DIR = math/CMakeFiles/math.dir
+  OBJECT_FILE_DIR = math/CMakeFiles/math.dir
+  TARGET_SUPPORT_DIR = math/CMakeFiles/math.dir
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target math
+
+
+#############################################
+# Link the static library math/libmath.a
+
+build math/libmath.a: CXX_STATIC_LIBRARY_LINKER__math_Release math/CMakeFiles/math.dir/math.cpp.obj
+  CONFIG = Release
+  LANGUAGE_COMPILE_FLAGS = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -std=c++17 -fno-rtti -fno-exceptions -O3 -DNDEBUG
+  OBJECT_DIR = math/CMakeFiles/math.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = math/libmath.a
+  TARGET_PDB = math.a.dbg
+  TARGET_SUPPORT_DIR = math/CMakeFiles/math.dir
+
+
+#############################################
+# Utility command for edit_cache
+
+build math/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /home/pablo/devel/vkr/code/build/firmware/math && /usr/bin/ccmake -S/home/pablo/devel/vkr/code -B/home/pablo/devel/vkr/code/build/firmware
+  DESC = Running CMake cache editor...
+  pool = console
+  restat = 1
+
+build math/edit_cache: phony math/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build math/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /home/pablo/devel/vkr/code/build/firmware/math && /usr/bin/cmake --regenerate-during-build -S/home/pablo/devel/vkr/code -B/home/pablo/devel/vkr/code/build/firmware
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build math/rebuild_cache: phony math/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /home/pablo/devel/vkr/code/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for STATIC_LIBRARY target stm32
+
+
+#############################################
+# Order-only phony target for stm32
+
+build cmake_object_order_depends_target_stm32: phony || .
+
+build stm32/CMakeFiles/stm32.dir/startup_stm32f411xe.s.obj: ASM_COMPILER__stm32_unscanned_Release /home/pablo/devel/vkr/code/stm32/startup_stm32f411xe.s || cmake_object_order_depends_target_stm32
+  CONFIG = Release
+  DEP_FILE = stm32/CMakeFiles/stm32.dir/startup_stm32f411xe.s.obj.d
+  FLAGS = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -O3 -DNDEBUG
+  INCLUDES = -I/home/pablo/devel/vkr/code/stm32/Drivers/CMSIS/Include -I/home/pablo/devel/vkr/code/stm32/Drivers/CMSIS/Device/ST/STM32F4xx/Include
+  OBJECT_DIR = stm32/CMakeFiles/stm32.dir
+  OBJECT_FILE_DIR = stm32/CMakeFiles/stm32.dir
+  TARGET_SUPPORT_DIR = stm32/CMakeFiles/stm32.dir
+
+build stm32/CMakeFiles/stm32.dir/system_stm32f4xx.c.obj: C_COMPILER__stm32_unscanned_Release /home/pablo/devel/vkr/code/stm32/system_stm32f4xx.c || cmake_object_order_depends_target_stm32
+  CONFIG = Release
+  DEP_FILE = stm32/CMakeFiles/stm32.dir/system_stm32f4xx.c.obj.d
+  FLAGS = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -O3 -DNDEBUG
+  INCLUDES = -I/home/pablo/devel/vkr/code/stm32/Drivers/CMSIS/Include -I/home/pablo/devel/vkr/code/stm32/Drivers/CMSIS/Device/ST/STM32F4xx/Include
+  OBJECT_DIR = stm32/CMakeFiles/stm32.dir
+  OBJECT_FILE_DIR = stm32/CMakeFiles/stm32.dir
+  TARGET_SUPPORT_DIR = stm32/CMakeFiles/stm32.dir
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target stm32
+
+
+#############################################
+# Link the static library stm32/libstm32.a
+
+build stm32/libstm32.a: C_STATIC_LIBRARY_LINKER__stm32_Release stm32/CMakeFiles/stm32.dir/startup_stm32f411xe.s.obj stm32/CMakeFiles/stm32.dir/system_stm32f4xx.c.obj
+  CONFIG = Release
+  LANGUAGE_COMPILE_FLAGS = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -O3 -DNDEBUG
+  OBJECT_DIR = stm32/CMakeFiles/stm32.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = stm32/libstm32.a
+  TARGET_PDB = stm32.a.dbg
+  TARGET_SUPPORT_DIR = stm32/CMakeFiles/stm32.dir
+
+
+#############################################
+# Utility command for edit_cache
+
+build stm32/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /home/pablo/devel/vkr/code/build/firmware/stm32 && /usr/bin/ccmake -S/home/pablo/devel/vkr/code -B/home/pablo/devel/vkr/code/build/firmware
+  DESC = Running CMake cache editor...
+  pool = console
+  restat = 1
+
+build stm32/edit_cache: phony stm32/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build stm32/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /home/pablo/devel/vkr/code/build/firmware/stm32 && /usr/bin/cmake --regenerate-during-build -S/home/pablo/devel/vkr/code -B/home/pablo/devel/vkr/code/build/firmware
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build stm32/rebuild_cache: phony stm32/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
 # Target aliases.
+
+build libmath.a: phony math/libmath.a
+
+build libstm32.a: phony stm32/libstm32.a
+
+build math: phony math/libmath.a
+
+build stm32: phony stm32/libstm32.a
 
 # =============================================================================
 # Folder targets.
@@ -112,7 +261,21 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 #############################################
 # Folder: /home/pablo/devel/vkr/code/build/firmware
 
-build all: phony firmware.elf
+build all: phony firmware.elf math/all stm32/all
+
+# =============================================================================
+
+#############################################
+# Folder: /home/pablo/devel/vkr/code/build/firmware/math
+
+build math/all: phony math/libmath.a
+
+# =============================================================================
+
+#############################################
+# Folder: /home/pablo/devel/vkr/code/build/firmware/stm32
+
+build stm32/all: phony stm32/libstm32.a
 
 # =============================================================================
 # Built-in targets
@@ -121,14 +284,14 @@ build all: phony firmware.elf
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja /home/pablo/devel/vkr/code/build/firmware/cmake_install.cmake: RERUN_CMAKE | /home/pablo/devel/vkr/code/CMakeLists.txt /home/pablo/devel/vkr/code/toolchain-arm.cmake /usr/share/cmake-4.2/Modules/CMakeASMInformation.cmake /usr/share/cmake-4.2/Modules/CMakeCInformation.cmake /usr/share/cmake-4.2/Modules/CMakeCXXInformation.cmake /usr/share/cmake-4.2/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-4.2/Modules/CMakeGenericSystem.cmake /usr/share/cmake-4.2/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-4.2/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-4.2/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-4.2/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-4.2/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU-ASM.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU-C.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeASMLinkerInformation.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeCLinkerInformation.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeCXXLinkerInformation.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeCommonLinkerInformation.cmake /usr/share/cmake-4.2/Modules/Platform/Generic.cmake CMakeCache.txt CMakeFiles/4.2.2/CMakeASMCompiler.cmake CMakeFiles/4.2.2/CMakeCCompiler.cmake CMakeFiles/4.2.2/CMakeCXXCompiler.cmake CMakeFiles/4.2.2/CMakeSystem.cmake
+build build.ninja /home/pablo/devel/vkr/code/build/firmware/cmake_install.cmake /home/pablo/devel/vkr/code/build/firmware/math/cmake_install.cmake /home/pablo/devel/vkr/code/build/firmware/stm32/cmake_install.cmake: RERUN_CMAKE | /home/pablo/devel/vkr/code/CMakeLists.txt /home/pablo/devel/vkr/code/math/CMakeLists.txt /home/pablo/devel/vkr/code/stm32/CMakeLists.txt /home/pablo/devel/vkr/code/toolchain-arm.cmake /usr/share/cmake-4.2/Modules/CMakeASMInformation.cmake /usr/share/cmake-4.2/Modules/CMakeCInformation.cmake /usr/share/cmake-4.2/Modules/CMakeCXXInformation.cmake /usr/share/cmake-4.2/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-4.2/Modules/CMakeGenericSystem.cmake /usr/share/cmake-4.2/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-4.2/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-4.2/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-4.2/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-4.2/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU-ASM.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU-C.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeASMLinkerInformation.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeCLinkerInformation.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeCXXLinkerInformation.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeCommonLinkerInformation.cmake /usr/share/cmake-4.2/Modules/Platform/Generic.cmake CMakeCache.txt CMakeFiles/4.2.2/CMakeASMCompiler.cmake CMakeFiles/4.2.2/CMakeCCompiler.cmake CMakeFiles/4.2.2/CMakeCXXCompiler.cmake CMakeFiles/4.2.2/CMakeSystem.cmake
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build /home/pablo/devel/vkr/code/CMakeLists.txt /home/pablo/devel/vkr/code/toolchain-arm.cmake /usr/share/cmake-4.2/Modules/CMakeASMInformation.cmake /usr/share/cmake-4.2/Modules/CMakeCInformation.cmake /usr/share/cmake-4.2/Modules/CMakeCXXInformation.cmake /usr/share/cmake-4.2/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-4.2/Modules/CMakeGenericSystem.cmake /usr/share/cmake-4.2/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-4.2/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-4.2/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-4.2/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-4.2/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU-ASM.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU-C.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeASMLinkerInformation.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeCLinkerInformation.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeCXXLinkerInformation.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeCommonLinkerInformation.cmake /usr/share/cmake-4.2/Modules/Platform/Generic.cmake CMakeCache.txt CMakeFiles/4.2.2/CMakeASMCompiler.cmake CMakeFiles/4.2.2/CMakeCCompiler.cmake CMakeFiles/4.2.2/CMakeCXXCompiler.cmake CMakeFiles/4.2.2/CMakeSystem.cmake: phony
+build /home/pablo/devel/vkr/code/CMakeLists.txt /home/pablo/devel/vkr/code/math/CMakeLists.txt /home/pablo/devel/vkr/code/stm32/CMakeLists.txt /home/pablo/devel/vkr/code/toolchain-arm.cmake /usr/share/cmake-4.2/Modules/CMakeASMInformation.cmake /usr/share/cmake-4.2/Modules/CMakeCInformation.cmake /usr/share/cmake-4.2/Modules/CMakeCXXInformation.cmake /usr/share/cmake-4.2/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-4.2/Modules/CMakeGenericSystem.cmake /usr/share/cmake-4.2/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-4.2/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-4.2/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-4.2/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-4.2/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU-ASM.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU-C.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-4.2/Modules/Compiler/GNU.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeASMLinkerInformation.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeCLinkerInformation.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeCXXLinkerInformation.cmake /usr/share/cmake-4.2/Modules/Internal/CMakeCommonLinkerInformation.cmake /usr/share/cmake-4.2/Modules/Platform/Generic.cmake CMakeCache.txt CMakeFiles/4.2.2/CMakeASMCompiler.cmake CMakeFiles/4.2.2/CMakeCCompiler.cmake CMakeFiles/4.2.2/CMakeCXXCompiler.cmake CMakeFiles/4.2.2/CMakeSystem.cmake: phony
 
 
 #############################################

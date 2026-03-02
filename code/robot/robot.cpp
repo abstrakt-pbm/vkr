@@ -1,4 +1,4 @@
-#include <inc/robot/robot.hpp>
+#include <robot/robot.hpp>
 #include <cmath>
 #include <algorithm>
 

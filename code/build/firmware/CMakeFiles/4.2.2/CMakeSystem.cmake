@@ -1,6 +1,6 @@
-set(CMAKE_HOST_SYSTEM "Linux-6.19.4_1")
+set(CMAKE_HOST_SYSTEM "Linux-6.19.5_1")
 set(CMAKE_HOST_SYSTEM_NAME "Linux")
-set(CMAKE_HOST_SYSTEM_VERSION "6.19.4_1")
+set(CMAKE_HOST_SYSTEM_VERSION "6.19.5_1")
 set(CMAKE_HOST_SYSTEM_PROCESSOR "x86_64")
 
 include("/home/pablo/devel/vkr/code/toolchain-arm.cmake")

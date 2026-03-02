@@ -1,4 +1,4 @@
-#include <inc/robot/robot_control.hpp>
+#include <robot/robot_control.hpp>
 #include <algorithm>
 #include <cmath>
 

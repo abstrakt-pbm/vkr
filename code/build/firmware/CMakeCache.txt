@@ -25,7 +25,7 @@ CMAKE_ASM_COMPILER_AR:FILEPATH=/usr/bin/arm-none-eabi-gcc-ar
 // for the GCC compiler
 CMAKE_ASM_COMPILER_RANLIB:FILEPATH=/usr/bin/arm-none-eabi-gcc-ranlib
 
-CMAKE_ASM_FLAGS:STRING=-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -x assembler-with-cpp
+CMAKE_ASM_FLAGS:STRING=-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE
 
 //Flags used by the ASM compiler during DEBUG builds.
 CMAKE_ASM_FLAGS_DEBUG:STRING=-g
@@ -53,7 +53,7 @@ CMAKE_CXX_COMPILER_RANLIB:FILEPATH=/usr/bin/arm-none-eabi-gcc-ranlib
 
 CMAKE_CXX_COMPILER_WORKS:BOOL=1
 
-CMAKE_CXX_FLAGS:STRING=-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -std=c++17 -fno-rtti -fno-exceptions
+CMAKE_CXX_FLAGS:STRING=-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -std=c++17 -fno-rtti -fno-exceptions
 
 //Flags used by the CXX compiler during DEBUG builds.
 CMAKE_CXX_FLAGS_DEBUG:STRING=-g
@@ -77,7 +77,7 @@ CMAKE_C_COMPILER_RANLIB:FILEPATH=/usr/bin/arm-none-eabi-gcc-ranlib
 
 CMAKE_C_COMPILER_WORKS:BOOL=1
 
-CMAKE_C_FLAGS:STRING=-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
+CMAKE_C_FLAGS:STRING=-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall
 
 //Flags used by the C compiler during DEBUG builds.
 CMAKE_C_FLAGS_DEBUG:STRING=-g
@@ -94,7 +94,7 @@ CMAKE_C_FLAGS_RELWITHDEBINFO:STRING=-O2 -g -DNDEBUG
 //Path to a program.
 CMAKE_DLLTOOL:FILEPATH=CMAKE_DLLTOOL-NOTFOUND
 
-CMAKE_EXE_LINKER_FLAGS:STRING=-specs=nano.specs -lc -lm -Wl,--gc-sections
+CMAKE_EXE_LINKER_FLAGS:STRING=-specs=nano.specs -lc -lm -lnosys -Wl,--gc-sections
 
 //Flags used by the linker during DEBUG builds.
 CMAKE_EXE_LINKER_FLAGS_DEBUG:STRING=
@@ -223,23 +223,14 @@ CMAKE_STRIP:FILEPATH=/usr/bin/arm-none-eabi-strip
 //Path to a program.
 CMAKE_TAPI:FILEPATH=CMAKE_TAPI-NOTFOUND
 
-//No help, variable specified on the command line.
-CMAKE_TOOLCHAIN_FILE:UNINITIALIZED=/home/pablo/devel/vkr/code/toolchain-arm.cmake
+//The CMake toolchain file
+CMAKE_TOOLCHAIN_FILE:FILEPATH=/home/pablo/devel/vkr/code/toolchain-arm.cmake
 
 //If this value is on, makefiles will be generated without the
 // .SILENT directive, and all commands will be echoed to the console
 // during the make.  This is useful for debugging only. With Visual
 // Studio IDE projects all commands are done without /nologo.
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
-
-//Value Computed by CMake
-Project_BINARY_DIR:STATIC=/home/pablo/devel/vkr/code/build/firmware
-
-//Value Computed by CMake
-Project_IS_TOP_LEVEL:STATIC=ON
-
-//Value Computed by CMake
-Project_SOURCE_DIR:STATIC=/home/pablo/devel/vkr/code
 
 //Value Computed by CMake
 f411_4wd_BINARY_DIR:STATIC=/home/pablo/devel/vkr/code/build/firmware
@@ -249,6 +240,33 @@ f411_4wd_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
 f411_4wd_SOURCE_DIR:STATIC=/home/pablo/devel/vkr/code
+
+//Value Computed by CMake
+math_BINARY_DIR:STATIC=/home/pablo/devel/vkr/code/build/firmware/math
+
+//Value Computed by CMake
+math_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+math_SOURCE_DIR:STATIC=/home/pablo/devel/vkr/code/math
+
+//Value Computed by CMake
+robot_BINARY_DIR:STATIC=/home/pablo/devel/vkr/code/build/firmware/robot
+
+//Value Computed by CMake
+robot_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+robot_SOURCE_DIR:STATIC=/home/pablo/devel/vkr/code/robot
+
+//Value Computed by CMake
+stm32_BINARY_DIR:STATIC=/home/pablo/devel/vkr/code/build/firmware/stm32
+
+//Value Computed by CMake
+stm32_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+stm32_SOURCE_DIR:STATIC=/home/pablo/devel/vkr/code/stm32
 
 
 ########################
@@ -364,7 +382,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=1
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=3
 //Platform information initialized
 CMAKE_PLATFORM_INFO_INITIALIZED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_RANLIB

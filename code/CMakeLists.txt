@@ -1,35 +1,31 @@
 cmake_minimum_required(VERSION 3.16)
 project(f411_4wd C CXX ASM)
 
-enable_language(ASM)
+set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/STM32F411CEUx.ld)
 
+# Поддиректории
+add_subdirectory(math)
+#add_subdirectory(robot)
+add_subdirectory(stm32)
+
+# Основная прошивка
 add_executable(firmware.elf
-    src/main.cpp
-	#    src/stm32/startup_stm32f4xx.s
-	#src/stm32/system_stm32f4xx.c
+    main.cpp
 )
 
-target_include_directories(firmware.elf PRIVATE 
-    inc inc/math inc/robot inc/stm32 inc/stm32/CMSIS inc/stm32/CMSIS/Core
+target_include_directories(firmware.elf PRIVATE
+    math/inc
+	#robot/inc
+    stm32/
+    stm32/
 )
 
-target_compile_options(firmware.elf PRIVATE
-    -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
-    -DSTM32F411xE -Os -Wall 
-    $<$<COMPILE_LANGUAGE:CXX>:-std=c++17 -fno-rtti -fno-exceptions>
-    $<$<COMPILE_LANGUAGE:ASM>:-x assembler-with-cpp>
+# Компилятор (из toolchain)
+target_link_libraries(firmware.elf PRIVATE 
+    math 
+	#robot 
+    stm32
 )
 
-target_link_options(firmware.elf PRIVATE
-    -mcpu=cortex-m4 -mthumb 
-    -T${CMAKE_SOURCE_DIR}/STM32F411CEUx.ld
-    -Wl,--gc-sections
-)
-
-# HEX/BIN + SIZE
-add_custom_command(TARGET firmware.elf POST_BUILD
-    COMMAND ${CMAKE_OBJCOPY} -O ihex $<TARGET_FILE:firmware.elf> firmware.hex
-    COMMAND ${CMAKE_OBJCOPY} -O binary $<TARGET_FILE:firmware.elf> firmware.bin
-    COMMAND ${CMAKE_SIZEUTIL} $<TARGET_FILE:firmware.elf>
-)
+target_link_options(firmware.elf PRIVATE -T ${LINKER_SCRIPT})
 
