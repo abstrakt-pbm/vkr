@@ -1,18 +1,23 @@
 #include <robot/robot_control.hpp>
+
+#include <math/math.hpp>
+#include <robot/robot.hpp>
+
 #include <algorithm>
 #include <cmath>
 
+using namespace Robot;
+
 namespace RobotControl {
 
-// ✅ ССЫЛКИ — гарантия безопасности от nullptr (Tier-1 Safety-Critical)
+constexpr int MAX_DT = 10;
+
 RobotController::RobotController(FFModel& ffmodel, 
                                  Math::PID& linear_pid, 
-                                 Math::PID& angular_pid,
-                                 ActuatorLimits& limits)
+                                 Math::PID& angular_pid)
     : m_model(ffmodel),
       m_linear_velocity_pid(linear_pid),
       m_angle_velocity_pid(angular_pid),
-      m_limits(limits),
       m_last_safe_effort{0.0f, 0.0f} 
 {}
 
@@ -26,10 +31,10 @@ ControlEffort RobotController::GetAdjustedControlEffort(const Robot::RobotState&
         if (dt > 0.5f) {  // Полный отказ → Emergency Stop
             m_linear_velocity_pid.reset();
             m_angle_velocity_pid.reset();
-            robot.enterSafeStopMode();  // Только при критическом сбое
+            //robot.enterSafeStopMode();  // Только при критическом сбое
         }
         // Иначе продолжаем с прошлым усилием (Coasting-like)
-        return m_last_safe_effort{0,0}; 
+        return m_last_safe_effort; 
     }
 
     // 1. ВЫЧИСЛЕНИЕ ОШИБОК (с deadband против шума энкодеров)
@@ -49,8 +54,9 @@ ControlEffort RobotController::GetAdjustedControlEffort(const Robot::RobotState&
 
     // 4. КИНЕМАТИЧЕСКИЙ МИКСЕР УСИЛИЙ (правильные размерности!)
     // ПИДы выдают вольты → миксим просто ±
-    float left_pid_volts  = pid_linear - robot.velocity_to_voltage(pid_angular);
-    float right_pid_volts = pid_linear + robot.velocity_to_voltage(pid_angular);
+	// TODO:
+    float left_pid_volts  = pid_linear /*- robot.velocity_to_voltage(pid_angular)*/;
+    float right_pid_volts = pid_linear /*+ robot.velocity_to_voltage(pid_angular)*/;
 
     // 5. СУММИРОВАНИЕ УСИЛИЙ (FF + FB)
     ControlEffort total_effort;
@@ -80,4 +86,5 @@ ControlEffort RobotController::GetAdjustedControlEffort(const Robot::RobotState&
     m_last_safe_effort = safe_effort.effort;
     return safe_effort.effort;
 }
+} // namespace RobotControl
 

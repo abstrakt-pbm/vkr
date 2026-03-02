@@ -3,6 +3,7 @@
 	[
 		"/home/pablo/devel/vkr/code/build/firmware/cmake_install.cmake",
 		"/home/pablo/devel/vkr/code/build/firmware/math/cmake_install.cmake",
+		"/home/pablo/devel/vkr/code/build/firmware/robot/cmake_install.cmake",
 		"/home/pablo/devel/vkr/code/build/firmware/stm32/cmake_install.cmake"
 	],
 	"Parallel" : false

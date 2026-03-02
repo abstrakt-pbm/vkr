@@ -1394,8 +1394,8 @@ events:
     checks:
       - "Detecting C compiler ABI info"
     directories:
-      source: "/home/pablo/devel/vkr/code/build/firmware/CMakeFiles/CMakeScratch/TryCompile-jbZRTz"
-      binary: "/home/pablo/devel/vkr/code/build/firmware/CMakeFiles/CMakeScratch/TryCompile-jbZRTz"
+      source: "/home/pablo/devel/vkr/code/build/firmware/CMakeFiles/CMakeScratch/TryCompile-Rv4NCR"
+      binary: "/home/pablo/devel/vkr/code/build/firmware/CMakeFiles/CMakeScratch/TryCompile-Rv4NCR"
     cmakeVariables:
       CMAKE_C_FLAGS: "-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall"
       CMAKE_C_FLAGS_DEBUG: "-g"
@@ -1404,18 +1404,18 @@ events:
       variable: "CMAKE_C_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: '/home/pablo/devel/vkr/code/build/firmware/CMakeFiles/CMakeScratch/TryCompile-jbZRTz'
+        Change Dir: '/home/pablo/devel/vkr/code/build/firmware/CMakeFiles/CMakeScratch/TryCompile-Rv4NCR'
         
-        Run Build Command(s): /usr/bin/ninja -v cmTC_fe3c7
-        [1/2] /usr/bin/arm-none-eabi-gcc   -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall    -v -o CMakeFiles/cmTC_fe3c7.dir/CMakeCCompilerABI.c.obj -c /usr/share/cmake-4.2/Modules/CMakeCCompilerABI.c
+        Run Build Command(s): /usr/bin/ninja -v cmTC_a7d5f
+        [1/2] /usr/bin/arm-none-eabi-gcc   -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall    -v -o CMakeFiles/cmTC_a7d5f.dir/CMakeCCompilerABI.c.obj -c /usr/share/cmake-4.2/Modules/CMakeCCompilerABI.c
         Using built-in specs.
         COLLECT_GCC=/usr/bin/arm-none-eabi-gcc
         Target: arm-none-eabi
         Configured with: ../configure --disable-decimal-float --disable-libffi --disable-libgomp --disable-libmudflap --disable-libquadmath --disable-libssp --disable-libstdcxx-pch --disable-libstdc__-v3 --disable-nls --disable-shared --disable-threads --disable-tls --disable-werror --enable-__cxa_atexit --enable-c99 --enable-gnu-indirect-function --enable-interwork --enable-languages=c,c++ --enable-long-long --enable-multilib --enable-plugins --host= --libdir=/usr/lib --libexecdir=/usr/lib --prefix=/usr --target=arm-none-eabi --with-gmp --with-gnu-as --with-gnu-ld --with-headers=/usr/arm-none-eabi/include --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --with-isl --with-libelf --with-mpc --with-mpfr --with-multilib-list=rmprofile --with-native-system-header-dir=/include --with-newlib --with-python-dir=share/gcc-arm-none-eabi --with-sysroot=/usr/arm-none-eabi --with-system-zlib
         Thread model: single
         gcc version 9.3.0 (GCC) 
-        COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-v' '-o' 'CMakeFiles/cmTC_fe3c7.dir/CMakeCCompilerABI.c.obj' '-c' '-march=armv7e-m+fp'
-         /usr/lib/gcc/arm-none-eabi/9.3.0/cc1 -quiet -v -imultilib thumb/v7e-m+fp/hard -D__USES_INITFINI__ -D STM32F411xE /usr/share/cmake-4.2/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -march=armv7e-m+fp -auxbase-strip CMakeFiles/cmTC_fe3c7.dir/CMakeCCompilerABI.c.obj -Os -Wall -version -o /tmp/ccoIR6gv.s
+        COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-v' '-o' 'CMakeFiles/cmTC_a7d5f.dir/CMakeCCompilerABI.c.obj' '-c' '-march=armv7e-m+fp'
+         /usr/lib/gcc/arm-none-eabi/9.3.0/cc1 -quiet -v -imultilib thumb/v7e-m+fp/hard -D__USES_INITFINI__ -D STM32F411xE /usr/share/cmake-4.2/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -march=armv7e-m+fp -auxbase-strip CMakeFiles/cmTC_a7d5f.dir/CMakeCCompilerABI.c.obj -Os -Wall -version -o /tmp/ccH3lGd4.s
         GNU C17 (GCC) version 9.3.0 (arm-none-eabi)
         	compiled by GNU C version 9.3.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.19-GMP
         
@@ -1439,13 +1439,13 @@ events:
         warning: MPC header version 1.1.0 differs from library version 1.3.1.
         GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
         Compiler executable checksum: 0dbe903bfd2d614fd1db89221093437b
-        COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-v' '-o' 'CMakeFiles/cmTC_fe3c7.dir/CMakeCCompilerABI.c.obj' '-c' '-march=armv7e-m+fp'
-         /usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/bin/as -v -march=armv7e-m -mfloat-abi=hard -mfpu=fpv4-sp-d16 -meabi=5 -o CMakeFiles/cmTC_fe3c7.dir/CMakeCCompilerABI.c.obj /tmp/ccoIR6gv.s
+        COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-v' '-o' 'CMakeFiles/cmTC_a7d5f.dir/CMakeCCompilerABI.c.obj' '-c' '-march=armv7e-m+fp'
+         /usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/bin/as -v -march=armv7e-m -mfloat-abi=hard -mfpu=fpv4-sp-d16 -meabi=5 -o CMakeFiles/cmTC_a7d5f.dir/CMakeCCompilerABI.c.obj /tmp/ccH3lGd4.s
         GNU assembler version 2.32 (arm-none-eabi) using BFD version (GNU Binutils) 2.32
         COMPILER_PATH=/usr/lib/gcc/arm-none-eabi/9.3.0/:/usr/lib/gcc/arm-none-eabi/9.3.0/:/usr/lib/gcc/arm-none-eabi/:/usr/lib/gcc/arm-none-eabi/9.3.0/:/usr/lib/gcc/arm-none-eabi/:/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/bin/
         LIBRARY_PATH=/usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/:/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/:/usr/arm-none-eabi/lib/thumb/v7e-m+fp/hard/:/usr/lib/gcc/arm-none-eabi/9.3.0/:/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/:/usr/arm-none-eabi/lib/
-        COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-v' '-o' 'CMakeFiles/cmTC_fe3c7.dir/CMakeCCompilerABI.c.obj' '-c' '-march=armv7e-m+fp'
-        [2/2] : && /usr/bin/arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -specs=nano.specs -lc -lm -lnosys -Wl,--gc-sections -v CMakeFiles/cmTC_fe3c7.dir/CMakeCCompilerABI.c.obj -o cmTC_fe3c7   && :
+        COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-v' '-o' 'CMakeFiles/cmTC_a7d5f.dir/CMakeCCompilerABI.c.obj' '-c' '-march=armv7e-m+fp'
+        [2/2] : && /usr/bin/arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -specs=nano.specs -lc -lm -lnosys -Wl,--gc-sections -v CMakeFiles/cmTC_a7d5f.dir/CMakeCCompilerABI.c.obj -o cmTC_a7d5f   && :
         Using built-in specs.
         Reading specs from /usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/nano.specs
         rename spec link to nano_link
@@ -1459,9 +1459,9 @@ events:
         gcc version 9.3.0 (GCC) 
         COMPILER_PATH=/usr/lib/gcc/arm-none-eabi/9.3.0/:/usr/lib/gcc/arm-none-eabi/9.3.0/:/usr/lib/gcc/arm-none-eabi/:/usr/lib/gcc/arm-none-eabi/9.3.0/:/usr/lib/gcc/arm-none-eabi/:/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/bin/
         LIBRARY_PATH=/usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/:/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/:/usr/arm-none-eabi/lib/thumb/v7e-m+fp/hard/:/usr/lib/gcc/arm-none-eabi/9.3.0/:/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/:/usr/arm-none-eabi/lib/
-        COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-specs=nano.specs' '-v' '-o' 'cmTC_fe3c7' '-march=armv7e-m+fp'
-         /usr/lib/gcc/arm-none-eabi/9.3.0/collect2 -plugin /usr/lib/gcc/arm-none-eabi/9.3.0/liblto_plugin.so -plugin-opt=/usr/lib/gcc/arm-none-eabi/9.3.0/lto-wrapper -plugin-opt=-fresolution=/tmp/ccEOKvPr.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc_nano -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc_nano --sysroot=/usr/arm-none-eabi -X -o cmTC_fe3c7 /usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crti.o /usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crtbegin.o /usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/crt0.o -L/usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard -L/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard -L/usr/arm-none-eabi/lib/thumb/v7e-m+fp/hard -L/usr/lib/gcc/arm-none-eabi/9.3.0 -L/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib -L/usr/arm-none-eabi/lib -lc_nano -lm -lnosys --gc-sections CMakeFiles/cmTC_fe3c7.dir/CMakeCCompilerABI.c.obj --start-group -lgcc -lc_nano --end-group --start-group -lgcc -lc_nano --end-group /usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crtend.o /usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crtn.o
-        COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-specs=nano.specs' '-v' '-o' 'cmTC_fe3c7' '-march=armv7e-m+fp'
+        COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-specs=nano.specs' '-v' '-o' 'cmTC_a7d5f' '-march=armv7e-m+fp'
+         /usr/lib/gcc/arm-none-eabi/9.3.0/collect2 -plugin /usr/lib/gcc/arm-none-eabi/9.3.0/liblto_plugin.so -plugin-opt=/usr/lib/gcc/arm-none-eabi/9.3.0/lto-wrapper -plugin-opt=-fresolution=/tmp/ccGhvZ2p.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc_nano -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc_nano --sysroot=/usr/arm-none-eabi -X -o cmTC_a7d5f /usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crti.o /usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crtbegin.o /usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/crt0.o -L/usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard -L/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard -L/usr/arm-none-eabi/lib/thumb/v7e-m+fp/hard -L/usr/lib/gcc/arm-none-eabi/9.3.0 -L/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib -L/usr/arm-none-eabi/lib -lc_nano -lm -lnosys --gc-sections CMakeFiles/cmTC_a7d5f.dir/CMakeCCompilerABI.c.obj --start-group -lgcc -lc_nano --end-group --start-group -lgcc -lc_nano --end-group /usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crtend.o /usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crtn.o
+        COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-specs=nano.specs' '-v' '-o' 'cmTC_a7d5f' '-march=armv7e-m+fp'
         
       exitCode: 0
   -
@@ -1494,18 +1494,18 @@ events:
       Parsed C implicit link information:
         link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
         linker tool regex: [^[ 	]*(->|"|[0-9]+>[ 	-]*Build:[ 	0-9]+ ms[ 	]*)?[ 	]*(([^"]*[/\\])?(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)))("|,| |$)]
-        ignore line: [Change Dir: '/home/pablo/devel/vkr/code/build/firmware/CMakeFiles/CMakeScratch/TryCompile-jbZRTz']
+        ignore line: [Change Dir: '/home/pablo/devel/vkr/code/build/firmware/CMakeFiles/CMakeScratch/TryCompile-Rv4NCR']
         ignore line: []
-        ignore line: [Run Build Command(s): /usr/bin/ninja -v cmTC_fe3c7]
-        ignore line: [[1/2] /usr/bin/arm-none-eabi-gcc   -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall    -v -o CMakeFiles/cmTC_fe3c7.dir/CMakeCCompilerABI.c.obj -c /usr/share/cmake-4.2/Modules/CMakeCCompilerABI.c]
+        ignore line: [Run Build Command(s): /usr/bin/ninja -v cmTC_a7d5f]
+        ignore line: [[1/2] /usr/bin/arm-none-eabi-gcc   -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall    -v -o CMakeFiles/cmTC_a7d5f.dir/CMakeCCompilerABI.c.obj -c /usr/share/cmake-4.2/Modules/CMakeCCompilerABI.c]
         ignore line: [Using built-in specs.]
         ignore line: [COLLECT_GCC=/usr/bin/arm-none-eabi-gcc]
         ignore line: [Target: arm-none-eabi]
         ignore line: [Configured with: ../configure --disable-decimal-float --disable-libffi --disable-libgomp --disable-libmudflap --disable-libquadmath --disable-libssp --disable-libstdcxx-pch --disable-libstdc__-v3 --disable-nls --disable-shared --disable-threads --disable-tls --disable-werror --enable-__cxa_atexit --enable-c99 --enable-gnu-indirect-function --enable-interwork --enable-languages=c,c++ --enable-long-long --enable-multilib --enable-plugins --host= --libdir=/usr/lib --libexecdir=/usr/lib --prefix=/usr --target=arm-none-eabi --with-gmp --with-gnu-as --with-gnu-ld --with-headers=/usr/arm-none-eabi/include --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --with-isl --with-libelf --with-mpc --with-mpfr --with-multilib-list=rmprofile --with-native-system-header-dir=/include --with-newlib --with-python-dir=share/gcc-arm-none-eabi --with-sysroot=/usr/arm-none-eabi --with-system-zlib]
         ignore line: [Thread model: single]
         ignore line: [gcc version 9.3.0 (GCC) ]
-        ignore line: [COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-v' '-o' 'CMakeFiles/cmTC_fe3c7.dir/CMakeCCompilerABI.c.obj' '-c' '-march=armv7e-m+fp']
-        ignore line: [ /usr/lib/gcc/arm-none-eabi/9.3.0/cc1 -quiet -v -imultilib thumb/v7e-m+fp/hard -D__USES_INITFINI__ -D STM32F411xE /usr/share/cmake-4.2/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -march=armv7e-m+fp -auxbase-strip CMakeFiles/cmTC_fe3c7.dir/CMakeCCompilerABI.c.obj -Os -Wall -version -o /tmp/ccoIR6gv.s]
+        ignore line: [COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-v' '-o' 'CMakeFiles/cmTC_a7d5f.dir/CMakeCCompilerABI.c.obj' '-c' '-march=armv7e-m+fp']
+        ignore line: [ /usr/lib/gcc/arm-none-eabi/9.3.0/cc1 -quiet -v -imultilib thumb/v7e-m+fp/hard -D__USES_INITFINI__ -D STM32F411xE /usr/share/cmake-4.2/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -march=armv7e-m+fp -auxbase-strip CMakeFiles/cmTC_a7d5f.dir/CMakeCCompilerABI.c.obj -Os -Wall -version -o /tmp/ccH3lGd4.s]
         ignore line: [GNU C17 (GCC) version 9.3.0 (arm-none-eabi)]
         ignore line: [	compiled by GNU C version 9.3.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.19-GMP]
         ignore line: []
@@ -1529,13 +1529,13 @@ events:
         ignore line: [warning: MPC header version 1.1.0 differs from library version 1.3.1.]
         ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
         ignore line: [Compiler executable checksum: 0dbe903bfd2d614fd1db89221093437b]
-        ignore line: [COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-v' '-o' 'CMakeFiles/cmTC_fe3c7.dir/CMakeCCompilerABI.c.obj' '-c' '-march=armv7e-m+fp']
-        ignore line: [ /usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/bin/as -v -march=armv7e-m -mfloat-abi=hard -mfpu=fpv4-sp-d16 -meabi=5 -o CMakeFiles/cmTC_fe3c7.dir/CMakeCCompilerABI.c.obj /tmp/ccoIR6gv.s]
+        ignore line: [COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-v' '-o' 'CMakeFiles/cmTC_a7d5f.dir/CMakeCCompilerABI.c.obj' '-c' '-march=armv7e-m+fp']
+        ignore line: [ /usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/bin/as -v -march=armv7e-m -mfloat-abi=hard -mfpu=fpv4-sp-d16 -meabi=5 -o CMakeFiles/cmTC_a7d5f.dir/CMakeCCompilerABI.c.obj /tmp/ccH3lGd4.s]
         ignore line: [GNU assembler version 2.32 (arm-none-eabi) using BFD version (GNU Binutils) 2.32]
         ignore line: [COMPILER_PATH=/usr/lib/gcc/arm-none-eabi/9.3.0/:/usr/lib/gcc/arm-none-eabi/9.3.0/:/usr/lib/gcc/arm-none-eabi/:/usr/lib/gcc/arm-none-eabi/9.3.0/:/usr/lib/gcc/arm-none-eabi/:/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/bin/]
         ignore line: [LIBRARY_PATH=/usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/:/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/:/usr/arm-none-eabi/lib/thumb/v7e-m+fp/hard/:/usr/lib/gcc/arm-none-eabi/9.3.0/:/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/:/usr/arm-none-eabi/lib/]
-        ignore line: [COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-v' '-o' 'CMakeFiles/cmTC_fe3c7.dir/CMakeCCompilerABI.c.obj' '-c' '-march=armv7e-m+fp']
-        ignore line: [[2/2] : && /usr/bin/arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -specs=nano.specs -lc -lm -lnosys -Wl --gc-sections -v CMakeFiles/cmTC_fe3c7.dir/CMakeCCompilerABI.c.obj -o cmTC_fe3c7   && :]
+        ignore line: [COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-v' '-o' 'CMakeFiles/cmTC_a7d5f.dir/CMakeCCompilerABI.c.obj' '-c' '-march=armv7e-m+fp']
+        ignore line: [[2/2] : && /usr/bin/arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -specs=nano.specs -lc -lm -lnosys -Wl --gc-sections -v CMakeFiles/cmTC_a7d5f.dir/CMakeCCompilerABI.c.obj -o cmTC_a7d5f   && :]
         ignore line: [Using built-in specs.]
         ignore line: [Reading specs from /usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/nano.specs]
         ignore line: [rename spec link to nano_link]
@@ -1549,13 +1549,13 @@ events:
         ignore line: [gcc version 9.3.0 (GCC) ]
         ignore line: [COMPILER_PATH=/usr/lib/gcc/arm-none-eabi/9.3.0/:/usr/lib/gcc/arm-none-eabi/9.3.0/:/usr/lib/gcc/arm-none-eabi/:/usr/lib/gcc/arm-none-eabi/9.3.0/:/usr/lib/gcc/arm-none-eabi/:/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/bin/]
         ignore line: [LIBRARY_PATH=/usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/:/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/:/usr/arm-none-eabi/lib/thumb/v7e-m+fp/hard/:/usr/lib/gcc/arm-none-eabi/9.3.0/:/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/:/usr/arm-none-eabi/lib/]
-        ignore line: [COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-specs=nano.specs' '-v' '-o' 'cmTC_fe3c7' '-march=armv7e-m+fp']
-        link line: [ /usr/lib/gcc/arm-none-eabi/9.3.0/collect2 -plugin /usr/lib/gcc/arm-none-eabi/9.3.0/liblto_plugin.so -plugin-opt=/usr/lib/gcc/arm-none-eabi/9.3.0/lto-wrapper -plugin-opt=-fresolution=/tmp/ccEOKvPr.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc_nano -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc_nano --sysroot=/usr/arm-none-eabi -X -o cmTC_fe3c7 /usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crti.o /usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crtbegin.o /usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/crt0.o -L/usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard -L/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard -L/usr/arm-none-eabi/lib/thumb/v7e-m+fp/hard -L/usr/lib/gcc/arm-none-eabi/9.3.0 -L/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib -L/usr/arm-none-eabi/lib -lc_nano -lm -lnosys --gc-sections CMakeFiles/cmTC_fe3c7.dir/CMakeCCompilerABI.c.obj --start-group -lgcc -lc_nano --end-group --start-group -lgcc -lc_nano --end-group /usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crtend.o /usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crtn.o]
+        ignore line: [COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-specs=nano.specs' '-v' '-o' 'cmTC_a7d5f' '-march=armv7e-m+fp']
+        link line: [ /usr/lib/gcc/arm-none-eabi/9.3.0/collect2 -plugin /usr/lib/gcc/arm-none-eabi/9.3.0/liblto_plugin.so -plugin-opt=/usr/lib/gcc/arm-none-eabi/9.3.0/lto-wrapper -plugin-opt=-fresolution=/tmp/ccGhvZ2p.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc_nano -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc_nano --sysroot=/usr/arm-none-eabi -X -o cmTC_a7d5f /usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crti.o /usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crtbegin.o /usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/crt0.o -L/usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard -L/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard -L/usr/arm-none-eabi/lib/thumb/v7e-m+fp/hard -L/usr/lib/gcc/arm-none-eabi/9.3.0 -L/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib -L/usr/arm-none-eabi/lib -lc_nano -lm -lnosys --gc-sections CMakeFiles/cmTC_a7d5f.dir/CMakeCCompilerABI.c.obj --start-group -lgcc -lc_nano --end-group --start-group -lgcc -lc_nano --end-group /usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crtend.o /usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crtn.o]
           arg [/usr/lib/gcc/arm-none-eabi/9.3.0/collect2] ==> ignore
           arg [-plugin] ==> ignore
           arg [/usr/lib/gcc/arm-none-eabi/9.3.0/liblto_plugin.so] ==> ignore
           arg [-plugin-opt=/usr/lib/gcc/arm-none-eabi/9.3.0/lto-wrapper] ==> ignore
-          arg [-plugin-opt=-fresolution=/tmp/ccEOKvPr.res] ==> ignore
+          arg [-plugin-opt=-fresolution=/tmp/ccGhvZ2p.res] ==> ignore
           arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
           arg [-plugin-opt=-pass-through=-lc_nano] ==> ignore
           arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
@@ -1563,7 +1563,7 @@ events:
           arg [--sysroot=/usr/arm-none-eabi] ==> ignore
           arg [-X] ==> ignore
           arg [-o] ==> ignore
-          arg [cmTC_fe3c7] ==> ignore
+          arg [cmTC_a7d5f] ==> ignore
           arg [/usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crti.o] ==> obj [/usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crti.o]
           arg [/usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crtbegin.o] ==> obj [/usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crtbegin.o]
           arg [/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/crt0.o] ==> obj [/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/crt0.o]
@@ -1577,7 +1577,7 @@ events:
           arg [-lm] ==> lib [m]
           arg [-lnosys] ==> lib [nosys]
           arg [--gc-sections] ==> ignore
-          arg [CMakeFiles/cmTC_fe3c7.dir/CMakeCCompilerABI.c.obj] ==> ignore
+          arg [CMakeFiles/cmTC_a7d5f.dir/CMakeCCompilerABI.c.obj] ==> ignore
           arg [--start-group] ==> ignore
           arg [-lgcc] ==> lib [gcc]
           arg [-lc_nano] ==> lib [c_nano]
@@ -1588,7 +1588,7 @@ events:
           arg [--end-group] ==> ignore
           arg [/usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crtend.o] ==> obj [/usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crtend.o]
           arg [/usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crtn.o] ==> obj [/usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crtn.o]
-        ignore line: [COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-specs=nano.specs' '-v' '-o' 'cmTC_fe3c7' '-march=armv7e-m+fp']
+        ignore line: [COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-specs=nano.specs' '-v' '-o' 'cmTC_a7d5f' '-march=armv7e-m+fp']
         ignore line: []
         ignore line: []
         collapse obj [/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/crt0.o] ==> [/usr/arm-none-eabi/lib/thumb/v7e-m+fp/hard/crt0.o]
@@ -1613,8 +1613,8 @@ events:
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "/home/pablo/devel/vkr/code/build/firmware/CMakeFiles/CMakeScratch/TryCompile-haeFaZ"
-      binary: "/home/pablo/devel/vkr/code/build/firmware/CMakeFiles/CMakeScratch/TryCompile-haeFaZ"
+      source: "/home/pablo/devel/vkr/code/build/firmware/CMakeFiles/CMakeScratch/TryCompile-WbKPRx"
+      binary: "/home/pablo/devel/vkr/code/build/firmware/CMakeFiles/CMakeScratch/TryCompile-WbKPRx"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -std=c++17 -fno-rtti -fno-exceptions"
       CMAKE_CXX_FLAGS_DEBUG: "-g"
@@ -1624,18 +1624,18 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: '/home/pablo/devel/vkr/code/build/firmware/CMakeFiles/CMakeScratch/TryCompile-haeFaZ'
+        Change Dir: '/home/pablo/devel/vkr/code/build/firmware/CMakeFiles/CMakeScratch/TryCompile-WbKPRx'
         
-        Run Build Command(s): /usr/bin/ninja -v cmTC_f0477
-        [1/2] /usr/bin/arm-none-eabi-g++   -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -std=c++17 -fno-rtti -fno-exceptions    -v -o CMakeFiles/cmTC_f0477.dir/CMakeCXXCompilerABI.cpp.obj -c /usr/share/cmake-4.2/Modules/CMakeCXXCompilerABI.cpp
+        Run Build Command(s): /usr/bin/ninja -v cmTC_febbb
+        [1/2] /usr/bin/arm-none-eabi-g++   -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -std=c++17 -fno-rtti -fno-exceptions    -v -o CMakeFiles/cmTC_febbb.dir/CMakeCXXCompilerABI.cpp.obj -c /usr/share/cmake-4.2/Modules/CMakeCXXCompilerABI.cpp
         Using built-in specs.
         COLLECT_GCC=/usr/bin/arm-none-eabi-g++
         Target: arm-none-eabi
         Configured with: ../configure --disable-decimal-float --disable-libffi --disable-libgomp --disable-libmudflap --disable-libquadmath --disable-libssp --disable-libstdcxx-pch --disable-libstdc__-v3 --disable-nls --disable-shared --disable-threads --disable-tls --disable-werror --enable-__cxa_atexit --enable-c99 --enable-gnu-indirect-function --enable-interwork --enable-languages=c,c++ --enable-long-long --enable-multilib --enable-plugins --host= --libdir=/usr/lib --libexecdir=/usr/lib --prefix=/usr --target=arm-none-eabi --with-gmp --with-gnu-as --with-gnu-ld --with-headers=/usr/arm-none-eabi/include --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --with-isl --with-libelf --with-mpc --with-mpfr --with-multilib-list=rmprofile --with-native-system-header-dir=/include --with-newlib --with-python-dir=share/gcc-arm-none-eabi --with-sysroot=/usr/arm-none-eabi --with-system-zlib
         Thread model: single
         gcc version 9.3.0 (GCC) 
-        COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-std=c++17' '-fno-rtti' '-fno-exceptions' '-v' '-o' 'CMakeFiles/cmTC_f0477.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-march=armv7e-m+fp'
-         /usr/lib/gcc/arm-none-eabi/9.3.0/cc1plus -quiet -v -imultilib thumb/v7e-m+fp/hard -D__USES_INITFINI__ -D STM32F411xE /usr/share/cmake-4.2/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpbase CMakeCXXCompilerABI.cpp -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -march=armv7e-m+fp -auxbase-strip CMakeFiles/cmTC_f0477.dir/CMakeCXXCompilerABI.cpp.obj -Os -Wall -std=c++17 -version -fno-rtti -fno-exceptions -o /tmp/ccP8YxMq.s
+        COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-std=c++17' '-fno-rtti' '-fno-exceptions' '-v' '-o' 'CMakeFiles/cmTC_febbb.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-march=armv7e-m+fp'
+         /usr/lib/gcc/arm-none-eabi/9.3.0/cc1plus -quiet -v -imultilib thumb/v7e-m+fp/hard -D__USES_INITFINI__ -D STM32F411xE /usr/share/cmake-4.2/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpbase CMakeCXXCompilerABI.cpp -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -march=armv7e-m+fp -auxbase-strip CMakeFiles/cmTC_febbb.dir/CMakeCXXCompilerABI.cpp.obj -Os -Wall -std=c++17 -version -fno-rtti -fno-exceptions -o /tmp/ccmbPJF1.s
         GNU C++17 (GCC) version 9.3.0 (arm-none-eabi)
         	compiled by GNU C version 9.3.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.19-GMP
         
@@ -1662,15 +1662,15 @@ events:
         warning: MPC header version 1.1.0 differs from library version 1.3.1.
         GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
         Compiler executable checksum: f3401ca2523d3283967ad84448fc87a6
-        COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-std=c++17' '-fno-rtti' '-fno-exceptions' '-v' '-o' 'CMakeFiles/cmTC_f0477.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-march=armv7e-m+fp'
-         /usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/bin/as -v -march=armv7e-m -mfloat-abi=hard -mfpu=fpv4-sp-d16 -meabi=5 -o CMakeFiles/cmTC_f0477.dir/CMakeCXXCompilerABI.cpp.obj /tmp/ccP8YxMq.s
+        COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-std=c++17' '-fno-rtti' '-fno-exceptions' '-v' '-o' 'CMakeFiles/cmTC_febbb.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-march=armv7e-m+fp'
+         /usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/bin/as -v -march=armv7e-m -mfloat-abi=hard -mfpu=fpv4-sp-d16 -meabi=5 -o CMakeFiles/cmTC_febbb.dir/CMakeCXXCompilerABI.cpp.obj /tmp/ccmbPJF1.s
         GNU assembler version 2.32 (arm-none-eabi) using BFD version (GNU Binutils) 2.32
         COMPILER_PATH=/usr/lib/gcc/arm-none-eabi/9.3.0/:/usr/lib/gcc/arm-none-eabi/9.3.0/:/usr/lib/gcc/arm-none-eabi/:/usr/lib/gcc/arm-none-eabi/9.3.0/:/usr/lib/gcc/arm-none-eabi/:/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/bin/
         LIBRARY_PATH=/usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/:/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/:/usr/arm-none-eabi/lib/thumb/v7e-m+fp/hard/:/usr/lib/gcc/arm-none-eabi/9.3.0/:/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/:/usr/arm-none-eabi/lib/
-        COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-std=c++17' '-fno-rtti' '-fno-exceptions' '-v' '-o' 'CMakeFiles/cmTC_f0477.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-march=armv7e-m+fp'
-        [2/2] : && /usr/bin/arm-none-eabi-g++ -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -std=c++17 -fno-rtti -fno-exceptions -specs=nano.specs -lc -lm -lnosys -Wl,--gc-sections -v CMakeFiles/cmTC_f0477.dir/CMakeCXXCompilerABI.cpp.obj -o cmTC_f0477   && :
-        FAILED: [code=1] cmTC_f0477 
-        : && /usr/bin/arm-none-eabi-g++ -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -std=c++17 -fno-rtti -fno-exceptions -specs=nano.specs -lc -lm -lnosys -Wl,--gc-sections -v CMakeFiles/cmTC_f0477.dir/CMakeCXXCompilerABI.cpp.obj -o cmTC_f0477   && :
+        COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-std=c++17' '-fno-rtti' '-fno-exceptions' '-v' '-o' 'CMakeFiles/cmTC_febbb.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-march=armv7e-m+fp'
+        [2/2] : && /usr/bin/arm-none-eabi-g++ -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -std=c++17 -fno-rtti -fno-exceptions -specs=nano.specs -lc -lm -lnosys -Wl,--gc-sections -v CMakeFiles/cmTC_febbb.dir/CMakeCXXCompilerABI.cpp.obj -o cmTC_febbb   && :
+        FAILED: [code=1] cmTC_febbb 
+        : && /usr/bin/arm-none-eabi-g++ -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -std=c++17 -fno-rtti -fno-exceptions -specs=nano.specs -lc -lm -lnosys -Wl,--gc-sections -v CMakeFiles/cmTC_febbb.dir/CMakeCXXCompilerABI.cpp.obj -o cmTC_febbb   && :
         Using built-in specs.
         Reading specs from /usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/nano.specs
         rename spec link to nano_link
@@ -1684,8 +1684,8 @@ events:
         gcc version 9.3.0 (GCC) 
         COMPILER_PATH=/usr/lib/gcc/arm-none-eabi/9.3.0/:/usr/lib/gcc/arm-none-eabi/9.3.0/:/usr/lib/gcc/arm-none-eabi/:/usr/lib/gcc/arm-none-eabi/9.3.0/:/usr/lib/gcc/arm-none-eabi/:/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/bin/
         LIBRARY_PATH=/usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/:/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/:/usr/arm-none-eabi/lib/thumb/v7e-m+fp/hard/:/usr/lib/gcc/arm-none-eabi/9.3.0/:/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/:/usr/arm-none-eabi/lib/
-        COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-std=c++17' '-fno-rtti' '-fno-exceptions' '-specs=nano.specs' '-v' '-o' 'cmTC_f0477' '-march=armv7e-m+fp'
-         /usr/lib/gcc/arm-none-eabi/9.3.0/collect2 -plugin /usr/lib/gcc/arm-none-eabi/9.3.0/liblto_plugin.so -plugin-opt=/usr/lib/gcc/arm-none-eabi/9.3.0/lto-wrapper -plugin-opt=-fresolution=/tmp/ccKS1j4H.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc_nano -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc_nano --sysroot=/usr/arm-none-eabi -X -o cmTC_f0477 /usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crti.o /usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crtbegin.o /usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/crt0.o -L/usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard -L/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard -L/usr/arm-none-eabi/lib/thumb/v7e-m+fp/hard -L/usr/lib/gcc/arm-none-eabi/9.3.0 -L/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib -L/usr/arm-none-eabi/lib -lnosys --gc-sections CMakeFiles/cmTC_f0477.dir/CMakeCXXCompilerABI.cpp.obj -lstdc++_nano -lm -lc_nano --start-group -lgcc -lc_nano --end-group --start-group -lgcc -lc_nano --end-group /usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crtend.o /usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crtn.o
+        COLLECT_GCC_OPTIONS='-mcpu=cortex-m4' '-mthumb' '-mfloat-abi=hard' '-mfpu=fpv4-sp-d16' '-D' 'STM32F411xE' '-Os' '-Wall' '-std=c++17' '-fno-rtti' '-fno-exceptions' '-specs=nano.specs' '-v' '-o' 'cmTC_febbb' '-march=armv7e-m+fp'
+         /usr/lib/gcc/arm-none-eabi/9.3.0/collect2 -plugin /usr/lib/gcc/arm-none-eabi/9.3.0/liblto_plugin.so -plugin-opt=/usr/lib/gcc/arm-none-eabi/9.3.0/lto-wrapper -plugin-opt=-fresolution=/tmp/ccbYvwmF.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc_nano -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc_nano --sysroot=/usr/arm-none-eabi -X -o cmTC_febbb /usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crti.o /usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crtbegin.o /usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/crt0.o -L/usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard -L/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard -L/usr/arm-none-eabi/lib/thumb/v7e-m+fp/hard -L/usr/lib/gcc/arm-none-eabi/9.3.0 -L/usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib -L/usr/arm-none-eabi/lib -lnosys --gc-sections CMakeFiles/cmTC_febbb.dir/CMakeCXXCompilerABI.cpp.obj -lstdc++_nano -lm -lc_nano --start-group -lgcc -lc_nano --end-group --start-group -lgcc -lc_nano --end-group /usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crtend.o /usr/lib/gcc/arm-none-eabi/9.3.0/thumb/v7e-m+fp/hard/crtn.o
         /usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/bin/ld: /usr/lib/gcc/arm-none-eabi/9.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(lib_a-exit.o): in function `exit':
         /builddir/newlib-3.1.0.20181231/build-nano/arm-none-eabi/thumb/v7e-m+fp/hard/newlib/libc/stdlib/../../../../../../../../newlib/libc/stdlib/exit.c:64: undefined reference to `_exit'
         collect2: error: ld returned 1 exit status

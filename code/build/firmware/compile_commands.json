@@ -1,7 +1,7 @@
 [
 {
   "directory": "/home/pablo/devel/vkr/code/build/firmware",
-  "command": "/usr/bin/arm-none-eabi-g++ -I/home/pablo/devel/vkr/code/math/inc -I/home/pablo/devel/vkr/code/stm32 -I/home/pablo/devel/vkr/code/math/.. -I/home/pablo/devel/vkr/code/stm32/Drivers/CMSIS/Include -I/home/pablo/devel/vkr/code/stm32/Drivers/CMSIS/Device/ST/STM32F4xx/Include -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -std=c++17 -fno-rtti -fno-exceptions -O3 -DNDEBUG -o CMakeFiles/firmware.elf.dir/main.cpp.obj -c /home/pablo/devel/vkr/code/main.cpp",
+  "command": "/usr/bin/arm-none-eabi-g++ -I/home/pablo/devel/vkr/code/math/inc -I/home/pablo/devel/vkr/code/robot/inc -I/home/pablo/devel/vkr/code/stm32 -I/home/pablo/devel/vkr/code/math/.. -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/stm32/Drivers/CMSIS/Include -I/home/pablo/devel/vkr/code/stm32/Drivers/CMSIS/Device/ST/STM32F4xx/Include -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -std=c++17 -fno-rtti -fno-exceptions -O3 -DNDEBUG -o CMakeFiles/firmware.elf.dir/main.cpp.obj -c /home/pablo/devel/vkr/code/main.cpp",
   "file": "/home/pablo/devel/vkr/code/main.cpp",
   "output": "/home/pablo/devel/vkr/code/build/firmware/CMakeFiles/firmware.elf.dir/main.cpp.obj"
 },
@@ -10,6 +10,18 @@
   "command": "/usr/bin/arm-none-eabi-g++ -I/home/pablo/devel/vkr/code/math/inc -I/home/pablo/devel/vkr/code/math/.. -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -std=c++17 -fno-rtti -fno-exceptions -O3 -DNDEBUG -o math/CMakeFiles/math.dir/math.cpp.obj -c /home/pablo/devel/vkr/code/math/math.cpp",
   "file": "/home/pablo/devel/vkr/code/math/math.cpp",
   "output": "/home/pablo/devel/vkr/code/build/firmware/math/CMakeFiles/math.dir/math.cpp.obj"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/firmware",
+  "command": "/usr/bin/arm-none-eabi-g++ -I/home/pablo/devel/vkr/code/robot/.. -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -std=c++17 -fno-rtti -fno-exceptions -O3 -DNDEBUG -o robot/CMakeFiles/robot.dir/robot.cpp.obj -c /home/pablo/devel/vkr/code/robot/robot.cpp",
+  "file": "/home/pablo/devel/vkr/code/robot/robot.cpp",
+  "output": "/home/pablo/devel/vkr/code/build/firmware/robot/CMakeFiles/robot.dir/robot.cpp.obj"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/firmware",
+  "command": "/usr/bin/arm-none-eabi-g++ -I/home/pablo/devel/vkr/code/robot/.. -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F411xE -Os -Wall -std=c++17 -fno-rtti -fno-exceptions -O3 -DNDEBUG -o robot/CMakeFiles/robot.dir/robot_control.cpp.obj -c /home/pablo/devel/vkr/code/robot/robot_control.cpp",
+  "file": "/home/pablo/devel/vkr/code/robot/robot_control.cpp",
+  "output": "/home/pablo/devel/vkr/code/build/firmware/robot/CMakeFiles/robot.dir/robot_control.cpp.obj"
 },
 {
   "directory": "/home/pablo/devel/vkr/code/build/firmware",

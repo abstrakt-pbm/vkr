@@ -58,6 +58,25 @@ rule CXX_STATIC_LIBRARY_LINKER__math_Release
 
 
 #############################################
+# Rule for compiling CXX files.
+
+rule CXX_COMPILER__robot_unscanned_Release
+  depfile = $DEP_FILE
+  deps = gcc
+  command = ${LAUNCHER}${CODE_CHECK}/usr/bin/arm-none-eabi-g++ $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  description = Building CXX object $out
+
+
+#############################################
+# Rule for linking CXX static library.
+
+rule CXX_STATIC_LIBRARY_LINKER__robot_Release
+  command = $PRE_LINK && /usr/bin/cmake -E rm -f $TARGET_FILE && arm-none-eabi-ar qc $TARGET_FILE $LINK_FLAGS $in && /usr/bin/arm-none-eabi-ranlib $TARGET_FILE && $POST_BUILD
+  description = Linking CXX static library $TARGET_FILE
+  restat = $RESTAT
+
+
+#############################################
 # Rule for compiling ASM files.
 
 rule ASM_COMPILER__stm32_unscanned_Release
