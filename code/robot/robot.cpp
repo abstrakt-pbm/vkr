@@ -6,65 +6,67 @@
 namespace Robot {
 
 constexpr float M_PI = 3.14;
+constexpr float M_MIN_DT = 1e-6f;
+constexpr float M_MAX_DT = 0.05f;
+constexpr float kMaxWheelSpeed = 5.0f;
+constexpr float kAlpha = 0.2f;
 
 RobotState Robot::FetchCurrentRobotState(float dt) {
     RobotState state = m_last_state;
     
-    // 0. Timing validation
-    if (dt < 1e-6f || dt > 0.05f) return state;
+    // Валидация дельты времени
+    if (dt < M_MIN_DT || dt > M_MAX_DT) {
+ 		return state;
+	}
 
-    // 1. Encoder health & data
-    if (!l_encoder.IsAlive() || !r_encoder.IsAlive()) return state;
+    // Валидация энкодеров
+    if (!m_left_encoder.IsAlive() || !m_right_encoder.IsAlive()) {
+		return state;
+	}
     
-    float v_left = l_encoder.get_current_velocity();
-    float v_right = r_encoder.get_current_velocity();
+	// Сырая скорость
+    float v_left = m_left_encoder.GetCurrentVelocity();
+    float v_right = m_right_encoder.GetCurrentVelocity();
     
-    if (!std::isfinite(v_left) || !std::isfinite(v_right)) return state;
+    if (!std::isfinite(v_left) || !std::isfinite(v_right)) {
+ 		return state;
+	}
     
-    // 2. Physics clamp
-    constexpr float kMaxWheelSpeed = 5.0f;
     v_left  = std::clamp(v_left,  -kMaxWheelSpeed, kMaxWheelSpeed);
     v_right = std::clamp(v_right, -kMaxWheelSpeed, kMaxWheelSpeed);
     
-    // 3. EMA smoothing
-    constexpr float kAlpha = 0.2f;
-    float m_vl_filt = (1.0f - kAlpha) * m_vl_filt + kAlpha * v_left;
-    float m_vr_filt = (1.0f - kAlpha) * m_vr_filt + kAlpha * v_right;
-    
-    // 4. Linear velocity
-    state.current_linear_speed = std::clamp(
-        (m_vl_filt + m_vr_filt) * 0.5f, -3.0f, 3.0f);
-    
-    // 5. Angular velocity: IMU first, encoders fallback
+	// Фильтр низких частот
+    m_l_filtered_velocity = (1.0f - kAlpha) * m_l_filtered_velocity + kAlpha * v_left;
+    m_r_filtered_velocity = (1.0f - kAlpha) * m_r_filtered_velocity + kAlpha * v_right;
+
+	// Получаем линейную и угловую скорость на основе энкодеров
+	float linear_robot_speed_enc = (m_l_filtered_velocity + m_r_filtered_velocity) / 2;
+	float angle_robot_speed_env = (m_r_filtered_velocity - m_l_filtered_velocity) / m_track_width;
+
+
+    m_ekf.Predict(m_l_filtered_velocity,
+				  m_r_filtered_velocity);
+
     float w_imu = 0.0f;
     if (imu.IsAlive()) {
         w_imu = imu.get_gyro_z();
+		m_ekf.Update(linear_robot_speed_enc,
+			 angle_robot_speed_env,
+			 w_imu);
     }
-    
-    if (std::isfinite(w_imu)) {
-        state.current_angular_speed = w_imu;
-    } else {
-        state.current_angular_speed = (m_vr_filt - m_vl_filt) / m_track_width;
-    }
-    
-	/*
-    // 6. Odometry integration
-    m_total_dist += state.current_linear_speed * dt;
-    m_total_angle += state.current_angular_speed * dt;
-    
-    // Normalize angle [-PI, PI]
-    m_total_angle = std::fmod(m_total_angle + M_PI, 2.0f * M_PI) - M_PI;
-    
-    state.total_linear_distance = m_total_dist;
-    state.total_angular_distance = m_total_angle;
-    */
 
-    // 7. Save & return
+    state.current_linear_speed = m_ekf.GetLinearVelocity();
+	state.current_angular_speed = m_ekf.GetAngularVelocity();
+	
     m_last_state = state;
     return state;
 }
 
 void Robot::TransferToNewState(const ControlEffort &control_effort, float dt) {
+	if (m_is_in_safe_mode) {
+		return;
+	}
+
     SaturatedEffort saturated_effort = m_limits.ApplyLimits(control_effort);
 	ControlEffort safe_effort = saturated_effort.effort;
     
@@ -80,7 +82,7 @@ void Robot::TransferToNewState(const ControlEffort &control_effort, float dt) {
     }
     
     // 4. Dead-time compensation (для BLDC, опционально)
-    //apply_deadtime_compensation(safe_effort);
+    // apply_deadtime_compensation(safe_effort);
     
     // 5. PWM output (hardware)
     l_motor.SetVoltage(safe_effort.left_motor_voltage, dt);
@@ -89,6 +91,18 @@ void Robot::TransferToNewState(const ControlEffort &control_effort, float dt) {
     // 6. Logging last values
     // m_left_voltage_last = safe_effort.left_motor_voltage;
     // m_right_voltage_last = safe_effort.right_motor_voltage;
+}
+
+
+void Robot::enterSafeStopMode() {
+	m_is_in_safe_mode = true;
+	float max_dt = M_MAX_DT;
+	while (l_motor.GetCurrentVoltage() > 1e-6f || r_motor.GetCurrentVoltage()> 1e-6f) {
+		l_motor.SetVoltage(0.0f, max_dt);
+		r_motor.SetVoltage(0.0f, max_dt);
+	}
+	l_motor.SetRawVoltage(0.0f);
+	r_motor.SetRawVoltage(0.0f);
 }
 
 // Motor
@@ -101,7 +115,8 @@ Motor::Motor(float ramp_coeff,
 	m_current_voltage(0.0f) {}
 
 void Motor::SetVoltage(float target_voltage, float dt) {
-	if (std::abs(target_voltage - m_current_voltage) < 1e-6f) {
+	if (target_voltage < m_min_voltage_to_start) {
+		SetRawVoltage(0);
 		return;
 	}
 
@@ -118,6 +133,10 @@ void Motor::SetVoltage(float target_voltage, float dt) {
 }
 
 void Motor::SetRawVoltage(float voltage) {
+	voltage = std::clamp(voltage, -m_max_voltage, m_max_voltage);
+    if (std::abs(voltage) < m_min_voltage_to_start) {
+        voltage = 0.0f;
+    }
 	//вызов на нужные пины мотора
 	m_current_voltage = voltage;
 }

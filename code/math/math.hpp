@@ -10,6 +10,5 @@ public:
 };
 
 
-
 } // namespace Math
 

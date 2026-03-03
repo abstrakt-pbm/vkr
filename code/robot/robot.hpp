@@ -1,7 +1,30 @@
 #pragma once
 
-
 namespace Robot {
+
+class RobotEKF {
+public:
+	void Predict(float v_left_enc, float v_right_enc);
+    void Update(float v_enc, float omega_enc, float gyro_z);
+
+    // Основное для PID/ff
+    float GetLinearVelocity() const;
+    float GetAngularVelocity() const;
+
+    void Reset();
+
+	void SetQv(float process_noise_v);     // Проскальзывание
+    void SetEncNoise(float enc_noise_v, float enc_noise_omega);
+    void SetGyroNoise(float gyro_noise);
+
+	bool IsAlive();
+private:	
+	struct State {
+		float linear_velocity;
+		float angular_velocity;
+	};
+};
+
 
 class Motor {
 public:
@@ -36,7 +59,7 @@ public:
 
 class Encoder {
 public:
-	float get_current_velocity();
+	float GetCurrentVelocity();
 	bool IsAlive();
 };
 
@@ -95,16 +118,24 @@ public:
 
 	IMU &imu;
 	Motor &l_motor;
-	Encoder &l_encoder;
+	Encoder &m_left_encoder;
 	Motor &r_motor;
-	Encoder &r_encoder;
+	Encoder &m_right_encoder;
 
 private:
 	RobotState m_last_state;
 	ActuatorLimits &m_limits;
 	
+	// Robot State
+	float m_l_filtered_velocity;
+	float m_r_filtered_velocity;
+
 	// Robot Antropomethry
 	float m_track_width;
+
+	RobotEKF m_ekf;
+
+	bool m_is_in_safe_mode;
 };
 
 } // namespace Robot
