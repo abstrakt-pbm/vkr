@@ -49,6 +49,46 @@ TEST_F(MotorTest, RampReachesTargetWithFeedback) {
 
 }
 
+TEST_F(MotorTest, RampUpFromZero) {
+    Motor motor(mock_hal, 2.0f /*ramp*/, 12.0f /*max*/, 0.0f /*start*/);
+    motor.SetVoltage(6.0f, 0.5f);  // 50% PWM
+    for(int i=0; i<7; i++) motor.SetVoltage(6.0f, 0.5f);
+    EXPECT_NEAR(motor.GetCurrentVoltage(), 6.0f, 0.1f);
+}
+
+TEST_F(MotorTest, RampDownFromMax) {
+    Motor motor(mock_hal, 2.0f /*ramp*/, 12.0f /*max*/, 0.0f /*start*/);
+    mock_hal.SetRawVoltage(12.0f);
+    motor.SetVoltage(0.0f, 0.5f);
+    for(int i=0; i<12; i++) motor.SetVoltage(0.0f, 0.5f);
+    EXPECT_NEAR(motor.GetCurrentVoltage(), 0.0f, 0.1f);
+}
+
+TEST_F(MotorTest, RampAboveMax) {
+    Motor motor(mock_hal, 2.0f /*ramp*/, 12.0f /*max*/, 0.0f /*start*/);
+    motor.SetVoltage(20.0f, 0.5f);  // >12V
+	for(int i = 0; i < 15; i++) {
+        motor.SetVoltage(20.0f, 0.5f);
+    }
+    EXPECT_NEAR(motor.GetCurrentVoltage(), 12.0f, 0.2f);
+}
+
+TEST_F(MotorTest, RampBelowZero) {
+    Motor motor(mock_hal, 2.0f /*ramp*/, 12.0f /*max*/, 0.0f /*start*/);
+    mock_hal.SetRawVoltage(6.0f);
+    motor.SetVoltage(-5.0f, 0.5f);
+    for(int i=0; i<10; i++) motor.SetVoltage(-5.0f, 0.5f);
+    EXPECT_NEAR(motor.GetCurrentVoltage(), 0.0f, 0.1f);
+}
+
+TEST_F(MotorTest, ZeroDtNoChange) {
+    Motor motor(mock_hal, 2.0f /*ramp*/, 12.0f /*max*/, 0.0f /*start*/);
+    float before = motor.GetCurrentVoltage();
+    motor.SetVoltage(12.0f, 0.0f);  // dt=0
+    motor.SetVoltage(12.0f, 0.0f);
+    EXPECT_FLOAT_EQ(motor.GetCurrentVoltage(), before);  // Не меняется!
+}
+
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     ::testing::InitGoogleMock(&argc, argv);
