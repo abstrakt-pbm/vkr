@@ -2,38 +2,79 @@
   "version": 3,
   "configurePresets": [
     {
-      "name": "arm-none-eabi",
-      "displayName": "ARM Cortex-M4 F411",
-      "description": "STM32F411CEU6 4WD Robot",
+      "name": "default-workspace",
+      "displayName": "Workspace (Host Tests + ARM Firmware)",
+      "description": "Unified build environment: x86_64 host tests & STM32F411 ARM firmware via ExternalProject",
       "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/firmware",
+      "binaryDir": "${sourceDir}/build/workspace",
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/toolchain-arm.cmake",
-        "CMAKE_BUILD_TYPE": "Release",
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "BUILD_TESTS": "ON"
       }
     },
     {
-      "name": "arm-debug",
-      "inherits": "arm-none-eabi",
-      "displayName": "ARM Debug",
+      "name": "workspace-cov",
+      "inherits": "default-workspace",
+      "displayName": "Workspace + Coverage",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug"
+        "CMAKE_CXX_FLAGS_DEBUG": "-g -O0 -fprofile-arcs -ftest-coverage",
+        "CMAKE_EXE_LINKER_FLAGS_DEBUG": "-fprofile-arcs -lgcov"
       }
     }
   ],
   "buildPresets": [
     {
-      "name": "release",
-      "configurePreset": "arm-none-eabi",
-      "displayName": "Release Build",
-      "jobs": 4
+      "name": "build-all",
+      "configurePreset": "default-workspace",
+      "displayName": "Build All: Tests + Firmware",
+      "jobs": 8
     },
     {
-      "name": "debug",
-      "configurePreset": "arm-debug",
-      "displayName": "Debug Build",
-      "jobs": 4
+      "name": "firmware-only",
+      "configurePreset": "default-workspace",
+      "displayName": "Build ARM Firmware Only",
+      "targets": ["firmware"],
+      "jobs": 8
+    },
+    {
+      "name": "tests-only",
+      "configurePreset": "default-workspace",
+      "displayName": "Build Host Tests Only",
+      "targets": ["test_robot"],
+      "jobs": 8
+    },
+    {
+      "name": "build-cov",
+      "configurePreset": "workspace-cov",
+      "displayName": "Build Host Tests (Coverage)",
+      "targets": ["test_robot"],
+      "jobs": 8
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "run-all-tests",
+      "configurePreset": "default-workspace",
+      "displayName": "Run All Unit Tests 🚀",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "jobs": 8
+      }
+    },
+    {
+      "name": "run-robot-tests",
+      "configurePreset": "default-workspace",
+      "displayName": "Run Robot Domain Tests",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "jobs": 8,
+        "labelRegex": "robot"
+      }
     }
   ]
 }

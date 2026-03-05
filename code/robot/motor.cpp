@@ -1,0 +1,58 @@
+#include <robot/motor.hpp>
+
+#include <hal/hal_motor.hpp>
+
+#include <cmath>
+#include <algorithm>
+
+namespace Robot {
+Motor::Motor(HAL::IMotorHAL &motor_hal,
+			 float ramp_coeff,
+			 float max_voltage,
+			 float voltage_to_start)
+	:
+	m_motor_hal(motor_hal),
+	m_ramp_coeff(ramp_coeff),
+	m_max_voltage(max_voltage),
+    m_min_voltage_to_start(voltage_to_start),
+	m_current_voltage(0.0f) {
+	m_motor_hal.SetRawVoltage(0);
+}
+
+void Motor::SetVoltage(float target_voltage, float dt) {
+	if (target_voltage < m_min_voltage_to_start) {
+		SetRawVoltage(0);
+		return;
+	}
+
+	target_voltage = std::clamp(target_voltage, m_min_voltage_to_start, m_max_voltage);
+
+	float delta = m_ramp_coeff * dt;
+
+	if (target_voltage > m_motor_hal.GetCurrentRawVoltage()) {
+		SetRawVoltage(m_motor_hal.GetCurrentRawVoltage() + delta);
+	} else {
+		SetRawVoltage(m_motor_hal.GetCurrentRawVoltage() - delta);
+	}
+
+}
+
+void Motor::SetRawVoltage(float voltage) {
+	voltage = std::clamp(voltage, -m_max_voltage, m_max_voltage);
+    if (std::abs(voltage) < m_min_voltage_to_start) {
+        voltage = 0.0f;
+    }
+
+	//вызов на нужные пины мотора
+	if (m_motor_hal.IsAlive()) {
+		m_motor_hal.SetRawVoltage(voltage);
+		m_current_voltage = voltage;
+	}
+}
+
+float Motor::GetCurrentVoltage() {
+	return m_motor_hal.GetCurrentRawVoltage();
+}
+
+}
+

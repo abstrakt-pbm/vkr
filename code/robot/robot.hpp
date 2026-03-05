@@ -2,6 +2,10 @@
 
 namespace Robot {
 
+class IMU;
+class Encoder;
+class Motor;
+
 class RobotEKF {
 public:
 	void Predict(float v_left_enc, float v_right_enc);
@@ -10,7 +14,6 @@ public:
     // Основное для PID/ff
     float GetLinearVelocity() const;
     float GetAngularVelocity() const;
-
     void Reset();
 
 	void SetQv(float process_noise_v);     // Проскальзывание
@@ -23,44 +26,6 @@ private:
 		float linear_velocity;
 		float angular_velocity;
 	};
-};
-
-
-class Motor {
-public:
-	Motor(float ramp_coeff,
-	   float max_voltage,
-	   float voltage_to_start);
-	// Безопасная функция, внутри обеспечивает рампообразное снижение/повышение напряжения за указаный промежуток времени dt
-	void SetVoltage(float target_voltage, float dt);
-	// Опасная функция, использовать аккуратно,
-	// если разница между текущим напряжением и конечным высока, может убить мотор 
-	void SetRawVoltage(float voltage);
-	// Возвращает текущий установленный на моторе вольтаж
-	float GetCurrentVoltage();
-	// Проверка на вменяемость
-	bool IsAlive();
-private:
-
-	float m_current_voltage;
-	float m_ramp_coeff;
-	float m_max_voltage;
-	float m_min_voltage_to_start;
-};
-
-class IMU {
-public:
-	float get_linear_acceleration();
-	float get_angular_velocity();
-	float get_gyro_z();
-
-	bool IsAlive();
-};
-
-class Encoder {
-public:
-	float GetCurrentVelocity();
-	bool IsAlive();
 };
 
 // Effort for change robot state

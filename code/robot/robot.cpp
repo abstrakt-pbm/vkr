@@ -1,11 +1,14 @@
 #include <robot/robot.hpp>
 
+#include <robot/motor.hpp>
+#include <robot/imu.hpp>
+#include <robot/encoder.hpp>
+
 #include <cmath>
 #include <algorithm>
 
 namespace Robot {
 
-constexpr float M_PI = 3.14;
 constexpr float M_MIN_DT = 1e-6f;
 constexpr float M_MAX_DT = 0.05f;
 constexpr float kMaxWheelSpeed = 5.0f;
@@ -105,45 +108,7 @@ void Robot::enterSafeStopMode() {
 	r_motor.SetRawVoltage(0.0f);
 }
 
-// Motor
-Motor::Motor(float ramp_coeff,
-			 float max_voltage,
-			 float voltage_to_start)
-	:m_ramp_coeff(ramp_coeff),
-	m_max_voltage(max_voltage),
-    m_min_voltage_to_start(voltage_to_start),
-	m_current_voltage(0.0f) {}
 
-void Motor::SetVoltage(float target_voltage, float dt) {
-	if (target_voltage < m_min_voltage_to_start) {
-		SetRawVoltage(0);
-		return;
-	}
-
-	target_voltage = std::clamp(target_voltage, m_min_voltage_to_start, m_max_voltage);
-
-	float delta = m_ramp_coeff * dt;
-
-	if (target_voltage > m_current_voltage) {
-		SetRawVoltage(m_current_voltage + delta);
-	} else {
-		SetRawVoltage(m_current_voltage - delta);
-	}
-
-}
-
-void Motor::SetRawVoltage(float voltage) {
-	voltage = std::clamp(voltage, -m_max_voltage, m_max_voltage);
-    if (std::abs(voltage) < m_min_voltage_to_start) {
-        voltage = 0.0f;
-    }
-	//вызов на нужные пины мотора
-	m_current_voltage = voltage;
-}
-
-float Motor::GetCurrentVoltage() {
-	return m_current_voltage;
-}
 
 } // namespace Robot
 
