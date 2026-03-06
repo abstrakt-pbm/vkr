@@ -22,7 +22,6 @@ public:
 	// Проверка на вменяемость
 	bool IsAlive();
 private:
-
 	float m_current_voltage;
 	float m_ramp_coeff;
 	float m_max_voltage;

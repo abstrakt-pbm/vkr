@@ -5,11 +5,6 @@
 
 #include <gtest/gtest.h>
 
-using ::testing::Return;
-using ::testing::FloatNear;
-using ::testing::AtLeast;
-using ::testing::_;
-using ::testing::Exactly;
 using namespace Robot;
 
 class MotorTest : public ::testing::Test {
@@ -89,8 +84,10 @@ TEST_F(MotorTest, ZeroDtNoChange) {
     EXPECT_FLOAT_EQ(motor.GetCurrentVoltage(), before);  // Не меняется!
 }
 
+/*
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
-    ::testing::InitGoogleMock(&argc, argv);
     return RUN_ALL_TESTS();
 }
+*/
+

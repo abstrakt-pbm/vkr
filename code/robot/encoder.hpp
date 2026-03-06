@@ -8,13 +8,17 @@ namespace Robot {
 class Encoder {
 public:
 	Encoder(HAL::IEncoderHAL &encoder_hal);
+	// Обновление состояния энкодера,
+	// получает с HAL сырую скорость и прогоняет через фильтр низких частот
+	void UpdateState();
 	// Возвращает скорость отфильтрованую черезь фильтр низких частот
-	float GetCurrentVelocity();
-	bool IsAlive();
+	float GetCurrentVelocity() const;
+	// Проверка на роботоспособность энкодера
+	bool IsAlive() const;
 private:
-	HAL::IEncoderHAL &m_encoder_hal;
+	float m_filtered_velocity_latest;
 
-	bool m_is_alive;
+	HAL::IEncoderHAL &m_encoder_hal;
 };
 } // namespace Robot
 

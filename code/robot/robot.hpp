@@ -79,6 +79,8 @@ public:
 
 	RobotState FetchCurrentRobotState(float dt);
 	void TransferToNewState(const ControlEffort &control_effort, float dt);
+	void UpdateSensors();
+
 	void enterSafeStopMode();
 
 	IMU &imu;

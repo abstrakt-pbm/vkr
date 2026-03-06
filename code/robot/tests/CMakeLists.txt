@@ -1,7 +1,8 @@
 add_executable(test_robot 
 	mocks/hal/mock_motor.cpp
-    motor_tests.hpp
+	mocks/hal/mock_encoder.cpp
     motor_tests.cpp
+    encoder_tests.cpp
 )
 
 target_link_libraries(test_robot PRIVATE 

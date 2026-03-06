@@ -1,3 +1,4 @@
+#include "robot.hpp"
 #include <robot/robot.hpp>
 
 #include <robot/motor.hpp>
@@ -24,23 +25,18 @@ RobotState Robot::FetchCurrentRobotState(float dt) {
 
     // Валидация энкодеров
     if (!m_left_encoder.IsAlive() || !m_right_encoder.IsAlive()) {
-		return state;
+        enterSafeStopMode();
+		return RobotState{0.0f, 0.0f, 0.0f,
+					0.0f, 0.0f, 0.0f};
 	}
     
-	// Сырая скорость
+	// Отфильтрованая скорость, датчики обновлены перед FetchCurrentRobotState
     float v_left = m_left_encoder.GetCurrentVelocity();
     float v_right = m_right_encoder.GetCurrentVelocity();
     
     if (!std::isfinite(v_left) || !std::isfinite(v_right)) {
  		return state;
 	}
-    
-    v_left  = std::clamp(v_left,  -kMaxWheelSpeed, kMaxWheelSpeed);
-    v_right = std::clamp(v_right, -kMaxWheelSpeed, kMaxWheelSpeed);
-    
-	// Фильтр низких частот
-    m_l_filtered_velocity = (1.0f - kAlpha) * m_l_filtered_velocity + kAlpha * v_left;
-    m_r_filtered_velocity = (1.0f - kAlpha) * m_r_filtered_velocity + kAlpha * v_right;
 
 	// Получаем линейную и угловую скорость на основе энкодеров
 	float linear_robot_speed_enc = (m_l_filtered_velocity + m_r_filtered_velocity) / 2;
@@ -108,7 +104,10 @@ void Robot::enterSafeStopMode() {
 	r_motor.SetRawVoltage(0.0f);
 }
 
-
+void Robot::UpdateSensors() {
+	m_left_encoder.UpdateState();
+	m_right_encoder.UpdateState();
+}
 
 } // namespace Robot
 

@@ -2,8 +2,6 @@
 
 #include <hal/hal_motor.hpp>
 
-#include <gmock/gmock.h>
-
 namespace HAL {
 
 class MockIMotorHAL : public IMotorHAL {
@@ -24,3 +22,4 @@ private:
 };
 
 } // namespace HAL
+
