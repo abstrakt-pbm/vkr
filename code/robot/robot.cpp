@@ -48,7 +48,7 @@ RobotState Robot::FetchCurrentRobotState(float dt) {
 
     float w_imu = 0.0f;
     if (imu.IsAlive()) {
-        w_imu = imu.get_gyro_z();
+        w_imu = imu.GetGyroZ();
 		m_ekf.Update(linear_robot_speed_enc,
 			 angle_robot_speed_env,
 			 w_imu);
