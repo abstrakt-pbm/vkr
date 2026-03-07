@@ -7,6 +7,7 @@ endif()
 set (ROBOT_INC
 	"robot.hpp"
 	"robot_control.hpp"
+	"robot_ekf.hpp"
 	"encoder.hpp"
 	"imu.hpp"
 	"motor.hpp")
@@ -14,6 +15,7 @@ set (ROBOT_INC
 set (ROBOT_SRC
 	"robot.cpp"
 	"robot_control.cpp"
+	"robot_ekf.cpp"
 	"encoder.cpp"
 	"imu.cpp"
 	"motor.cpp")

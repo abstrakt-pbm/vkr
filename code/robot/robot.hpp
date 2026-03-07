@@ -16,7 +16,7 @@ public:
     float GetAngularVelocity() const;
     void Reset();
 
-	void SetQv(float process_noise_v);     // Проскальзывание
+	void SetQv(float process_noise_v); // Проскальзывание
     void SetEncNoise(float enc_noise_v, float enc_noise_omega);
     void SetGyroNoise(float gyro_noise);
 
@@ -53,7 +53,6 @@ class RobotState {
     float right_motor_current_voltage;
 };
 
-
 class SaturatedEffort {
 public:
 	ControlEffort effort;
@@ -64,7 +63,8 @@ public:
 class ActuatorLimits {
 public:
 	SaturatedEffort ApplyLimits(const ControlEffort& requested_effort);
-	float GetMaxVoltage();
+
+private:
 };
 
 class Robot {
@@ -73,7 +73,8 @@ public:
 		Motor &l_motor,
 		Encoder &l_encoder,
 		Motor &r_motor,
-		Encoder &r_encoder);
+		Encoder &r_encoder,
+	   	ActuatorLimits &acturator_limits);
 
 	ActuatorLimits &GetLimits();
 
@@ -83,22 +84,18 @@ public:
 
 	void enterSafeStopMode();
 
-	IMU &imu;
-	Motor &l_motor;
+	IMU &m_imu;
+	Motor &m_l_motor;
 	Encoder &m_left_encoder;
-	Motor &r_motor;
+	Motor &m_r_motor;
 	Encoder &m_right_encoder;
 
 private:
 	RobotState m_last_state;
 	ActuatorLimits &m_limits;
 	
-	// Robot State
-	float m_l_filtered_velocity;
-	float m_r_filtered_velocity;
-
 	// Robot Antropomethry
-	float m_track_width;
+	float m_track_width = 0.3f;
 
 	RobotEKF m_ekf;
 

@@ -5,6 +5,7 @@ add_executable(test_robot
     motor_tests.cpp
     encoder_tests.cpp
     imu_tests.cpp
+    robot_tests.cpp
 )
 
 target_link_libraries(test_robot PRIVATE 

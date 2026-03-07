@@ -54,5 +54,14 @@ float Motor::GetCurrentVoltage() {
 	return m_motor_hal.GetCurrentRawVoltage();
 }
 
+
+bool Motor::IsAlive() {
+	return m_motor_hal.IsAlive();
+}
+
+float Motor::GetMaxVoltage() const {
+	return m_max_voltage;
+}
+
 }
 

@@ -21,6 +21,7 @@ public:
 	float GetCurrentVoltage();
 	// Проверка на вменяемость
 	bool IsAlive();
+	float GetMaxVoltage() const;
 private:
 	float m_current_voltage;
 	float m_ramp_coeff;

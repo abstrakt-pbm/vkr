@@ -1,10 +1,10 @@
 project(robotmath CXX)
 
 set (MATH_INC
-	"math.hpp")
+	"mathr.hpp")
 
 set (MATH_SRC
-	"math.cpp")
+	"mathr.cpp")
 
 add_library(${PROJECT_NAME} STATIC
 	${MATH_INC}
