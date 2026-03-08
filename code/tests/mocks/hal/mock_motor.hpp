@@ -1,6 +1,6 @@
 #pragma once
 
-#include <hal/hal_motor.hpp>
+#include <robot/hal/hal_motor.hpp>
 
 namespace HAL {
 

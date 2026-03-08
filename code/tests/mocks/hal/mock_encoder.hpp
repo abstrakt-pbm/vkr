@@ -1,6 +1,6 @@
 #pragma once
 
-#include <hal/hal_encoder.hpp>
+#include <robot/hal/hal_encoder.hpp>
 
 namespace HAL {
 

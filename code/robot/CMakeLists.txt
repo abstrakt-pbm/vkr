@@ -1,8 +1,8 @@
 project(robot CXX)
 
-if(BUILD_TESTS)
-    add_subdirectory(tests)
-endif()
+
+add_subdirectory(math)
+add_subdirectory(hal)
 
 set (ROBOT_INC
 	"robot.hpp"
@@ -25,10 +25,12 @@ add_library(${PROJECT_NAME} STATIC
 	${ROBOT_SRC})
 
 target_link_libraries(robot PRIVATE 
-	hal
-)
+	robotmath
+	hal)
 
 
 target_include_directories(${PROJECT_NAME} PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/..)
+    ${CMAKE_CURRENT_SOURCE_DIR}/..
+	${CMAKE_CURRENT_SOURCE_DIR}/hal/
+	${CMAKE_CURRENT_SOURCE_DIR}/math/)
 

@@ -3,13 +3,11 @@ project(stm32 C ASM)
 
 set(STM32_SOURCES
     startup_stm32f411xe.s
-    system_stm32f4xx.c
-)
+    system_stm32f4xx.c)
 
 
 
 add_library(${PROJECT_NAME} STATIC ${STM32_SOURCES})
 
-target_include_directories(${PROJECT_NAME} PUBLIC
-)
+target_include_directories(${PROJECT_NAME} PUBLIC)
 

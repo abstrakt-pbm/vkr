@@ -2,80 +2,32 @@
   "version": 3,
   "configurePresets": [
     {
-      "name": "default-workspace",
-      "displayName": "Workspace (Host Tests + ARM Firmware)",
-      "description": "Unified build environment: x86_64 host tests & STM32F411 ARM firmware via ExternalProject",
+      "name": "host",
+      "displayName": "Host Tests",
       "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/workspace",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-        "BUILD_TESTS": "ON"
-      }
+      "binaryDir": "${sourceDir}/build/host",
+      "cacheVariables": {"BUILD_TESTS": "ON"}
     },
     {
-      "name": "workspace-cov",
-      "inherits": "default-workspace",
-      "displayName": "Workspace + Coverage",
-      "cacheVariables": {
-        "CMAKE_CXX_FLAGS_DEBUG": "-g -O0 -fprofile-arcs -ftest-coverage",
-        "CMAKE_EXE_LINKER_FLAGS_DEBUG": "-fprofile-arcs -lgcov"
-      }
+      "name": "arm",
+      "displayName": "ARM Firmware",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/arm",
+      "cacheVariables": {"CMAKE_TOOLCHAIN_FILE": "${sourceDir}/toolchain-arm.cmake"}
     }
   ],
   "buildPresets": [
     {
-      "name": "build-all",
-      "configurePreset": "default-workspace",
-      "displayName": "Build All: Tests + Firmware",
-      "jobs": 8
+      "name": "tests",
+      "configurePreset": "host",
+      "targets": ["test_robot"]
     },
     {
-      "name": "firmware-only",
-      "configurePreset": "default-workspace",
-      "displayName": "Build ARM Firmware Only",
-      "targets": ["firmware"],
-      "jobs": 8
-    },
-    {
-      "name": "tests-only",
-      "configurePreset": "default-workspace",
-      "displayName": "Build Host Tests Only",
-      "targets": ["test_robot"],
-      "jobs": 8
-    },
-    {
-      "name": "build-cov",
-      "configurePreset": "workspace-cov",
-      "displayName": "Build Host Tests (Coverage)",
-      "targets": ["test_robot"],
-      "jobs": 8
-    }
-  ],
-  "testPresets": [
-    {
-      "name": "run-all-tests",
-      "configurePreset": "default-workspace",
-      "displayName": "Run All Unit Tests 🚀",
-      "output": {
-        "outputOnFailure": true
-      },
-      "execution": {
-        "jobs": 8
-      }
-    },
-    {
-      "name": "run-robot-tests",
-      "configurePreset": "default-workspace",
-      "displayName": "Run Robot Domain Tests",
-      "output": {
-        "outputOnFailure": true
-      },
-      "execution": {
-        "jobs": 8,
-        "labelRegex": "robot"
-      }
+      "name": "armware", 
+      "configurePreset": "arm",
+      "targets": ["firmware.elf"]
     }
   ]
 }
+
 

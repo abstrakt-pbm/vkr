@@ -1,6 +1,6 @@
 #pragma once
 
-#include <hal/hal_imu.hpp>
+#include <robot/hal/hal_imu.hpp>
 
 namespace HAL {
 class MockIImuHAL : public IImuHAL {

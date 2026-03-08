@@ -3,9 +3,7 @@ project(hal CXX)
 
 
 set(HAL_SOURCES
-    hal_encoder.cpp
-	hal_imu.cpp
-	hal_motor.cpp)
+    hal_encoder.cpp)
 
 set(HAL_HEADERS
 	hal_encoder.hpp
