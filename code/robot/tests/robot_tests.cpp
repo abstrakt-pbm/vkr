@@ -1,5 +1,6 @@
-#include <robot/robot.hpp> // Motor класс
-#include <robot/motor.hpp> // Motor класс
+#include <robot/robot.hpp>
+
+#include <robot/motor.hpp>
 #include <robot/imu.hpp>
 #include <robot/encoder.hpp>
 #include <hal/hal_motor.hpp> // IMotorHAL интерфейс
@@ -30,13 +31,15 @@ protected:
     Motor mock_r_motor{motor_hal_r, 2.0f, 12.0f, 0.0f};
     
 	ActuatorLimits limits{};
+	RobotKinematics robot_kinematics{};
 
 	Robot::Robot robot{imu, 
 		mock_l_motor, 
 		mock_l_enc, 
 		mock_r_motor, 
 		mock_r_enc,
-		limits};
+		limits,
+		robot_kinematics};
     
     void SetUp() override {
         // Стандартное состояние
@@ -55,12 +58,8 @@ TEST_F(RobotTest, FetchCurrentRobotState_ReturnsFiltered) {
     imu_hal.SetRawGyroZ(0.0f);
     
     // WHEN: Даем фильтру время на "сходимость" (например 100 тиков = 1 секунда)
-	robot.UpdateSensors();
 	RobotState state;
-   for(size_t i = 0; i < 100; ++i) {
-        // Вызываем обновление робота. Внутри он должен прочитать 
-        // данные с Mock-датчиков и прогнать их через EKF.Update()
-		//
+   	for(size_t i = 0; i < 100; ++i) {
 		robot.UpdateSensors();
         state = robot.FetchCurrentRobotState(0.01f); 
     }
@@ -72,7 +71,6 @@ TEST_F(RobotTest, FetchCurrentRobotState_ReturnsFiltered) {
     EXPECT_NEAR(state.right_motor_current_voltage, 0.0f, 0.1f);
 }
 
-/*
 TEST_F(RobotTest, TransferToNewState_SafeLimitsApplied) {
     // GIVEN: экстремальное управление
     ControlEffort effort{15.0f, 15.0f};  // >12V
@@ -81,13 +79,13 @@ TEST_F(RobotTest, TransferToNewState_SafeLimitsApplied) {
     robot.TransferToNewState(effort, 0.01f);
     
     // THEN: limits применены
-    EXPECT_LE(mock_l_motor.GetVoltage(), 12.0f);
-    EXPECT_LE(mock_r_motor.GetVoltage(), 12.0f);
+    EXPECT_LE(mock_l_motor.GetCurrentVoltage(), 12.0f);
+    EXPECT_LE(mock_r_motor.GetCurrentVoltage(), 12.0f);
 }
 
 TEST_F(RobotTest, TransferToNewState_MotorDead_SafeMode) {
     // GIVEN: левый мотор мёртв
-    mock_l_motor.SetAlive(false);
+    motor_hal_l.SetAlive(false);
     
     ControlEffort effort{10.0f, 10.0f};
     
@@ -95,39 +93,26 @@ TEST_F(RobotTest, TransferToNewState_MotorDead_SafeMode) {
     robot.TransferToNewState(effort, 0.01f);
     
     // THEN: safe stop
-    EXPECT_EQ(mock_l_motor.GetVoltage(), 0.0f);
-    EXPECT_EQ(mock_r_motor.GetVoltage(), 0.0f);
+    EXPECT_EQ(mock_l_motor.GetCurrentVoltage(), 0.0f);
+    EXPECT_EQ(mock_r_motor.GetCurrentVoltage(), 0.0f);
     EXPECT_TRUE(robot.m_is_in_safe_mode);
-}
-
-TEST_F(RobotTest, UpdateSensors_CallsAllHAL) {
-    // GIVEN: mock ожидания
-    EXPECT_CALL(mock_hal, UpdateEncoders()).Times(1);
-    EXPECT_CALL(mock_hal, UpdateIMU()).Times(1);
-    
-    // WHEN
-    robot.UpdateSensors();
-    
-    // THEN: все сенсоры обновлены
 }
 
 TEST_F(RobotTest, EnterSafeStopMode_ZeroVoltages) {
     // GIVEN: активные моторы
-    mock_l_motor.SetVoltage(5.0f);
-    mock_r_motor.SetVoltage(6.0f);
+    mock_l_motor.SetVoltage(5.0f, 0.01f);
+    mock_r_motor.SetVoltage(6.0f, 0.01f);
     
     // WHEN
     robot.enterSafeStopMode();
     
     // THEN: 0V + safe mode
-    EXPECT_EQ(mock_l_motor.GetVoltage(), 0.0f);
+    EXPECT_EQ(mock_l_motor.GetCurrentVoltage(), 0.0f);
     EXPECT_TRUE(robot.m_is_in_safe_mode);
 }
 
 TEST_F(RobotTest, GetLimits_ReturnsReference) {
-    ActuatorLimits limits{12.0f, -12.0f};
-    // mock_limits setup...
     
-    EXPECT_EQ(&robot.GetLimits(), &m_limits);
+    EXPECT_EQ(&robot.GetLimits(), &robot.m_limits);
 }
-*/
+

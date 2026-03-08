@@ -10,43 +10,45 @@ using namespace Robot;
 
 namespace RobotControl {
 
-constexpr int MAX_DT = 10;
+constexpr float MAX_DT = 0.5f;
+constexpr float MIN_DT = 1e-6f;
 
-RobotController::RobotController(FFModel& ffmodel, 
+RobotController::RobotController(Robot::Robot &robot,
+								 FFModel& ffmodel, 
                                  Math::PID& linear_pid, 
                                  Math::PID& angular_pid)
-    : m_model(ffmodel),
-      m_linear_velocity_pid(linear_pid),
-      m_angle_velocity_pid(angular_pid),
-      m_last_safe_effort{0.0f, 0.0f} 
+    : m_robot(robot),
+	m_ff_model(ffmodel),
+	m_linear_velocity_pid(linear_pid),
+	m_angle_velocity_pid(angular_pid),
+	m_last_safe_effort{0.0f, 0.0f} 
 {}
 
-ControlEffort RobotController::GetAdjustedControlEffort(const Robot::RobotState& state,
-                                                        const Robot::MotionCommand& cmd,
-                                                        float dt) {
-    // 0. ЖЕСТКАЯ ВАЛИДАЦИЯ ВРЕМЕНИ (RTOS Safety)
-    // Защита от деления на ноль И срыва дедлайнов
-    if (dt < 1e-6f || dt > MAX_DT) {
-        // Мягкая деградация: НЕ обнуляем резко (уничтожение редукторов!)
-        if (dt > 0.5f) {  // Полный отказ → Emergency Stop
-            m_linear_velocity_pid.reset();
-            m_angle_velocity_pid.reset();
-            //robot.enterSafeStopMode();  // Только при критическом сбое
-        }
-        // Иначе продолжаем с прошлым усилием (Coasting-like)
-        return m_last_safe_effort; 
-    }
+ControlEffort RobotController::GetAdjustedControlEffort(const MotionCommand& cmd, float dt) {
+	if (dt > MAX_DT || m_robot.IsInSafeMode()) {
+		// Слишком большая дельта, робот перестаёт быть квазистатичным, дальнейшая математика не работает, робот не безопасный,
+		// поэтому останавливаем робота
+		m_robot.enterSafeStopMode();
+        m_linear_velocity_pid.reset();
+        m_angle_velocity_pid.reset();
+        return Robot::ControlEffort{0.0f, 0.0f};
+	}
+
+	if (dt < MIN_DT) {
+		// Выглядит как проблема, но врятли состояние сильно изменится за такую короткую дельту
+		// поэтому вернём последнее состояние
+		// (также защита от деление на ноль)
+		return m_last_safe_effort;
+	}
+
+	const Robot::RobotState	state = m_robot.FetchCurrentRobotState(dt);
 
     // 1. ВЫЧИСЛЕНИЕ ОШИБОК (с deadband против шума энкодеров)
     float err_v = cmd.linear_velocity - state.current_linear_speed;
     float err_w = cmd.angular_velocity - state.current_angular_speed;
-    
-    // Deadband 0.01 м/с против микро-шума
-   	err_v = std::copysign(std::max(0.0f, std::abs(err_v) - 0.01f), err_v);
-	err_w = std::copysign(std::max(0.0f, std::abs(err_w) - 0.01f), err_w);
 
     // 2. FEEDFORWARD (нелинейная модель моторов + статическое трение)
-    ControlEffort ff_effort = m_model.GetControlEffort(cmd);
+    ControlEffort ff_effort = m_ff_model.GetControlEffort(cmd);
 
     // 3. FEEDBACK (ПИД-регулирование напряжений)
     float pid_linear = m_linear_velocity_pid.step(err_v, dt);
@@ -55,8 +57,8 @@ ControlEffort RobotController::GetAdjustedControlEffort(const Robot::RobotState&
     // 4. КИНЕМАТИЧЕСКИЙ МИКСЕР УСИЛИЙ (правильные размерности!)
     // ПИДы выдают вольты → миксим просто ±
 	// TODO:
-    float left_pid_volts  = pid_linear /*- robot.velocity_to_voltage(pid_angular)*/;
-    float right_pid_volts = pid_linear /*+ robot.velocity_to_voltage(pid_angular)*/;
+    float left_pid_volts  = pid_linear - pid_angular * m_robot.m_robot_kinematics.m_track_width / 2.0f;
+    float right_pid_volts = pid_linear + pid_angular * m_robot.m_robot_kinematics.m_track_width / 2.0f;
 
     // 5. СУММИРОВАНИЕ УСИЛИЙ (FF + FB)
     ControlEffort total_effort;
@@ -64,7 +66,8 @@ ControlEffort RobotController::GetAdjustedControlEffort(const Robot::RobotState&
     total_effort.right_motor_voltage = ff_effort.right_motor_voltage + right_pid_volts;
 
     // 6. ПРИМЕНЕНИЕ ФИЗИЧЕСКИХ ЛИМИТОВ (Proportional Desaturation)
-    SaturatedEffort safe_effort = m_limits.ApplyLimits(total_effort);
+	ActuatorLimits &limits = m_robot.GetLimits();
+    SaturatedEffort safe_effort = limits.ApplyLimits(total_effort);
 
     // 7. ✅ ТРЕКИНГОВЫЙ ANTI-WINDUP (Tracking Back-Calculation)
     // ИСПРАВЛЕНО: правильный знак! Сколько "недодали" актуаторам

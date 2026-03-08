@@ -27,5 +27,9 @@ bool MockIMotorHAL::IsAlive() const {
     return alive_status_;
 }
 
+void MockIMotorHAL::SetAlive(bool is_alive) {
+	alive_status_ = is_alive;
+}
+
 } // namespace HAL
 

@@ -12,6 +12,8 @@ public:
 	float GetMaxVoltage() const override;
 
 	bool IsAlive() const override;
+
+	void SetAlive(bool is_alive);
     
 private:
     float voltage_feedback_ = 0.0f;

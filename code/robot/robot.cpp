@@ -20,13 +20,15 @@ Robot::Robot(IMU &imu,
 		Encoder &l_encoder,
 		Motor &r_motor,
 		Encoder &r_encoder,
-		ActuatorLimits &acturator_limits)
+		ActuatorLimits &acturator_limits,
+		RobotKinematics &robot_kinematics)
 	: m_imu(imu),
 	m_l_motor(l_motor),
 	m_left_encoder(l_encoder),
 	m_r_motor(r_motor),
 	m_right_encoder(r_encoder),
-	m_limits(acturator_limits)
+	m_limits(acturator_limits),
+	m_robot_kinematics(robot_kinematics)
 {
 	m_ekf.Reset();
 }
@@ -56,7 +58,7 @@ RobotState Robot::FetchCurrentRobotState(float dt) {
 
 	// Получаем линейную и угловую скорость на основе энкодеров
 	float linear_robot_speed_enc = (v_left + v_right) / 2;
-	float angle_robot_speed_env = (v_right - v_left) / m_track_width;
+	float angle_robot_speed_env = (v_right - v_left) / m_robot_kinematics.m_track_width;
 
 
     m_ekf.Predict(v_left,
@@ -98,7 +100,10 @@ void Robot::TransferToNewState(const ControlEffort &control_effort, float dt) {
             enterSafeStopMode();
             return;
         }
-    }
+    } else {
+		enterSafeStopMode();
+        return;
+	}
     
     // 4. Dead-time compensation (для BLDC, опционально)
     // apply_deadtime_compensation(safe_effort);
@@ -130,10 +135,14 @@ void Robot::UpdateSensors() {
 	m_imu.UpdateState();
 }
 
-	SaturatedEffort ApplyLimits();
+ActuatorLimits &Robot::GetLimits() {
+	return m_limits;
+}
+
 SaturatedEffort ActuatorLimits::ApplyLimits(const ControlEffort& requested_effort) {
 	return SaturatedEffort{requested_effort, false};
 }
+
 
 } // namespace Robot
 
