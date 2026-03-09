@@ -1,7 +1,13 @@
 #include "stm32f4xx.h"
+#include <robot/robot.hpp>
+#include <robot/encoder.hpp>
+#include <robot/imu.hpp>
+#include <robot/motor.hpp>
 
+using namespace Robot;
+
+/*
 int main(void) {
-	/*
     // 0. HAL Init (обязательно первым!)
     HAL_Init();
     SystemClock_Config();  // Ваш clock config
@@ -68,6 +74,10 @@ int main(void) {
             GPIOC->BSRR = GPIO_BSRR_BR13;  // Error: LED OFF constantly
         }
     }
-	*/
+}
+*/
+
+int main (void) {
+
 }
 

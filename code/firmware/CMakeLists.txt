@@ -14,7 +14,8 @@ target_include_directories(firmware.elf PRIVATE
 
 # Линкуем ARM-версии библиотек
 target_link_libraries(firmware.elf PRIVATE 
-    stm32)
+	robot
+    stm32_platform)
 
 target_link_options(firmware.elf PRIVATE -T ${LINKER_SCRIPT})
 
