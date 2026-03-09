@@ -19,3 +19,10 @@ target_link_libraries(firmware.elf PRIVATE
 
 target_link_options(firmware.elf PRIVATE -T ${LINKER_SCRIPT})
 
+add_custom_command(TARGET firmware.elf POST_BUILD
+    COMMAND arm-none-eabi-objcopy -O binary firmware.elf firmware.bin
+    COMMAND arm-none-eabi-objcopy -O ihex firmware.elf firmware.hex
+    COMMAND arm-none-eabi-size firmware.elf
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMENT "Создаём .bin/.hex"
+)

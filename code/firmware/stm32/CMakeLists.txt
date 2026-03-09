@@ -6,9 +6,14 @@ set(STM32_PLATFORM_SOURCES
     hal/stm32f4xx_hal_cortex.c
     hal/stm32f4xx_hal_dma.c
     hal/stm32f4xx_hal_dma_ex.c
+    hal/stm32f4xx_hal_flash.c
+    hal/stm32f4xx_hal_flash_ex.c
+    hal/stm32f4xx_hal_flash_ramfunc.c
     hal/stm32f4xx_hal_gpio.c
     hal/stm32f4xx_hal_i2c.c
     hal/stm32f4xx_hal_i2c_ex.c
+    hal/stm32f4xx_hal_pwr.c
+    hal/stm32f4xx_hal_pwr_ex.c
     hal/stm32f4xx_hal_rcc.c
     hal/stm32f4xx_hal_rcc_ex.c
     hal/stm32f4xx_hal_tim.c

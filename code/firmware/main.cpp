@@ -77,7 +77,131 @@ int main(void) {
 }
 */
 
-int main (void) {
+void SystemClock_Config(void);
+void Error_Handler(void);
 
+void SystemClock_Config(void)
+{
+  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+
+  /** Configure the main internal regulator output voltage
+  */
+  __HAL_RCC_PWR_CLK_ENABLE();
+  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+
+  /** Initializes the RCC Oscillators according to the specified parameters
+  * in the RCC_OscInitTypeDef structure.
+  */
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
+  RCC_OscInitStruct.PLL.PLLM = 8;
+  RCC_OscInitStruct.PLL.PLLN = 100;
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+  RCC_OscInitStruct.PLL.PLLQ = 4;
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Initializes the CPU, AHB and APB buses clocks 
+  */
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+
+  // ИСПРАВЛЕНО: FLASH_LATENCY_2 для 100MHz на STM32F411
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
 }
 
+void Error_Handler(void)
+{
+  __disable_irq();
+  
+  // DEBUG: мигание в случае ошибки
+  RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN;
+  GPIOC->MODER |= (1UL << 26);  // PC13 output
+  
+  while (1)
+  {
+    GPIOC->BSRR = (1UL << 13);     // LED ON
+    for(volatile int d=0; d<100000; d++);
+    GPIOC->BSRR = (1UL << (13+16)); // LED OFF
+    for(volatile int d=0; d<100000; d++);
+  }
+}
+
+int main(void)
+{
+  // Debug 1: мигни 5 раз (перед HAL) - OK
+  RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN;  // ВКЛ GPIOC (на всякий случай)
+  GPIOC->MODER |= (1UL << 26);          // PC13 = output
+  
+  for(int i=0; i<5; i++) {
+    GPIOC->BSRR = (1UL << 13);     
+    for(volatile int d=0; d<100000; d++);
+    GPIOC->BSRR = (1UL << (13+16)); 
+    for(volatile int d=0; d<100000; d++);
+  }
+
+  // ИСПРАВЛЕНО: Сначала clock config, потом HAL_Init
+  SystemClock_Config();  // Теперь работает!
+  
+  HAL_Init();  // SysTick на 100MHz
+  
+  // Debug 2: мигни 3 раза (после HAL_Init)
+  for(int i=0; i<3; i++) {
+    GPIOC->BSRR = (1UL << 13);
+    for(volatile int d=0; d<100000; d++);
+    GPIOC->BSRR = (1UL << (13+16));
+    for(volatile int d=0; d<100000; d++);
+  }
+
+  // Debug 3: мигни 10 раз (после всего)
+  for(int i=0; i<10; i++) {
+    GPIOC->BSRR = (1UL << 13);
+    for(volatile int d=0; d<100000; d++);
+    GPIOC->BSRR = (1UL << (13+16));
+    for(volatile int d=0; d<100000; d++);
+  }
+  
+  // GPIO init через HAL (после clock)
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+  __HAL_RCC_GPIOC_CLK_ENABLE();  // Уже включён, но OK
+  
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
+  GPIO_InitStruct.Pin = GPIO_PIN_13;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  while (1)
+  {
+    HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+    HAL_Delay(50);  // Теперь работает на правильном SysTick!
+  }
+}
+
+
+/* работает
+	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN;  // GPIOC ON
+    GPIOC->MODER |= (1UL << 26);          // PC13 = output
+    
+    while(1) {
+        GPIOC->BSRR = (1UL << 13);        // PC13 HIGH
+        for(volatile int i=0; i<1000000; i++);
+        GPIOC->BSRR = (1UL << (13+16));   // PC13 LOW (BSRR!)
+        for(volatile int i=0; i<1000000; i++);
+    }
+
+	*/
