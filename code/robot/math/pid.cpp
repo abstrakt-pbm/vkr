@@ -47,5 +47,22 @@ void PID::SetPIDCoef(float kp, float ki, float kd) {
 	m_ki = ki;
 	m_kd = kd;
 }
+
+float PID::GetIntegrator() {
+	return m_integrator;
+}
+
+float PID::GetP() {
+	return m_kp;
+}
+
+float PID::GetI() {
+	return m_ki;
+}
+
+float PID::GetD() {
+	return m_kd;
+}
+
 } // namespace Math
 

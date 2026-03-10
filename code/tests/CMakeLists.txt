@@ -19,6 +19,7 @@ add_executable(test_robot
 	mocks/hal/mock_encoder.cpp
 	mocks/hal/mock_imu.cpp
     motor_tests.cpp
+    pid_tests.cpp
     encoder_tests.cpp
     imu_tests.cpp
     robot_tests.cpp

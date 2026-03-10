@@ -7,7 +7,6 @@ namespace HAL {
 namespace Robot{
 class Motor {
 public:
-	Motor() = default;
 	Motor(HAL::IMotorHAL &motor_hal,
 	   float ramp_coeff,
 	   float max_voltage,

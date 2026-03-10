@@ -14,6 +14,11 @@ public:
 	void ApplyBackCalculation(float delta_linear_effort, float dt);
 	void Reset();
 	void SetPIDCoef(float kp, float ki, float kd);
+
+	float GetIntegrator();
+	float GetP();
+	float GetI();
+	float GetD();
 private:
 	float m_kp;
 	float m_ki;
