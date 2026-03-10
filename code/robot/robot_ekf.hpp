@@ -23,7 +23,7 @@ public:
 
     bool IsAlive();
 
-private:	
+//private:	
     float linear_velocity = 0.0f;
     float angular_velocity = 0.0f;
 
