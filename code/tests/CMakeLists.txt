@@ -22,10 +22,12 @@ add_executable(test_robot
     encoder_tests.cpp
     imu_tests.cpp
     robot_tests.cpp
+    robot_control_tests.cpp
 )
 
 target_link_libraries(test_robot PRIVATE 
     robot 
+	robotmath
 	hal
 	gtest_main
     gtest)

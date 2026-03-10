@@ -1,6 +1,8 @@
 #include <robot/robot_control.hpp>
 
-#include <math/mathr.hpp>
+#include <pid.hpp>
+#include <ffmodel.hpp>
+
 #include <robot/robot.hpp>
 
 #include <algorithm>
@@ -29,8 +31,8 @@ ControlEffort RobotController::GetAdjustedControlEffort(const MotionCommand& cmd
 		// Слишком большая дельта, робот перестаёт быть квазистатичным, дальнейшая математика не работает, робот не безопасный,
 		// поэтому останавливаем робота
 		m_robot.enterSafeStopMode();
-        m_linear_velocity_pid.reset();
-        m_angle_velocity_pid.reset();
+        m_linear_velocity_pid.Reset();
+        m_angle_velocity_pid.Reset();
         return Robot::ControlEffort{0.0f, 0.0f};
 	}
 
@@ -51,14 +53,14 @@ ControlEffort RobotController::GetAdjustedControlEffort(const MotionCommand& cmd
     ControlEffort ff_effort = m_ff_model.GetControlEffort(cmd);
 
     // 3. FEEDBACK (ПИД-регулирование напряжений)
-    float pid_linear = m_linear_velocity_pid.step(err_v, dt);
-    float pid_angular = m_angle_velocity_pid.step(err_w, dt);
+    float pid_linear = m_linear_velocity_pid.Step(err_v, dt);
+    float pid_angular = m_angle_velocity_pid.Step(err_w, dt);
 
-    // 4. КИНЕМАТИЧЕСКИЙ МИКСЕР УСИЛИЙ (правильные размерности!)
-    // ПИДы выдают вольты → миксим просто ±
-	// TODO:
-    float left_pid_volts  = pid_linear - pid_angular * m_robot.m_robot_kinematics.m_track_width / 2.0f;
-    float right_pid_volts = pid_linear + pid_angular * m_robot.m_robot_kinematics.m_track_width / 2.0f;
+    // 4. МИКСЕР УСИЛИЙ (Вольты)
+	// pid_linear: Вольты для разгона/торможения всего робота
+	// pid_angular: Вольты для создания разницы скоростей между колесами
+	float left_pid_volts  = pid_linear - pid_angular;
+	float right_pid_volts = pid_linear + pid_angular;
 
     // 5. СУММИРОВАНИЕ УСИЛИЙ (FF + FB)
     ControlEffort total_effort;
@@ -81,8 +83,8 @@ ControlEffort RobotController::GetAdjustedControlEffort(const MotionCommand& cmd
         float delta_angular_effort = (delta_right_v - delta_left_v) / 2.0f;
         
         // ПИДы получают ПОЛОЖИТЕЛЬНУЮ обратную связь для коррекции интеграла
-        m_linear_velocity_pid.apply_back_calculation(delta_linear_effort, dt);
-        m_angle_velocity_pid.apply_back_calculation(delta_angular_effort, dt);
+        m_linear_velocity_pid.ApplyBackCalculation(delta_linear_effort, dt);
+        m_angle_velocity_pid.ApplyBackCalculation(delta_angular_effort, dt);
     }
 
     // Сохраняем безопасное усилие для деградации

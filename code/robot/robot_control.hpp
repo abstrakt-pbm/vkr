@@ -9,16 +9,12 @@ class PID;
 
 namespace RobotControl {
 
+class FFModel;
+
 class MotionCommand {
 public:
 	float linear_velocity;
 	float angular_velocity;
-};
-
-//FeedForwareded math model
-class FFModel {
-	public:
-	Robot::ControlEffort GetControlEffort(const MotionCommand &cmd);	
 };
 
 class RobotController {

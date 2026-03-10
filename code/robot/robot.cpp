@@ -135,6 +135,10 @@ void Robot::UpdateSensors() {
 	m_imu.UpdateState();
 }
 
+bool Robot::IsInSafeMode() {
+	return m_is_in_safe_mode;
+}
+
 ActuatorLimits &Robot::GetLimits() {
 	return m_limits;
 }

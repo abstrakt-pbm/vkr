@@ -192,16 +192,3 @@ int main(void)
   }
 }
 
-
-/* работает
-	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN;  // GPIOC ON
-    GPIOC->MODER |= (1UL << 26);          // PC13 = output
-    
-    while(1) {
-        GPIOC->BSRR = (1UL << 13);        // PC13 HIGH
-        for(volatile int i=0; i<1000000; i++);
-        GPIOC->BSRR = (1UL << (13+16));   // PC13 LOW (BSRR!)
-        for(volatile int i=0; i<1000000; i++);
-    }
-
-	*/
