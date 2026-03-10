@@ -1,11 +1,14 @@
 #pragma once
 
+#include "odometry.hpp"
 #include <robot/robot_ekf.hpp>
+#include <robot/odometry.hpp>
 
 namespace Robot {
 class IMU;
 class Encoder;
 class Motor;
+
 
 class RobotState {
 	public:
@@ -53,6 +56,7 @@ public:
 		RobotKinematics &robot_kinematics);
 
 	ActuatorLimits &GetLimits();
+	Odometry &GetOdometry();
 
 	RobotState FetchCurrentRobotState(float dt);
 	void TransferToNewState(const ControlEffort &control_effort,
@@ -62,6 +66,7 @@ public:
 	void enterSafeStopMode();
 	bool IsInSafeMode();
 
+//private:
 	IMU &m_imu;
 	Motor &m_l_motor;
 	Encoder &m_left_encoder;
@@ -73,6 +78,7 @@ public:
 	RobotKinematics &m_robot_kinematics;
 
 	RobotEKF m_ekf;
+	Odometry m_odometry;
 
 	bool m_is_in_safe_mode;
 };

@@ -35,7 +35,7 @@ private:
 	float m_acceleration_y;
 	float m_acceleration_z;
 	
-	bool m_is_alive;
+	bool m_is_alive = true;
 };
 } // namespace HAL
 

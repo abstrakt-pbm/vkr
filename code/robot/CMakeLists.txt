@@ -10,7 +10,8 @@ set (ROBOT_INC
 	"robot_ekf.hpp"
 	"encoder.hpp"
 	"imu.hpp"
-	"motor.hpp")
+	"motor.hpp"
+	"odometry.hpp")
 
 set (ROBOT_SRC
 	"robot.cpp"
@@ -18,7 +19,8 @@ set (ROBOT_SRC
 	"robot_ekf.cpp"
 	"encoder.cpp"
 	"imu.cpp"
-	"motor.cpp")
+	"motor.cpp"
+	"odometry.cpp")
 
 add_library(${PROJECT_NAME} STATIC
 	${ROBOT_INC}

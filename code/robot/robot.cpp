@@ -77,6 +77,9 @@ RobotState Robot::FetchCurrentRobotState(float dt) {
 
     state.current_linear_speed = m_ekf.GetLinearVelocity();
 	state.current_angular_speed = m_ekf.GetAngularVelocity();
+
+	m_odometry.Update(state.current_linear_speed,
+				   state.current_angular_speed, dt);
 	
     m_last_state = state;
     return state;
@@ -105,10 +108,6 @@ void Robot::TransferToNewState(const ControlEffort &control_effort, float dt) {
         return;
 	}
     
-    // 4. Dead-time compensation (для BLDC, опционально)
-    // apply_deadtime_compensation(safe_effort);
-    
-    // 5. PWM output (hardware)
     m_l_motor.SetVoltage(safe_effort.left_motor_voltage, dt);
     m_r_motor.SetVoltage(safe_effort.right_motor_voltage, dt);
     
@@ -141,6 +140,10 @@ bool Robot::IsInSafeMode() {
 
 ActuatorLimits &Robot::GetLimits() {
 	return m_limits;
+}
+
+Odometry &Robot::GetOdometry() {
+	return m_odometry;
 }
 
 SaturatedEffort ActuatorLimits::ApplyLimits(const ControlEffort& requested_effort) {

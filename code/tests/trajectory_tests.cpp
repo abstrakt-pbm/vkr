@@ -13,7 +13,8 @@
 #include <gtest/gtest.h>
 
 using namespace Robot;
-using namespace HAL;
+using namespace RobotControl;
+using namespace Math;
 
 // НЕ наследуем RobotTest — копируем структуру!
 class RobotTrajectoryTest : public ::testing::Test {
@@ -85,39 +86,49 @@ TEST_F(RobotTrajectoryTest, HighFrequency_LPFConvergence) {
 }
 
 TEST_F(RobotTrajectoryTest, SquareTrajectory_NoDrift) {
-    constexpr int STEPS_SIDE = 500;    // 0.5м @1м/с @1кГц
-    constexpr int STEPS_TURN = 160;    // π/2 @π рад/с @1кГц
+    constexpr float DT_REAL = 0.001f;
+    constexpr int STEPS_SIDE = 500;     // 0.5м @1м/с
+    constexpr int STEPS_TURN = 160;     // 0.16с
+    constexpr float W_TURN = 9.8175f;   // рад/с = π/2 за 0.16с ✓
     
     RobotState state;
     
-    // 4 стороны квадрата 0.5x0.5м
-    for(int side = 0; side < 4; side++) {
-        // Прямой ход
-        for(int i = 0; i < STEPS_SIDE; i++) {
+    // Квадрат 0.5×0.5м через EKF → Odometry
+    for(int side = 0; side < 4; ++side) {
+        // Прямой ход: encoders дают v=1м/с
+        for(int i = 0; i < STEPS_SIDE; ++i) {
             encoder_hal_l.SetRawVelocity(1.0f);
             encoder_hal_r.SetRawVelocity(1.0f);
-            imu_hal.SetRawGyroZ(0.0f);
+            imu_hal.SetRawGyroZ(0.0f);  // ω=0
             
             robot.UpdateSensors();
             state = robot.FetchCurrentRobotState(DT_REAL);
         }
         
-        // Поворот 90° (gyro dominant)
-        for(int i = 0; i < STEPS_TURN; i++) {
+        // Поворот 90°: gyro dominant
+        for(int i = 0; i < STEPS_TURN; ++i) {
             encoder_hal_l.SetRawVelocity(0.0f);
             encoder_hal_r.SetRawVelocity(0.0f);
-            imu_hal.SetRawGyroZ(3.14f);  // π рад/с
+            imu_hal.SetRawGyroZ(W_TURN);  // ✓ 9.82 рад/с = 90°!
             
             robot.UpdateSensors();
             state = robot.FetchCurrentRobotState(DT_REAL);
         }
     }
     
-    // После полного квадрата: v≈0, ω≈0, стабильность
-    EXPECT_NEAR(state.current_linear_speed, 0.0f, 0.1f);
-    EXPECT_NEAR(state.current_angular_speed, 0.0f, 0.2f);
+    // Финальное состояние после квадрата
+    EXPECT_NEAR(state.current_linear_speed,  0.0f, 0.05f);
+    EXPECT_NEAR(state.current_angular_speed, 0.0f, 0.1f);
     
-    // Voltages safe (нет cmd)
-    EXPECT_NEAR(state.left_motor_current_voltage, 0.0f, 0.1f);
+	
+	Position position =robot.GetOdometry().GetCurrentPosition();
+    // Pose замкнулся (одометрия + EKF)
+    EXPECT_NEAR(position.GetX(), 0.0f, 0.05f);     // + НОВОЕ!
+    EXPECT_NEAR(position.GetY(), 0.0f, 0.05f);     // + НОВОЕ!
+    EXPECT_NEAR(position.GetNormalizedAngle(), 0.0f, 0.1f);  // + НОВОЕ! (normalized)
+    
+    // Моторы safe (нет команд)
+    EXPECT_NEAR(state.left_motor_current_voltage,  0.0f, 0.1f);
     EXPECT_NEAR(state.right_motor_current_voltage, 0.0f, 0.1f);
 }
+

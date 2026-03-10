@@ -7,7 +7,6 @@ namespace HAL {
 
 bool MockIMotorHAL::SetRawVoltage(float voltage) {
     voltage_feedback_ = std::clamp(voltage, 0.0f, max_voltage_);
-    printf("[MockHAL] SetRawVoltage(%.2fV)\n", voltage_feedback_);  // DEBUG
     return true;  // Всегда success для тестов
 }
 
