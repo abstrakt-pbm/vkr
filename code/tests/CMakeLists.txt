@@ -26,7 +26,7 @@ add_executable(test_robot
     imu_tests.cpp
     robot_tests.cpp
     robot_control_tests.cpp
-)
+	trajectory_tests.cpp)
 
 target_link_libraries(test_robot PRIVATE 
     robot 
