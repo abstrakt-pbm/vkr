@@ -38,11 +38,12 @@ void Motor::SetVoltage(float target_voltage, float dt) {
 }
 
 void Motor::SetRawVoltage(float voltage) {
-	voltage = std::clamp(voltage, -m_max_voltage, m_max_voltage);
-    if (std::abs(voltage) < m_min_voltage_to_start) {
+	float min_voltage_to_start = m_motor_hal.GetMinVoltageToStart();
+	float max_voltage = m_motor_hal.GetMaxVoltage();
+	voltage = std::clamp(voltage, -max_voltage, max_voltage);
+    if (std::abs(voltage) < min_voltage_to_start) {
         voltage = 0.0f;
     }
-
 	//вызов на нужные пины мотора
 	if (m_motor_hal.IsAlive()) {
 		m_motor_hal.SetRawVoltage(voltage);

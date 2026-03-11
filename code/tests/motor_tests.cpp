@@ -20,27 +20,22 @@ TEST_F(MotorTest, RampReachesTargetWithFeedback) {
 	mock_hal.SetRawVoltage(12.0f);
     EXPECT_NEAR(mock_hal.GetCurrentRawVoltage(), 12.0f, 0.01f);
     
-    // 🚨 ТОРМОЖЕНИЕ: 12V → 0V
     int brake_steps = 0;
     while (motor.GetCurrentVoltage() > 0.1f) {
         motor.SetVoltage(0.0f, 0.5f);  // dt=0.5s
         brake_steps++;
-        printf("[BRAKE] Step %d: %.1fV\n", brake_steps, mock_hal.GetCurrentRawVoltage());
     }
     EXPECT_LE(motor.GetCurrentVoltage(), 0.1f);
     EXPECT_EQ(brake_steps, 12);  // 12V / 1V_step
     
-    // 🚀 РАЗГОН: 0V → 12V
     int accel_steps = 0;
     while (motor.GetCurrentVoltage() < 11.9f) {
         motor.SetVoltage(12.0f, 0.5f);
         accel_steps++;
-        printf("[ACCEL] Step %d: %.1fV\n", accel_steps, mock_hal.GetCurrentRawVoltage());
     }
     EXPECT_GE(motor.GetCurrentVoltage(), 11.9f);
     EXPECT_EQ(accel_steps, 12);
     
-    printf("✅ TORможение: %d шагов, РАЗГОН: %d шагов\n", brake_steps, accel_steps);
 
 }
 
@@ -83,11 +78,4 @@ TEST_F(MotorTest, ZeroDtNoChange) {
     motor.SetVoltage(12.0f, 0.0f);
     EXPECT_FLOAT_EQ(motor.GetCurrentVoltage(), before);  // Не меняется!
 }
-
-/*
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
-*/
 
