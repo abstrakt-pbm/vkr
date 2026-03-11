@@ -19,6 +19,9 @@ WebotsIMotorHAL::WebotsIMotorHAL(std::shared_ptr<webots::Robot> robot,
             std::cout << "[M✓] " << motor_name << " torque=" << m_motor->getMaxTorque() << std::endl;
             m_motor->setPosition(INFINITY);
             m_motor->setVelocity(0);
+
+    		m_motor->setControlPID(0.0f, 0.0f, 0.0f);
+
             m_motor->setAvailableTorque(m_motor->getMaxTorque());
         } else {
             std::cout << "[M✗] " << motor_name << std::endl;
@@ -34,15 +37,17 @@ bool WebotsIMotorHAL::SetRawVoltage(float voltage) {
     
     m_current_voltage = voltage;
     
-    double max_v = GetMaxVoltage();
-    double max_t = m_motor->getMaxTorque();
+    float max_v = GetMaxVoltage();
+    float max_vel = GetMaxVelocity();  // Нужно определить максимальную скорость
     
-    // Ваша оригинальная логика БЕЗ clamp
-    double target_torque = (voltage / max_v) * max_t;
-    m_motor->setTorque(target_torque);
+    // Переход с torque на velocity
+    float velocity_ratio = voltage / max_v;
+    float target_velocity = velocity_ratio * max_vel;
+    
+    m_motor->setVelocity(target_velocity);
     
     std::cout << "[M] " << std::fixed << std::setprecision(1) 
-              << voltage << "V → " << target_torque << "Nm" << std::endl;
+              << voltage << "V → " << target_velocity << "rad/s" << std::endl;
     
     return true;
 }
@@ -50,5 +55,13 @@ bool WebotsIMotorHAL::SetRawVoltage(float voltage) {
 float WebotsIMotorHAL::GetCurrentRawVoltage() const { return m_current_voltage; }
 float WebotsIMotorHAL::GetMinVoltageToStart() const { return 0.5f; }
 float WebotsIMotorHAL::GetMaxVoltage() const { return 12.0f; }
-bool WebotsIMotorHAL::IsAlive() const { return m_robot && m_motor; }
 
+
+// Добавить метод для максимальной скорости мотора
+float  WebotsIMotorHAL::GetMaxVelocity() const {
+    // Обычно для DC моторов в Webots ~6.28 рад/с (2 об/с) или по спецификации вашего мотора
+    // Можно получить из .proto файла мотора или hardcode
+    return 1.2 / 0.025;  // 2 об/с = 2 * 2π рад/с 
+}
+
+bool WebotsIMotorHAL::IsAlive() const { return m_robot && m_motor; }

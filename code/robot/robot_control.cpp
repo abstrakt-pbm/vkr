@@ -13,6 +13,7 @@ using namespace Robot;
 namespace RobotControl {
 
 constexpr float MAX_DT = 0.5f;
+//constexpr float MIN_DT = 1e-6f;
 constexpr float MIN_DT = 1e-6f;
 
 RobotController::RobotController(Robot::Robot &robot,

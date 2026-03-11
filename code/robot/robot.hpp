@@ -80,7 +80,7 @@ public:
 	RobotEKF m_ekf;
 	Odometry m_odometry;
 
-	bool m_is_in_safe_mode;
+	bool m_is_in_safe_mode = false;
 };
 
 } // namespace Robot

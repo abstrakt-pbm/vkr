@@ -19,6 +19,7 @@ WebotsIEncoderHAL::WebotsIEncoderHAL(std::shared_ptr<webots::Robot> robot,
 	}
 }
 
+
 float WebotsIEncoderHAL::GetRawLinearVelocity() const {
 	if (IsAlive() && m_wheel_radius_meters > 0.0f) {
 		double current_radians = m_encoder->getValue();

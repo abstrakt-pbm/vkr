@@ -7,6 +7,7 @@
 
 #include <cmath>
 #include <algorithm>
+#include <iostream>
 
 namespace Robot {
 
@@ -57,9 +58,10 @@ RobotState Robot::FetchCurrentRobotState(float dt) {
 	}
 
 	// Получаем линейную и угловую скорость на основе энкодеров
-	float linear_robot_speed_enc = (v_left + v_right) / 2;
+	float linear_robot_speed_enc = (static_cast<float>(v_left + v_right)) / 2;
 	float angle_robot_speed_env = (v_right - v_left) / m_robot_kinematics.m_track_width;
 
+	printf("current linear_speed %.3f m/s\n", linear_robot_speed_enc);
 
     m_ekf.Predict(v_left,
 				  v_right);

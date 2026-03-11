@@ -22,6 +22,8 @@ public:
 	float GetMaxVoltage() const override;
 
 	bool IsAlive() const override;
+
+	float GetMaxVelocity() const;
 private:
 	webots::Motor* m_motor;
     std::shared_ptr<webots::Robot> m_robot;
