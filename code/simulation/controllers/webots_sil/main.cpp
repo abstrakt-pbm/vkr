@@ -95,30 +95,33 @@ void test_turn_90deg(webots::Robot* wb_robot,
     }
 
     // Остановим робота
-    RobotControl::MotionCommand stop_cmd{0.0f, 0.0f};
-    Robot::ControlEffort stop_effort = controller.GetAdjustedControlEffort(stop_cmd, dt);
-    robot_lib.TransferToNewState(stop_effort, dt);
+	for (size_t i = 0 ; i < 50 ; ++i) {
+		RobotControl::MotionCommand stop_cmd{0.0f, 0.0f};
+    	Robot::ControlEffort stop_effort = controller.GetAdjustedControlEffort(stop_cmd, dt);
+    	robot_lib.TransferToNewState(stop_effort, dt);
+	}
+    
 }
 
 void run_square_test(webots::Robot* robot, Robot::Robot& robot_lib, 
                      RobotControl::RobotController& controller, webots::GPS* gps) {
-	float turn_time = 0.80f;
+	float turn_time = 0.65f;
     float stop_time = 0.50f;
 
     std::vector<TrajectoryPhase> square = {
-        {0.20f, 0.0f, 5.0f},       // Прямо 1м
+        {0.20f, 0.0f, 1.0f},       // Прямо 1м
         {0.00f, 0.0f, stop_time},  // Пауза (сброс инерции)
         {0.0f,  2.0f, turn_time},  // Поворот 90° (1)
         {0.00f, 0.0f, stop_time},  // Пауза
-        {0.20f, 0.0f, 5.0f},       // Прямо 2м
+        {0.20f, 0.0f, 1.0f},       // Прямо 2м
         {0.00f, 0.0f, stop_time},  // Пауза
         {0.0f,  2.0f, turn_time},  // Поворот 90° (2)
         {0.00f, 0.0f, stop_time},  // Пауза
-        {0.20f, 0.0f, 5.0f},
+        {0.20f, 0.0f, 1.0f},
         {0.00f, 0.0f, stop_time},
         {0.0f,  2.0f, turn_time},  // Поворот 90° (3)
         {0.00f, 0.0f, stop_time},
-        {0.20f, 0.0f, 5.0f},
+        {0.20f, 0.0f, 1.0f},
         {0.00f, 0.0f, stop_time},
         {0.0f,  2.0f, turn_time},  // Поворот 90° (4)
         {0.00f, 0.0f, stop_time}   // Финальная остановка
@@ -216,8 +219,8 @@ int main(int argc, char** argv) {
 	Robot::IMU imu(imu_hal);
     Robot::Encoder enc_l(encoder_hal_l);
     Robot::Encoder enc_r(encoder_hal_r);
-    Robot::Motor motor_l(motor_hal_l, 3.0f, 12.0f, 0.0f);
-    Robot::Motor motor_r(motor_hal_r, 3.0f, 12.0f, 0.0f);
+    Robot::Motor motor_l(motor_hal_l, 10.0f, 12.0f, 0.0f);
+    Robot::Motor motor_r(motor_hal_r, 10.0f, 12.0f, 0.0f);
 
     Robot::ActuatorLimits limits{};
     Robot::RobotKinematics kinematics{};
@@ -226,7 +229,7 @@ int main(int argc, char** argv) {
         imu, motor_l, enc_l, motor_r, enc_r, limits, kinematics);
 
     //Инициализируем новую FFModel (base_width=0.3, wheel_radius=0.05, kS=1.0, kV=0.02)
-	RobotControl::FFModel ff_model(0.09f, 0.025f, 0.25f, 0.25f, 12.0f);
+	RobotControl::FFModel ff_model(0.100f, 0.025f, 0.25f, 0.25f, 12.0f);
     
     Math::PID lin_pid (0.0f, 0.00f, 0.0f, 0.0f, 12.0f);
     Math::PID ang_pid (0.0f, 0.0f, 0.0f, 0.0f, 12.0f);

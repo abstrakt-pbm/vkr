@@ -9,6 +9,8 @@ WorldInfo {
     "The MyBot robot, the robot used in the tutorial of Webots"
   ]
   title "MyBot"
+  basicTimeStep 16
+  maxStep 1
 }
 Viewpoint {
   orientation 0.10441349581936693 -0.969606685129755 -0.2212706443305736 5.382793309990334
@@ -23,39 +25,41 @@ RectangleArena {
   	wallHeight 0.1
 }
 
-
 Robot {
-  translation 0 -0.15 0
-  rotation 0 0 0 0
+  translation 0 0 0
+  rotation 0 0 1 0
   children [
+    
+    # --- 1. КОРПУС РОБОТА (Прямоугольный "Box") ---
     Pose {
-      translation 0 0 0.0415
-      rotation 0 0 1 -1.570796
+      translation 0 0 0.035
       children [
         Shape {
           appearance PBRAppearance {
-            baseColor 0.0820075 0.364731 0.8
-            roughness 1
-            metalness 0
+            baseColor 0.2 0.2 0.2
+            roughness 0.8
+            metalness 0.2
           }
-          geometry DEF BODY Cylinder {
-            height 0.08
-            radius 0.045
+          geometry DEF BODY Box {
+            size 0.12 0.08 0.05
           }
         }
-		
       ]
     }
-	Pen {
-		translation 0 0.01 0    # Очень близко к полу
-  		rotation 1 0 0 -1.5708  # Поворот на -90 градусов по оси X, чтобы направить Y карандаша вниз
-  		name "pen"
-  		inkColor 1 0 0
-  		inkDensity 1
-  		leadSize 1.0           # Сделайте потолще (5 см), чтобы точно заметить
-		maxDistance 0.5
-  		write TRUE
+
+    # --- 2. КАРАНДАШ ДЛЯ ОТРИСОВКИ ТРАЕКТОРИИ ---
+    Pen {
+      translation 0 0 0.05
+      rotation 1 0 0 -1.5708
+      name "pen"
+      inkColor 1 0 0
+      inkDensity 1
+      leadSize 0.02
+      maxDistance 0.5
+      write TRUE
     }
+
+    # --- 3. ЛЕВОЕ КОЛЕСО (Ведущее) ---
     HingeJoint {
       jointParameters HingeJointParameters {
         axis 0 1 0
@@ -71,10 +75,10 @@ Robot {
       ]
       endPoint Solid {
         translation 0 0.045 0.025
-        rotation 0.13448695438559669 -0.13448695438559669 -0.9817466670176033 1.589217
+        rotation 0 0 1 0
         children [
           DEF WHEEL Pose {
-            rotation 0.577656895078166 0.5771968951617173 -0.5771968951617173 -2.093935
+            rotation 1 0 0 -1.570796
             children [
               Shape {
                 appearance PBRAppearance {
@@ -98,6 +102,8 @@ Robot {
         }
       }
     }
+
+    # --- 4. ПРАВОЕ КОЛЕСО (Ведущее) ---
     HingeJoint {
       jointParameters HingeJointParameters {
         axis 0 1 0
@@ -113,7 +119,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0 -0.045 0.025
-        rotation -0.06235700094427207 0.06235700094427207 -0.9961040150840031 1.5747
+        rotation 0 0 1 0
         children [
           USE WHEEL
         ]
@@ -122,70 +128,103 @@ Robot {
         physics USE PHYSICS_WHEEL
       }
     }
-	InertialUnit {
-      translation 0 0 0.05  # Высота над базой
-      rotation 0 0 1 0      # По осям робота
+
+    # --- 5. ПЕРЕДНИЙ КАСТЕР (Пассивный) ---
+    Solid {
+      translation 0.055 0 0.01  # Вынесен на самый нос
+      children [
+        # Само колесико (шарик)
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.9 0.9 0.9   # Светло-стальной, хорошо видно
+            roughness 0.3
+            metalness 0.8
+          }
+          geometry Sphere {
+            radius 0.01
+          }
+        }
+        # Декоративная стойка крепления (идет от шарика вверх к днищу)
+        Pose {
+          translation 0 0 0.005
+          children [
+            Shape {
+              appearance PBRAppearance { baseColor 0.1 0.1 0.1 roughness 1 }
+              geometry Cylinder {
+                height 0.01
+                radius 0.008
+              }
+            }
+          ]
+        }
+      ]
+      name "front_caster"
+      boundingObject Sphere {
+        radius 0.01
+      }
+      physics Physics {
+        density -1
+        mass 0.02
+      }
+    }
+
+    # --- 6. ЗАДНИЙ КАСТЕР (Пассивный) ---
+     Solid {
+      translation -0.055 0 0.01  # Вынесен на самую корму
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.9 0.9 0.9
+            roughness 0.3
+            metalness 0.8
+          }
+          geometry Sphere {
+            radius 0.01
+          }
+        }
+        Pose {
+          translation 0 0 0.005
+          children [
+            Shape {
+              appearance PBRAppearance { baseColor 0.1 0.1 0.1 roughness 1 }
+              geometry Cylinder {
+                height 0.01
+                radius 0.008
+              }
+            }
+          ]
+        }
+      ]
+      name "back_caster"
+      boundingObject Sphere {
+        radius 0.01
+      }
+      physics Physics {
+        density -1
+        mass 0.02
+      }
+    }    # --- 7. ДАТЧИКИ И СЕНСОРЫ ---
+    InertialUnit {
+      translation 0 0 0.05
       name "imu"
     }
-	Accelerometer {
+    Accelerometer {
       translation 0 0 0.05
-      rotation 0 0 1 0
       name "accelerometer"
       xAxis TRUE
-      yAxis TRUE  
+      yAxis TRUE
       zAxis TRUE
-      lookupTable [ ]  # Raw значения m/s²
     }
-	GPS {
-      translation 0 0 0.08    # Центр масс робота (над базой)
+    GPS {
+      translation 0 0 0.08
       name "gps_ground_truth"
     }
-    Shape {
-      appearance PBRAppearance {
-        baseColor 0.8 0.8 0.8
-        baseColorMap ImageTexture {
-          url [
-            "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/samples/mybot/worlds/textures/mybot.png"
-          ]
-        }
-        roughness 0.5
-        metalness 0
-      }
-      geometry IndexedFaceSet {
-        coord Coordinate {
-          point [
-            0.0435 -0.015 0.038
-            0.0435 -0.015 0.023
-            0.0455 0 0.023
-            0.0435 0.015 0.023
-            0.0435 0.015 0.038
-            0.0455 0 0.038
-          ]
-        }
-        texCoord TextureCoordinate {
-          point [
-            0 0
-            0.5 0
-            1 0
-            1 1
-            0.5 1
-            0 1
-          ]
-        }
-        coordIndex [
-          0, 1, 2, 5, -1, 5, 2, 3, 4, -1
-        ]
-        texCoordIndex [
-          5, 0, 1, 4, -1, 4, 1, 2, 3, -1
-        ]
-        creaseAngle 0.9
-      }
-    }
   ]
+  
+  # --- 8. ОБЩИЕ ПАРАМЕТРЫ РОБОТА ---
   name "MyBot"
   boundingObject Pose {
-    translation 0 0 0.0415
-    rotation 0 0 1 -1.570796
+    translation 0 0 0.035
     children [
       USE BODY
     ]
@@ -196,4 +235,5 @@ Robot {
   }
   controller "webots_sil"
 }
+
 

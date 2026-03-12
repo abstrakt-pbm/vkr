@@ -3,7 +3,7 @@
 #include <webots/Robot.hpp>
 #include <webots/InertialUnit.hpp>
 #include <webots/Accelerometer.hpp>
-
+#include <cstdio>
 WebotsIImuHAL::WebotsIImuHAL(std::shared_ptr<webots::Robot> robot, 
 							 const std::string& imu_name,
 							 const std::string& accelerometer_name)
@@ -37,6 +37,11 @@ float WebotsIImuHAL::GetRawGyroX() const {
 float WebotsIImuHAL::GetRawGyroY() const {
     if (IsAlive()) {
         const double* values = m_imu->getRollPitchYaw();
+		printf("🔥 GYROZ=%.3f рад/с | alive=%d | sampling=%d\n", 
+       static_cast<float>(values[1]), 
+       IsAlive(),
+       m_imu ? m_imu->getSamplingPeriod() : 0);
+
         return static_cast<float>(values[1]);
     }
     return 0.0f;
