@@ -19,12 +19,14 @@ TexturedBackground {
 TexturedBackgroundLight {
 }
 RectangleArena {
+	floorSize 20 20
+  	wallHeight 0.1
 }
 
 
 Robot {
   translation 0 -0.15 0
-  rotation 0 0 1 1
+  rotation 0 0 0 0
   children [
     Pose {
       translation 0 0 0.0415
@@ -41,7 +43,18 @@ Robot {
             radius 0.045
           }
         }
+		
       ]
+    }
+	Pen {
+		translation 0 0.01 0    # Очень близко к полу
+  		rotation 1 0 0 -1.5708  # Поворот на -90 градусов по оси X, чтобы направить Y карандаша вниз
+  		name "pen"
+  		inkColor 1 0 0
+  		inkDensity 1
+  		leadSize 1.0           # Сделайте потолще (5 см), чтобы точно заметить
+		maxDistance 0.5
+  		write TRUE
     }
     HingeJoint {
       jointParameters HingeJointParameters {

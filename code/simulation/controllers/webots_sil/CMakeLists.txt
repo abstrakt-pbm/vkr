@@ -22,7 +22,6 @@ set(TARGET_NAME webots_sil)
 add_executable(${TARGET_NAME} 
     main.cpp 
 	webots_encoder.cpp
-    webots_hal.cpp
     webots_imu.cpp
     webots_motor.cpp)
 

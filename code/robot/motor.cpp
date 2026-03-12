@@ -23,8 +23,7 @@ void Motor::SetVoltage(float target_voltage, float dt) {
 	float min_voltage_to_start = m_motor_hal.GetMinVoltageToStart();
 	float max_voltage = m_motor_hal.GetMaxVoltage();
 
-
-
+	/*
 	if (std::abs(target_voltage) >  1e-6f &&  std::abs(target_voltage) < m_min_voltage_to_start) {
 		SetRawVoltage(m_min_voltage_to_start);
 	}
@@ -33,8 +32,9 @@ void Motor::SetVoltage(float target_voltage, float dt) {
 		SetRawVoltage(0);
 		return;
 	}
+	*/
 
-	target_voltage = std::clamp(target_voltage, m_min_voltage_to_start, m_max_voltage);
+	target_voltage = std::clamp(target_voltage, -m_max_voltage, m_max_voltage);
 
 	float delta = m_ramp_coeff * dt;
 
@@ -52,9 +52,15 @@ void Motor::SetRawVoltage(float voltage) {
 
 	voltage = std::clamp(voltage, -max_voltage, max_voltage);
 
+	/*
 	if (std::abs(voltage) >  1e-6f &&  std::abs(voltage) < min_voltage_to_start) {
-        voltage = min_voltage_to_start;
+		if (GetCurrentVoltage() == 0.0f && voltage > 0) {
+        	voltage = min_voltage_to_start;
+		} else if (GetCurrentVoltage() == 0.0f && voltage < 0){
+        	voltage = -min_voltage_to_start ;
+		}
 	}
+	*/
 
 	//вызов на нужные пины мотора
 	if (m_motor_hal.IsAlive()) {

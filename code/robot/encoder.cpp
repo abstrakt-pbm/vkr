@@ -5,7 +5,7 @@
 #include <cstdio>
 
 namespace {
-	constexpr float kAlpha = 0.05f;
+	constexpr float kAlpha = 0.2f;
 } //
 
 namespace Robot {
