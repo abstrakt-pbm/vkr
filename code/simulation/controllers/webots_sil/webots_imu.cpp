@@ -37,11 +37,6 @@ float WebotsIImuHAL::GetRawGyroX() const {
 float WebotsIImuHAL::GetRawGyroY() const {
     if (IsAlive()) {
         const double* values = m_imu->getRollPitchYaw();
-		printf("🔥 GYROZ=%.3f рад/с | alive=%d | sampling=%d\n", 
-       static_cast<float>(values[1]), 
-       IsAlive(),
-       m_imu ? m_imu->getSamplingPeriod() : 0);
-
         return static_cast<float>(values[1]);
     }
     return 0.0f;

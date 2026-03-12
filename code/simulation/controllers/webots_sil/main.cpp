@@ -85,17 +85,17 @@ void test_turn_90deg(webots::Robot* wb_robot,
         }
 
         // Условие остановки: дошли до 90° (с запасом)
-        if (std::fabs(accumulated_angle) >= target_angle) {
-            printf("=== Цель достигнута: angle≈%.2f рад (%.0f°), t=%.2fs ===\n",
-                   accumulated_angle,
-                   accumulated_angle * 180.0f / static_cast<float>(M_PI),
-                   sim_time);
+		float current_angle = robot_lib.GetOdometry().GetCurrentPosition().GetNormalizedAngle();
+		 if (fabs(current_angle) >= target_angle) {
+            printf("\n🎯 90° по Odometry! t=%.3fs | угол=%.3f рад (%.1f°)\n",
+                   sim_time, current_angle, 0);
+            printf("   Используйте в квадрате: turn_time = %.3f\n\n", sim_time);
             break;
         }
     }
 
     // Остановим робота
-	for (size_t i = 0 ; i < 50 ; ++i) {
+	for (size_t i = 0 ; i < 500 ; ++i) {
 		RobotControl::MotionCommand stop_cmd{0.0f, 0.0f};
     	Robot::ControlEffort stop_effort = controller.GetAdjustedControlEffort(stop_cmd, dt);
     	robot_lib.TransferToNewState(stop_effort, dt);
@@ -109,19 +109,19 @@ void run_square_test(webots::Robot* robot, Robot::Robot& robot_lib,
     float stop_time = 0.50f;
 
     std::vector<TrajectoryPhase> square = {
-        {0.20f, 0.0f, 1.0f},       // Прямо 1м
+        {0.20f, 0.0f, 5.0f},       // Прямо 1м
         {0.00f, 0.0f, stop_time},  // Пауза (сброс инерции)
         {0.0f,  2.0f, turn_time},  // Поворот 90° (1)
         {0.00f, 0.0f, stop_time},  // Пауза
-        {0.20f, 0.0f, 1.0f},       // Прямо 2м
+        {0.20f, 0.0f, 5.0f},       // Прямо 2м
         {0.00f, 0.0f, stop_time},  // Пауза
         {0.0f,  2.0f, turn_time},  // Поворот 90° (2)
         {0.00f, 0.0f, stop_time},  // Пауза
-        {0.20f, 0.0f, 1.0f},
+        {0.20f, 0.0f, 5.0f},
         {0.00f, 0.0f, stop_time},
         {0.0f,  2.0f, turn_time},  // Поворот 90° (3)
         {0.00f, 0.0f, stop_time},
-        {0.20f, 0.0f, 1.0f},
+        {0.20f, 0.0f, 5.0f},
         {0.00f, 0.0f, stop_time},
         {0.0f,  2.0f, turn_time},  // Поворот 90° (4)
         {0.00f, 0.0f, stop_time}   // Финальная остановка

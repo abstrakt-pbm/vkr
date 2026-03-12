@@ -50,8 +50,12 @@ RobotState Robot::FetchCurrentRobotState(float dt) {
 	}
     
 	// Отфильтрованая скорость, датчики обновлены перед FetchCurrentRobotState
-    float v_left = m_left_encoder.GetCurrentVelocity();
-    float v_right = m_right_encoder.GetCurrentVelocity();
+	// TODO: ввести объект Wheel который будет аргерировать Encoder + Motor
+	// Сразу будет отдавать скорость с нормальным знаком
+	int left_wheel_direction = (m_l_motor.GetCurrentVoltage() >= 0) ? 1 : -1; 
+    float v_left = m_left_encoder.GetCurrentVelocity() * left_wheel_direction;
+	int right_wheel_direction = (m_l_motor.GetCurrentVoltage() >= 0) ? 1 : -1; 
+    float v_right = m_right_encoder.GetCurrentVelocity() * right_wheel_direction;
     
     if (!std::isfinite(v_left) || !std::isfinite(v_right)) {
  		return state;
