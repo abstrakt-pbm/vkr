@@ -23,6 +23,10 @@ float Position::GetNormalizedAngle() const {
 void Odometry::Update(float linear_velocity,
 					  float angle_velocity,
 					  float dt) {
+	if (dt <= 0.0f) {
+		return;
+	}
+
 	m_current_possition.m_current_x += linear_velocity * dt * std::cos(m_current_possition.m_current_angle);
     m_current_possition.m_current_y += linear_velocity * dt * std::sin(m_current_possition.m_current_angle);
     m_current_possition.m_current_angle += angle_velocity * dt;
@@ -33,6 +37,11 @@ Position Odometry::GetCurrentPosition() const {
 	return m_current_possition;
 }
 
+void Odometry::Reset() {
+	m_current_possition.m_current_x = 0;
+	m_current_possition.m_current_y = 0;
+	m_current_possition.m_current_angle = 0;
+}
 
 } // namespace Robot
 

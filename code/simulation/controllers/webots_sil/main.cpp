@@ -24,88 +24,58 @@ struct TrajectoryPhase {
     float duration;    // сек
 };
 
-void test_turn_90deg(webots::Robot* wb_robot,
-                     Robot::Robot& robot_lib,
-                     RobotControl::RobotController& controller,
-                     webots::GPS* gps) 
-{
-    const double time_step_ms = wb_robot->getBasicTimeStep();
-    const float dt = time_step_ms / 1000.0f;
-
-    // Команда: стоим на месте, крутимся
-    const float cmd_linear  = 0.0f;
-    const float cmd_angular = 2.0f;     // рад/с, как в квадрате
-
-    // Цель: 90° = pi/2 рад
-    const float target_angle = static_cast<float>(M_PI) / 2.0f;
-
-    float accumulated_angle = 0.0f;     // интеграл угл. скорости по времени
+void test_turn_90deg_by_gps(webots::Robot* wb_robot, 
+                            Robot::Robot& robot_lib,
+                            RobotControl::RobotController& controller,
+                            webots::GPS* gps) {
+    const double dt = wb_robot->getBasicTimeStep() / 1000.0;
+    const float cmd_angular = 2.0f;
+    const float target_angle = M_PI / 2.0f;
+    
     float sim_time = 0.0f;
+    double start_yaw = 0.0;
+    const double* gps_values = gps->getValues();
+	double yaw = atan2(gps_values[1], gps_values[0]);  // yaw из X,Y
+	start_yaw = yaw;
+    printf("=== Поворот 90° по GPS yaw (без ошибки одометрии) ===\n");
 
-    printf("=== Тест поворота на 90 градусов ===\n");
-
-    while (wb_robot->step(time_step_ms) != -1) {
+    while (wb_robot->step(wb_robot->getBasicTimeStep()) != -1) {
         sim_time += dt;
-
-        // Обновляем датчики (одометрию / энкодеры)
         robot_lib.UpdateSensors();
-
-        // Команда на вращение
-        RobotControl::MotionCommand cmd{cmd_linear, cmd_angular};
-
-        // Чистый FF (PID у вас нулевой)
-        Robot::ControlEffort effort = controller.GetAdjustedControlEffort(cmd, dt);
-        robot_lib.TransferToNewState(effort, dt);
-
-        // Оценка угла поворота:
-        // вариант 1 (простая интеграция команды, если одометрии пока нет):
-        accumulated_angle += cmd_angular * dt;
-
-        // вариант 2 (лучше): если у вас есть одометрия с углом:
-        // float theta = robot_lib.GetOdometryTheta();  // тогда логировать theta
-
-        if (static_cast<int>(sim_time * 1000) % 200 == 0) { // раз в 0.2с
-            if (gps) {
-                const double* pos = gps->getValues();
-                printf("[t=%.2fs] angle_int=%.2f рад (%.0f°) | X=%.3f Y=%.3f | V_L=%.2f V_R=%.2f\n",
-                       sim_time,
-                       accumulated_angle,
-                       accumulated_angle * 180.0f / static_cast<float>(M_PI),
-                       pos[0], pos[1],
-                       effort.left_motor_voltage,
-                       effort.right_motor_voltage);
-            } else {
-                printf("[t=%.2fs] angle_int=%.2f рад (%.0f°) | V_L=%.2f V_R=%.2f\n",
-                       sim_time,
-                       accumulated_angle,
-                       accumulated_angle * 180.0f / static_cast<float>(M_PI),
-                       effort.left_motor_voltage,
-                       effort.right_motor_voltage);
-            }
-        }
-
-        // Условие остановки: дошли до 90° (с запасом)
-		float current_angle = robot_lib.GetOdometry().GetCurrentPosition().GetNormalizedAngle();
-		 if (fabs(current_angle) >= target_angle) {
-            printf("\n🎯 90° по Odometry! t=%.3fs | угол=%.3f рад (%.1f°)\n",
-                   sim_time, current_angle, 0);
-            printf("   Используйте в квадрате: turn_time = %.3f\n\n", sim_time);
+        
+        // Команда поворота
+        RobotControl::MotionCommand cmd{0.0f, cmd_angular};
+        robot_lib.TransferToNewState(controller.GetAdjustedControlEffort(cmd, dt), dt);
+        
+        // ✅ Точный угол по GPS!
+        gps_values = gps->getValues();
+        yaw = atan2(gps_values[1], gps_values[0]);  // yaw из X,Y
+        double delta_yaw = yaw - start_yaw;
+        
+        printf("[t=%.2fs] yaw=%.2f рад (%.0f°) | delta=%.2f рад | X=%.2f Y=%.2f\n",
+               sim_time, yaw, yaw*180/M_PI, delta_yaw, gps_values[0], gps_values[1]);
+        
+        // Стоп при 90° (±2°)
+        if (fabs(delta_yaw) >= target_angle - 0.035f) {
+            printf("\n🎯 GPS 90°! Время=%.3fs | delta_yaw=%.3f рад\n", 
+                   sim_time, delta_yaw);
+            printf("Идеальное turn_time = %.3f\n\n", sim_time);
             break;
         }
+        
+        if (sim_time > 2.0f) break;  // Emergency stop
     }
-
-    // Остановим робота
-	for (size_t i = 0 ; i < 500 ; ++i) {
-		RobotControl::MotionCommand stop_cmd{0.0f, 0.0f};
-    	Robot::ControlEffort stop_effort = controller.GetAdjustedControlEffort(stop_cmd, dt);
-    	robot_lib.TransferToNewState(stop_effort, dt);
-	}
     
+    // Остановка
+    for (int i = 0; i < 60; i++) {
+        RobotControl::MotionCommand stop{0,0};
+        robot_lib.TransferToNewState(controller.GetAdjustedControlEffort(stop, dt), dt);
+        wb_robot->step(wb_robot->getBasicTimeStep());
+    }
 }
-
 void run_square_test(webots::Robot* robot, Robot::Robot& robot_lib, 
                      RobotControl::RobotController& controller, webots::GPS* gps) {
-	float turn_time = 0.65f;
+	float turn_time = 0.784f;
     float stop_time = 0.50f;
 
     std::vector<TrajectoryPhase> square = {
@@ -219,30 +189,30 @@ int main(int argc, char** argv) {
 	Robot::IMU imu(imu_hal);
     Robot::Encoder enc_l(encoder_hal_l);
     Robot::Encoder enc_r(encoder_hal_r);
-    Robot::Motor motor_l(motor_hal_l, 10.0f, 12.0f, 0.0f);
-    Robot::Motor motor_r(motor_hal_r, 10.0f, 12.0f, 0.0f);
+    Robot::Motor motor_l(motor_hal_l, 20.0f, 12.0f, 0.0f);
+    Robot::Motor motor_r(motor_hal_r, 20.0f, 12.0f, 0.0f);
 
     Robot::ActuatorLimits limits{};
-    Robot::RobotKinematics kinematics{};
+    Robot::RobotKinematics kinematics{0.100f};
 
     Robot::Robot robot_lib(
         imu, motor_l, enc_l, motor_r, enc_r, limits, kinematics);
 
     //Инициализируем новую FFModel (base_width=0.3, wheel_radius=0.05, kS=1.0, kV=0.02)
-	RobotControl::FFModel ff_model(0.100f, 0.025f, 0.25f, 0.25f, 12.0f);
+	RobotControl::FFModel ff_model(0.100f, 0.025f, 0.06f, 0.25f, 12.0f);
     
-    Math::PID lin_pid (0.0f, 0.00f, 0.0f, 0.0f, 12.0f);
-    Math::PID ang_pid (0.0f, 0.0f, 0.0f, 0.0f, 12.0f);
+    Math::PID lin_pid (3.2f, 1.2f, 0.25f, 1.0f, 12.0f);
+    Math::PID ang_pid (2.8f, 1.8f, 0.20f, 1.0f, 12.0f);
 
 	RobotControl::RobotController controller(robot_lib, ff_model, lin_pid, ang_pid);
 
 	run_square_test(robot.get(), robot_lib, controller, gps);
-	//test_turn_90deg(robot.get(), robot_lib, controller, gps);
+	//test_turn_90deg_by_gps(robot.get(), robot_lib, controller, gps);
 	/*
 	double time_step = robot->getBasicTimeStep();
 	while (robot->step(time_step) != -1) {
-    	float linear_velocity = 0.1f;   // м/с
-    	float angular_velocity = 0.0f;  // рад/с 
+    	float linear_velocity = 0.0f;   // м/с
+    	float angular_velocity = 1.0f;  // рад/с 
 		
    		RobotControl::MotionCommand cmd {linear_velocity, angular_velocity};
 

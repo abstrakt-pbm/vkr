@@ -23,11 +23,14 @@ private:
 class Odometry {
 public:
 	// Recalculate m_current_possition
+	// linear_velocity in m/s
+	// angle_velocity in r/s
 	void Update(float linear_velocity,
 			 float angle_velocity, float dt); 
 
 	// Return's copy of m_current_possition
 	Position GetCurrentPosition() const;
+	void Reset();
 private:
 	Position m_current_possition;
 };

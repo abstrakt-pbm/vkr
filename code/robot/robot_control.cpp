@@ -54,8 +54,8 @@ ControlEffort RobotController::GetAdjustedControlEffort(const MotionCommand& cmd
     ControlEffort ff_effort = m_ff_model.GetControlEffort(cmd);
 
     // 3. FEEDBACK (ПИД-регулирование напряжений)
-    float pid_linear = m_linear_velocity_pid.Step(err_v, dt);
-    float pid_angular = m_angle_velocity_pid.Step(err_w, dt);
+    float pid_linear = m_linear_velocity_pid.Step(cmd.linear_velocity, state.current_linear_speed, dt);
+    float pid_angular = m_angle_velocity_pid.Step(cmd.angular_velocity, state.current_angular_speed, dt);
 
     // 4. МИКСЕР УСИЛИЙ (Вольты)
 	// pid_linear: Вольты для разгона/торможения всего робота

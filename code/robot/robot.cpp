@@ -13,8 +13,6 @@ namespace Robot {
 
 constexpr float M_MIN_DT = 1e-6f;
 constexpr float M_MAX_DT = 0.05f;
-constexpr float kMaxWheelSpeed = 5.0f;
-constexpr float kAlpha = 0.2f;
 
 Robot::Robot(IMU &imu,
 		Motor &l_motor,
@@ -52,37 +50,57 @@ RobotState Robot::FetchCurrentRobotState(float dt) {
 	// Отфильтрованая скорость, датчики обновлены перед FetchCurrentRobotState
 	// TODO: ввести объект Wheel который будет аргерировать Encoder + Motor
 	// Сразу будет отдавать скорость с нормальным знаком
-	int left_wheel_direction = (m_l_motor.GetCurrentVoltage() >= 0) ? 1 : -1; 
-    float v_left = m_left_encoder.GetCurrentVelocity() * left_wheel_direction;
-	int right_wheel_direction = (m_l_motor.GetCurrentVoltage() >= 0) ? 1 : -1; 
-    float v_right = m_right_encoder.GetCurrentVelocity() * right_wheel_direction;
-    
+	//int left_wheel_direction = (m_l_motor.GetCurrentVoltage() >= 0) ? 1 : -1; 
+	int left_wheel_direction = -1; 
+    //float v_left = m_left_encoder.GetCurrentVelocity() * left_wheel_direction;
+    float v_left = m_left_encoder.GetCurrentVelocity();
+	printf("current l velocity %.3f m/s\n", m_left_encoder.GetCurrentVelocity());
+	printf("current l wheel direction %.3d m/s\n", left_wheel_direction );
+
+	//int right_wheel_direction = (m_r_motor.GetCurrentVoltage() >= 0) ? 1 : -1; 
+	int right_wheel_direction = 1; 
+    //float v_right = m_right_encoder.GetCurrentVelocity() * right_wheel_direction;
+    float v_right = m_right_encoder.GetCurrentVelocity();
+
+    printf("current r velocity %.3f m/s\n", m_right_encoder.GetCurrentVelocity());
+	printf("current r wheel direction %.3d m/s\n", right_wheel_direction );
+
     if (!std::isfinite(v_left) || !std::isfinite(v_right)) {
  		return state;
 	}
 
 	// Получаем линейную и угловую скорость на основе энкодеров
 	float linear_robot_speed_enc = (static_cast<float>(v_left + v_right)) / 2;
-	float angle_robot_speed_env = (v_right - v_left) / m_robot_kinematics.m_track_width;
+	float angle_robot_speed_env = (static_cast<float>(v_right - v_left)) / m_robot_kinematics.m_track_width;
+
+	printf("current v_left %.3f m/s\n", v_left);
+	printf("current v_right %.3f m/s\n", v_right);
 
 	printf("current linear_speed %.3f m/s\n", linear_robot_speed_enc);
+	printf("current angle_robot_speed %.3f rad\n", angle_robot_speed_env);
 
     m_ekf.Predict(v_left,
 				  v_right);
 
     float w_imu = 0.0f;
+	// TODO: сделать нормальную логику на IMU
     if (m_imu.IsAlive()) {
         w_imu = m_imu.GetGyroZ();
     } else {
         w_imu = angle_robot_speed_env;
 	}
 
+    w_imu = angle_robot_speed_env;
 	m_ekf.Update(linear_robot_speed_enc,
 			 angle_robot_speed_env,
 			 w_imu);
 
-    state.current_linear_speed = m_ekf.GetLinearVelocity();
-	state.current_angular_speed = m_ekf.GetAngularVelocity();
+	
+    //state.current_linear_speed = m_ekf.GetLinearVelocity();
+	//state.current_angular_speed = m_ekf.GetAngularVelocity();
+	
+    state.current_linear_speed = linear_robot_speed_enc;
+	state.current_angular_speed = angle_robot_speed_env;
 
 	m_odometry.Update(state.current_linear_speed,
 				   state.current_angular_speed, dt);
