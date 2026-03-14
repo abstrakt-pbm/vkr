@@ -38,10 +38,13 @@ void Motor::SetVoltage(float target_voltage, float dt) {
 
 	float delta = m_ramp_coeff * dt;
 
-	if (target_voltage > m_motor_hal.GetCurrentRawVoltage()) {
-		SetRawVoltage(m_motor_hal.GetCurrentRawVoltage() + delta);
+	float current_voltage = m_motor_hal.GetCurrentRawVoltage();
+	if (target_voltage > current_voltage) {
+		SetRawVoltage(current_voltage + delta);
+		//SetRawVoltage(current_voltage);
 	} else {
-		SetRawVoltage(m_motor_hal.GetCurrentRawVoltage() - delta);
+		SetRawVoltage(current_voltage - delta);
+		//SetRawVoltage(current_voltage);
 	}
 
 }

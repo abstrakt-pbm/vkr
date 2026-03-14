@@ -72,6 +72,7 @@ Robot {
         }
         PositionSensor {
           name "left_wheel_encoder"
+		  resolution -1
         }
       ]
       endPoint Solid {
@@ -117,6 +118,7 @@ Robot {
         }
         PositionSensor {
           name "right_wheel_encoder"
+		  resolution -1
         }
       ]
       endPoint Solid {

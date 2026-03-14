@@ -24,55 +24,6 @@ struct TrajectoryPhase {
     float duration;    // сек
 };
 
-void test_turn_90deg_by_gps(webots::Robot* wb_robot, 
-                            Robot::Robot& robot_lib,
-                            RobotControl::RobotController& controller,
-                            webots::GPS* gps) {
-    const double dt = wb_robot->getBasicTimeStep() / 1000.0;
-    const float cmd_angular = 2.0f;
-    const float target_angle = M_PI / 2.0f;
-    
-    float sim_time = 0.0f;
-    double start_yaw = 0.0;
-    const double* gps_values = gps->getValues();
-	double yaw = atan2(gps_values[1], gps_values[0]);  // yaw из X,Y
-	start_yaw = yaw;
-    printf("=== Поворот 90° по GPS yaw (без ошибки одометрии) ===\n");
-
-    while (wb_robot->step(wb_robot->getBasicTimeStep()) != -1) {
-        sim_time += dt;
-        robot_lib.UpdateSensors();
-        
-        // Команда поворота
-        RobotControl::MotionCommand cmd{0.0f, cmd_angular};
-        robot_lib.TransferToNewState(controller.GetAdjustedControlEffort(cmd, dt), dt);
-        
-        // ✅ Точный угол по GPS!
-        gps_values = gps->getValues();
-        yaw = atan2(gps_values[1], gps_values[0]);  // yaw из X,Y
-        double delta_yaw = yaw - start_yaw;
-        
-        printf("[t=%.2fs] yaw=%.2f рад (%.0f°) | delta=%.2f рад | X=%.2f Y=%.2f\n",
-               sim_time, yaw, yaw*180/M_PI, delta_yaw, gps_values[0], gps_values[1]);
-        
-        // Стоп при 90° (±2°)
-        if (fabs(delta_yaw) >= target_angle - 0.035f) {
-            printf("\n🎯 GPS 90°! Время=%.3fs | delta_yaw=%.3f рад\n", 
-                   sim_time, delta_yaw);
-            printf("Идеальное turn_time = %.3f\n\n", sim_time);
-            break;
-        }
-        
-        if (sim_time > 2.0f) break;  // Emergency stop
-    }
-    
-    // Остановка
-    for (int i = 0; i < 60; i++) {
-        RobotControl::MotionCommand stop{0,0};
-        robot_lib.TransferToNewState(controller.GetAdjustedControlEffort(stop, dt), dt);
-        wb_robot->step(wb_robot->getBasicTimeStep());
-    }
-}
 void run_square_test(webots::Robot* robot, Robot::Robot& robot_lib, 
                      RobotControl::RobotController& controller, webots::GPS* gps) {
 	float turn_time = 0.784f;
@@ -172,6 +123,10 @@ void run_square_test(webots::Robot* robot, Robot::Robot& robot_lib,
     printf("🏁 Тест 'Квадрат' завершен! Всего 4 поворота по ~90°.\n");
 }
 
+float GetOmegaFromTime(float t) {
+	return 1.0f * cosf(2*t);
+}
+
 int main(int argc, char** argv) {
 	auto robot = std::shared_ptr<webots::Robot>(new webots::Robot());
 	WebotsIImuHAL imu_hal(robot, "imu", "accelerometer");
@@ -204,21 +159,25 @@ int main(int argc, char** argv) {
     Math::PID lin_pid (3.2f, 1.2f, 0.25f, 1.0f, 12.0f);
     Math::PID ang_pid (2.8f, 1.8f, 0.20f, 1.0f, 12.0f);
 
+    //Math::PID lin_pid (0.0f, 0.0f, 0.0f, 0.0f, 12.0f);
+    //Math::PID ang_pid (0.0f, 0.0f, 0.0f, 0.0f, 12.0f);
+
 	RobotControl::RobotController controller(robot_lib, ff_model, lin_pid, ang_pid);
 
-	run_square_test(robot.get(), robot_lib, controller, gps);
-	//test_turn_90deg_by_gps(robot.get(), robot_lib, controller, gps);
-	/*
+	//run_square_test(robot.get(), robot_lib, controller, gps);
+	
 	double time_step = robot->getBasicTimeStep();
+	float global_time = 0.0f;
 	while (robot->step(time_step) != -1) {
-    	float linear_velocity = 0.0f;   // м/с
-    	float angular_velocity = 1.0f;  // рад/с 
-		
-   		RobotControl::MotionCommand cmd {linear_velocity, angular_velocity};
-
+    	float linear_velocity = 0.1f;   // м/с
+    	//float angular_velocity = -1.0f;  // рад/с 
 		float time_step = robot->getBasicTimeStep() / 1000.0;  // ms → секунды
+		global_time += time_step;
 		const float DT = time_step;
 
+    	float angular_velocity = GetOmegaFromTime(global_time);  // рад/с 
+
+   		RobotControl::MotionCommand cmd {linear_velocity, angular_velocity};
 		robot_lib.UpdateSensors();
 		Robot::ControlEffort effort = controller.GetAdjustedControlEffort(cmd, DT);
 
@@ -231,7 +190,6 @@ int main(int argc, char** argv) {
       		printf("GPS_truth=%.3f m/s | Error=%.1f%%\n",gps_speed);
     	}
 	}
-	*/
     return 0;
 }
 

@@ -34,6 +34,8 @@ ControlEffort RobotController::GetAdjustedControlEffort(const MotionCommand& cmd
 		m_robot.enterSafeStopMode();
         m_linear_velocity_pid.Reset();
         m_angle_velocity_pid.Reset();
+		m_smooth_linear_cmd = 0.0f;
+        m_smooth_angular_cmd = 0.0f;
         return Robot::ControlEffort{0.0f, 0.0f};
 	}
 
@@ -50,12 +52,12 @@ ControlEffort RobotController::GetAdjustedControlEffort(const MotionCommand& cmd
     float err_v = cmd.linear_velocity - state.current_linear_speed;
     float err_w = cmd.angular_velocity - state.current_angular_speed;
 
+	MotionCommand smooth_cmd = VelocityRamp(cmd, dt);
     // 2. FEEDFORWARD (нелинейная модель моторов + статическое трение)
-    ControlEffort ff_effort = m_ff_model.GetControlEffort(cmd);
-
+    ControlEffort ff_effort = m_ff_model.GetControlEffort(smooth_cmd);
     // 3. FEEDBACK (ПИД-регулирование напряжений)
-    float pid_linear = m_linear_velocity_pid.Step(cmd.linear_velocity, state.current_linear_speed, dt);
-    float pid_angular = m_angle_velocity_pid.Step(cmd.angular_velocity, state.current_angular_speed, dt);
+    float pid_linear = m_linear_velocity_pid.Step(smooth_cmd.linear_velocity, state.current_linear_speed, dt);
+    float pid_angular = m_angle_velocity_pid.Step(smooth_cmd.angular_velocity, state.current_angular_speed, dt);
 
     // 4. МИКСЕР УСИЛИЙ (Вольты)
 	// pid_linear: Вольты для разгона/торможения всего робота
@@ -92,5 +94,37 @@ ControlEffort RobotController::GetAdjustedControlEffort(const MotionCommand& cmd
     m_last_safe_effort = safe_effort.effort;
     return safe_effort.effort;
 }
+
+MotionCommand RobotController::VelocityRamp(const MotionCommand& target_cmd, float dt) {
+    MotionCommand smooth_cmd;
+
+    // --- Обработка линейной скорости ---
+    float linear_delta = target_cmd.linear_velocity - m_smooth_linear_cmd;
+    float linear_step = MAX_LINEAR_ACCEL * dt;
+
+    // Ограничиваем изменение скорости за один такт (dt)
+    if (std::abs(linear_delta) <= linear_step) {
+        m_smooth_linear_cmd = target_cmd.linear_velocity; // Достигли цели
+    } else {
+        // Делаем шаг в сторону цели
+        m_smooth_linear_cmd += (linear_delta > 0.0f ? linear_step : -linear_step);
+    }
+    smooth_cmd.linear_velocity = m_smooth_linear_cmd;
+
+    // --- Обработка угловой скорости ---
+    float angular_delta = target_cmd.angular_velocity - m_smooth_angular_cmd;
+    float angular_step = MAX_ANGULAR_ACCEL * dt;
+
+    if (std::abs(angular_delta) <= angular_step) {
+        m_smooth_angular_cmd = target_cmd.angular_velocity;
+    } else {
+        m_smooth_angular_cmd += (angular_delta > 0.0f ? angular_step : -angular_step);
+    }
+    smooth_cmd.angular_velocity = m_smooth_angular_cmd;
+
+    return smooth_cmd;
+}
+
+
 } // namespace RobotControl
 

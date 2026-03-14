@@ -30,9 +30,15 @@ float PID::Step(float setpoint, float measurement, float dt) {
     float error = setpoint - measurement;
 
     // DEADZONE против шума энкодеров (±0.05 рад/с = ±3°/с)
-    constexpr float DEADZONE = 0.08f;
+    constexpr float DEADZONE = 0.01f;
     if (std::abs(error) < DEADZONE) {
         error = 0.0f;  // Не реагируем на шум!
+		if (std::abs(setpoint) < 0.02f) {  // Уставка близка к нулю
+        m_integrator *= 0.92f;  // Экспоненциальное затухание (85% от текущего)
+        if (std::abs(m_integrator) < 0.05f) {
+            m_integrator = 0.0f;  // Полный сброс при малых значениях
+        }
+    }
     }
 
     // 2. Инициализация при первом запуске (избегаем рывка D-компоненты)
