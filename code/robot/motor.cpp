@@ -34,19 +34,23 @@ void Motor::SetVoltage(float target_voltage, float dt) {
 	}
 	*/
 
-	target_voltage = std::clamp(target_voltage, -m_max_voltage, m_max_voltage);
+	target_voltage = std::clamp(target_voltage,
+							 -m_max_voltage, m_max_voltage);
 
 	float delta = m_ramp_coeff * dt;
-
 	float current_voltage = m_motor_hal.GetCurrentRawVoltage();
-	if (target_voltage > current_voltage) {
-		SetRawVoltage(current_voltage + delta);
-		//SetRawVoltage(current_voltage);
-	} else {
-		SetRawVoltage(current_voltage - delta);
-		//SetRawVoltage(current_voltage);
-	}
 
+	if (std::abs(current_voltage - target_voltage) < delta ){
+		SetRawVoltage(target_voltage);
+	} else {
+		if (target_voltage > current_voltage) {
+			SetRawVoltage(current_voltage + delta);
+			//SetRawVoltage(current_voltage);
+		} else {
+			SetRawVoltage(current_voltage - delta);
+			//SetRawVoltage(current_voltage);
+		}
+	}
 }
 
 void Motor::SetRawVoltage(float voltage) {

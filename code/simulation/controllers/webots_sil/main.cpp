@@ -124,7 +124,7 @@ void run_square_test(webots::Robot* robot, Robot::Robot& robot_lib,
 }
 
 float GetOmegaFromTime(float t) {
-	return 1.0f * cosf(2*t);
+	return 1.0f * sinf(2*t);
 }
 
 int main(int argc, char** argv) {
@@ -144,8 +144,8 @@ int main(int argc, char** argv) {
 	Robot::IMU imu(imu_hal);
     Robot::Encoder enc_l(encoder_hal_l);
     Robot::Encoder enc_r(encoder_hal_r);
-    Robot::Motor motor_l(motor_hal_l, 20.0f, 12.0f, 0.0f);
-    Robot::Motor motor_r(motor_hal_r, 20.0f, 12.0f, 0.0f);
+    Robot::Motor motor_l(motor_hal_l, 200.0f, 12.0f, 0.0f);
+    Robot::Motor motor_r(motor_hal_r, 200.0f, 12.0f, 0.0f);
 
     Robot::ActuatorLimits limits{};
     Robot::RobotKinematics kinematics{0.100f};
@@ -154,10 +154,14 @@ int main(int argc, char** argv) {
         imu, motor_l, enc_l, motor_r, enc_r, limits, kinematics);
 
     //Инициализируем новую FFModel (base_width=0.3, wheel_radius=0.05, kS=1.0, kV=0.02)
-	RobotControl::FFModel ff_model(0.100f, 0.025f, 0.06f, 0.25f, 12.0f);
+	RobotControl::FFModel ff_model(0.100f, 0.025f, 0.06f, 0.232f, 12.0f);
     
-    Math::PID lin_pid (3.2f, 1.2f, 0.25f, 1.0f, 12.0f);
-    Math::PID ang_pid (2.8f, 1.8f, 0.20f, 1.0f, 12.0f);
+    //Math::PID lin_pid (3.2f, 1.2f, 0.0f, 1.0f, 12.0f);
+    //Math::PID ang_pid (2.8f, 1.8f, 0.0f, 1.0f, 12.0f);
+
+	Math::PID lin_pid (0.8f, 0.4f, 0.0f, 1.0f, 12.0f);
+    Math::PID ang_pid (0.4f, 0.2f, 0.0f, 1.0f, 12.0f);
+
 
     //Math::PID lin_pid (0.0f, 0.0f, 0.0f, 0.0f, 12.0f);
     //Math::PID ang_pid (0.0f, 0.0f, 0.0f, 0.0f, 12.0f);
@@ -169,13 +173,13 @@ int main(int argc, char** argv) {
 	double time_step = robot->getBasicTimeStep();
 	float global_time = 0.0f;
 	while (robot->step(time_step) != -1) {
-    	float linear_velocity = 0.1f;   // м/с
-    	//float angular_velocity = -1.0f;  // рад/с 
+    	float linear_velocity = 0.200f;   // м/с
+    	float angular_velocity = 0.4f;  // рад/с 
 		float time_step = robot->getBasicTimeStep() / 1000.0;  // ms → секунды
 		global_time += time_step;
 		const float DT = time_step;
 
-    	float angular_velocity = GetOmegaFromTime(global_time);  // рад/с 
+    	//float angular_velocity = GetOmegaFromTime(global_time);  // рад/с 
 
    		RobotControl::MotionCommand cmd {linear_velocity, angular_velocity};
 		robot_lib.UpdateSensors();

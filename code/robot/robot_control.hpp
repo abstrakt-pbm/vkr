@@ -41,8 +41,8 @@ private:
 
     // Константы максимального ускорения (подбираются по формуле из предыдущего ответа)
     // 2.0 м/с^2 = разгон до 1 м/с за 0.5 секунды
-    const float MAX_LINEAR_ACCEL = 2.0f;  
-    const float MAX_ANGULAR_ACCEL = 20.0f;
+    const float MAX_LINEAR_ACCEL = 200.0f;  
+    const float MAX_ANGULAR_ACCEL = 200.0f;
 
 	Robot::ControlEffort m_last_safe_effort;
 };

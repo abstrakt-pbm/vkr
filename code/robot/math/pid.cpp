@@ -30,7 +30,8 @@ float PID::Step(float setpoint, float measurement, float dt) {
     float error = setpoint - measurement;
 
     // DEADZONE против шума энкодеров (±0.05 рад/с = ±3°/с)
-    constexpr float DEADZONE = 0.01f;
+	/*
+    constexpr float DEADZONE = 0.0005f;
     if (std::abs(error) < DEADZONE) {
         error = 0.0f;  // Не реагируем на шум!
 		if (std::abs(setpoint) < 0.02f) {  // Уставка близка к нулю
@@ -40,6 +41,7 @@ float PID::Step(float setpoint, float measurement, float dt) {
         }
     }
     }
+	*/
 
     // 2. Инициализация при первом запуске (избегаем рывка D-компоненты)
     if (m_first_run) { 
