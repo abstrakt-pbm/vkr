@@ -5,6 +5,8 @@
 #include <cmath>
 #include <algorithm>
 
+#include <logger.hpp>
+
 namespace Robot {
 Motor::Motor(HAL::IMotorHAL &motor_hal,
 			 float ramp_coeff,
@@ -37,20 +39,22 @@ void Motor::SetVoltage(float target_voltage, float dt) {
 	target_voltage = std::clamp(target_voltage,
 							 -m_max_voltage, m_max_voltage);
 
+	LOG_INFO("Motor: target voltage = %.3f", target_voltage);
 	float delta = m_ramp_coeff * dt;
 	float current_voltage = m_motor_hal.GetCurrentRawVoltage();
 
+	float smooth_voltage = 0.0f;
 	if (std::abs(current_voltage - target_voltage) < delta ){
-		SetRawVoltage(target_voltage);
+		smooth_voltage = target_voltage;
 	} else {
 		if (target_voltage > current_voltage) {
-			SetRawVoltage(current_voltage + delta);
-			//SetRawVoltage(current_voltage);
+			smooth_voltage = target_voltage + delta;
 		} else {
-			SetRawVoltage(current_voltage - delta);
-			//SetRawVoltage(current_voltage);
+			smooth_voltage = target_voltage - delta;
 		}
 	}
+	LOG_INFO("Motor: smooth voltage = %.3f", smooth_voltage);
+	SetRawVoltage(smooth_voltage);
 }
 
 void Motor::SetRawVoltage(float voltage) {

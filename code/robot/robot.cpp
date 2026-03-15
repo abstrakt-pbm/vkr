@@ -7,7 +7,8 @@
 
 #include <cmath>
 #include <algorithm>
-#include <iostream>
+
+#include <logger.hpp>
 
 namespace Robot {
 
@@ -34,14 +35,21 @@ Robot::Robot(IMU &imu,
 
 RobotState Robot::FetchCurrentRobotState(float dt) {
     RobotState state = m_last_state;
-    
     // Валидация дельты времени
     if (dt < M_MIN_DT || dt > M_MAX_DT) {
+		LOG_ERROR("Robot: Delta miss", dt);
+ 		return state;
+	}
+
+	if (dt > M_MAX_DT) {
+		LOG_ERROR("Robot: Delta miss", dt);
+		enterSafeStopMode();
  		return state;
 	}
 
     // Валидация энкодеров
     if (!m_left_encoder.IsAlive() || !m_right_encoder.IsAlive()) {
+		LOG_ERROR("Robot: Encoder's are dead");
         enterSafeStopMode();
 		return RobotState{0.0f, 0.0f, 0.0f,
 					0.0f, 0.0f, 0.0f};
@@ -50,20 +58,11 @@ RobotState Robot::FetchCurrentRobotState(float dt) {
 	// Отфильтрованая скорость, датчики обновлены перед FetchCurrentRobotState
 	// TODO: ввести объект Wheel который будет аргерировать Encoder + Motor
 	// Сразу будет отдавать скорость с нормальным знаком
-	//int left_wheel_direction = (m_l_motor.GetCurrentVoltage() >= 0) ? 1 : -1; 
-	int left_wheel_direction = -1; 
-    //float v_left = m_left_encoder.GetCurrentVelocity() * left_wheel_direction;
     float v_left = m_left_encoder.GetCurrentVelocity();
-	printf("current l velocity %.3f m/s\n", m_left_encoder.GetCurrentVelocity());
-	printf("current l wheel direction %.3d m/s\n", left_wheel_direction );
+	LOG_INFO("Robot: Raw left wheel velocity: %.3f m/s", v_left);
 
-	//int right_wheel_direction = (m_r_motor.GetCurrentVoltage() >= 0) ? 1 : -1; 
-	int right_wheel_direction = 1; 
-    //float v_right = m_right_encoder.GetCurrentVelocity() * right_wheel_direction;
     float v_right = m_right_encoder.GetCurrentVelocity();
-
-    printf("current r velocity %.3f m/s\n", m_right_encoder.GetCurrentVelocity());
-	printf("current r wheel direction %.3d m/s\n", right_wheel_direction );
+	LOG_INFO("Robot: Raw right wheel velocity: %.3f m/s", v_right);
 
     if (!std::isfinite(v_left) || !std::isfinite(v_right)) {
  		return state;
@@ -71,13 +70,10 @@ RobotState Robot::FetchCurrentRobotState(float dt) {
 
 	// Получаем линейную и угловую скорость на основе энкодеров
 	float linear_robot_speed_enc = (static_cast<float>(v_left + v_right)) / 2;
+	LOG_INFO("Robot: Robot linear velocity: %.3f m/s", linear_robot_speed_enc);
+
 	float angle_robot_speed_env = (static_cast<float>(v_right - v_left)) / m_robot_kinematics.m_track_width;
-
-	printf("current v_left %.3f m/s\n", v_left);
-	printf("current v_right %.3f m/s\n", v_right);
-
-	printf("current linear_speed %.3f m/s\n", linear_robot_speed_enc);
-	printf("current angle_robot_speed %.3f rad\n", angle_robot_speed_env);
+	LOG_INFO("Robot:Robot angular velocity: %.3f rad/s", angle_robot_speed_env);
 
     m_ekf.Predict(v_left,
 				  v_right);
@@ -96,6 +92,7 @@ RobotState Robot::FetchCurrentRobotState(float dt) {
 			 w_imu);
 
 	
+	// TODO: Когда будут тесты защумленный датчиков вернуть EKF
     //state.current_linear_speed = m_ekf.GetLinearVelocity();
 	//state.current_angular_speed = m_ekf.GetAngularVelocity();
 	
@@ -134,10 +131,6 @@ void Robot::TransferToNewState(const ControlEffort &control_effort, float dt) {
     
     m_l_motor.SetVoltage(safe_effort.left_motor_voltage, dt);
     m_r_motor.SetVoltage(safe_effort.right_motor_voltage, dt);
-    
-    // 6. Logging last values
-    // m_left_voltage_last = safe_effort.left_motor_voltage;
-    // m_right_voltage_last = safe_effort.right_motor_voltage;
 }
 
 

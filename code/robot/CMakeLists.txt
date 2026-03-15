@@ -11,7 +11,8 @@ set (ROBOT_INC
 	"encoder.hpp"
 	"imu.hpp"
 	"motor.hpp"
-	"odometry.hpp")
+	"odometry.hpp"
+	"logger/logger.hpp")
 
 set (ROBOT_SRC
 	"robot.cpp"
@@ -34,5 +35,6 @@ target_link_libraries(robot PRIVATE
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/..
 	${CMAKE_CURRENT_SOURCE_DIR}/hal/
-	${CMAKE_CURRENT_SOURCE_DIR}/math/)
+	${CMAKE_CURRENT_SOURCE_DIR}/math/
+	${CMAKE_CURRENT_SOURCE_DIR}/logger/)
 

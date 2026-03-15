@@ -239,8 +239,9 @@ int main(int argc, char** argv) {
 
 	RobotControl::RobotController controller(robot_lib, ff_model, lin_pid, ang_pid);
 
-	//run_square_test(robot.get(), robot_lib, controller, gps);
-	//run_circle_test(robot.get(), robot_lib, controller, gps);
+	run_square_test(robot.get(), robot_lib, controller, gps);
+	run_circle_test(robot.get(), robot_lib, controller, gps);
+	/*
 	double time_step = robot->getBasicTimeStep();
 	float global_time = 0.0f;
 	while (robot->step(time_step) != -1) {
@@ -264,6 +265,7 @@ int main(int argc, char** argv) {
       		printf("GPS_truth=%.3f m/s | Error=%.1f%%\n",gps_speed);
     	}
 	}
+	*/
     return 0;
 }
 

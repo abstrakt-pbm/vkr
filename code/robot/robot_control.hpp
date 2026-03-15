@@ -36,13 +36,13 @@ private:
 	Math::PID &m_linear_velocity_pid;
 	Math::PID &m_angle_velocity_pid;
 
-	float m_smooth_linear_cmd = 0.0f;
-    float m_smooth_angular_cmd = 0.0f;
+	float m_smooth_linear_cmd;
+    float m_smooth_angular_cmd;
 
     // Константы максимального ускорения (подбираются по формуле из предыдущего ответа)
     // 2.0 м/с^2 = разгон до 1 м/с за 0.5 секунды
-    const float MAX_LINEAR_ACCEL = 200.0f;  
-    const float MAX_ANGULAR_ACCEL = 200.0f;
+    float m_max_linear_accel;
+    float m_max_angular_accel;
 
 	Robot::ControlEffort m_last_safe_effort;
 };

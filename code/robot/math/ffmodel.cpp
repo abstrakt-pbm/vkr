@@ -2,7 +2,10 @@
 
 #include <robot/robot.hpp>
 #include <robot/robot_control.hpp>
-#include <algorithm>  // std::clamp (C++17)
+
+#include <logger.hpp>
+
+#include <algorithm>
 
 namespace RobotControl {
 
@@ -38,6 +41,14 @@ Robot::ControlEffort FFModel::GetControlEffort(const MotionCommand& cmd) const {
     // 3. Расчет требуемого напряжения для каждого мотора
     float voltage_left  = CalculateMotorVoltage(omega_left);
     float voltage_right = CalculateMotorVoltage(omega_right);
+
+	LOG_INFO("FFModel: ang_velocity_left = %.3f ang_velocity_right = %.3f",
+		   omega_left,
+		   omega_right);
+
+	LOG_INFO("FFModel: voltage_left = %.3f voltage_right = %.3f",
+		   voltage_left,
+		   voltage_right);
 
     // 4. Возврат результата
     return Robot::ControlEffort{voltage_left, voltage_right};

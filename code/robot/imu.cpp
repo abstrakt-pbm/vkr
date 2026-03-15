@@ -1,6 +1,8 @@
 #include <robot/imu.hpp>
 #include <hal/hal_imu.hpp>
 
+#include <logger.hpp>
+
 namespace {
     constexpr float kGyroAlpha = 0.08f;
     constexpr float kAccelAlpha = 0.12f;
@@ -70,6 +72,14 @@ void IMU::UpdateState() {
 		m_filtered_acceleration_y = 0;
 		m_filtered_acceleration_z = 0;
 	}
+	LOG_INFO("IMU: GyroX=%.3f GyroY=%.3f GyroZ=%.3f",
+		   m_filtered_gyro_x,
+		   m_filtered_gyro_y,
+		   m_filtered_gyro_z);
+	LOG_INFO("IMU: AccelerationX=%.3f AccelerationY=%.3f AccelerationZ=%.3f",
+		   m_filtered_acceleration_x,
+		   m_filtered_acceleration_y,
+		   m_filtered_acceleration_z);
 }
 } // namespace Robot
 
