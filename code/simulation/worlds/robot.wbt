@@ -22,7 +22,18 @@ TexturedBackgroundLight {
 }
 RectangleArena {
 	floorSize 20 20
+	floorTileSize 20 20
   	wallHeight 0.1
+	floorAppearance PBRAppearance {
+    baseColor 0.8 0.8 0.8  # <- ТВОЙ ЖЕЛАЕМЫЙ СПЛОШНОЙ ЦВЕТ ПОЛА
+    roughness 1            # Чтобы пол не блестел как зеркало
+    metalness 0
+    baseColorMap ImageTexture {
+      url [
+        "textures/white.png" # Твоя однотонная картинка (создай 10x10 px в Paint)
+      ]
+    }
+  }
 }
 
 Robot {
@@ -50,7 +61,7 @@ Robot {
     # --- 2. КАРАНДАШ ДЛЯ ОТРИСОВКИ ТРАЕКТОРИИ ---
     Pen {
       translation 0 0 0.05
-      rotation 1 0 0 -1.5708
+      rotation 1 0 0 0.0
       name "pen"
       inkColor 1 0 0
       inkDensity 1
@@ -69,6 +80,8 @@ Robot {
       device [
         RotationalMotor {
           name "left_wheel_motor"
+		  maxVelocity 100.0
+      	  maxTorque 100.0
         }
         PositionSensor {
           name "left_wheel_encoder"
@@ -115,6 +128,8 @@ Robot {
       device [
         RotationalMotor {
           name "right_wheel_motor"
+		  maxVelocity 100.0
+      	  maxTorque 100.0
         }
         PositionSensor {
           name "right_wheel_encoder"

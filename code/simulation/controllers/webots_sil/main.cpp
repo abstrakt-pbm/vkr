@@ -123,8 +123,79 @@ void run_square_test(webots::Robot* robot, Robot::Robot& robot_lib,
     printf("🏁 Тест 'Квадрат' завершен! Всего 4 поворота по ~90°.\n");
 }
 
+void run_circle_test(webots::Robot* robot, Robot::Robot& robot_lib, 
+                     RobotControl::RobotController& controller, webots::GPS* gps) {
+    
+    // --- Настройки круга ---
+    float radius = 5.0f;               // Радиус круга (в метрах)
+    float linear_vel = 0.2f;          // Линейная скорость (м/с) - можно увеличить, если едет рывками
+    float angular_vel = linear_vel / radius; // Угловая скорость (ω = v / R)
+    
+    double time_step_ms = robot->getBasicTimeStep();
+    double time_step_s = time_step_ms / 1000.0;
+    
+    float current_time = 0.0f;
+    int tick = 0;
+
+    printf("🚀 Старт БЕСКОНЕЧНОГО движения по кругу!\n");
+    printf("📊 Параметры: R = %.2f м, v = %.2f м/с, ω = %.2f рад/с\n", radius, linear_vel, angular_vel);
+    printf("Нажми Паузу или Стоп в Webots, чтобы прервать тест.\n");
+
+    // БЕСКОНЕЧНЫЙ ЦИКЛ: работает пока работает симуляция
+    while (robot->step(time_step_ms) != -1) {
+        robot_lib.UpdateSensors();
+        current_time += time_step_s;
+
+        // Постоянная команда для круга
+        RobotControl::MotionCommand cmd{linear_vel, angular_vel};
+        
+        // Получаем усилия на моторы (напряжение/ШИМ от ПИД)
+        Robot::ControlEffort effort = controller.GetAdjustedControlEffort(cmd, time_step_s);
+        robot_lib.TransferToNewState(effort, time_step_s);
+
+        // Логируем данные каждые 15 тиков (~0.5 сек)
+        if (gps && tick++ % 15 == 0) {
+            const double* pos = gps->getValues();
+            double imu_val = robot_lib.m_imu.GetGyroZ(); 
+            printf("[POS] X: %6.3f | Y: %6.3f | Время: %.1f сек | Датчик Z: %.3f\n", 
+                   pos[0], pos[1], current_time, imu_val);
+            
+            // Если нужно следить за моторами для настройки ПИД:
+            // printf("Моторы: Лев=%.2f, Прав=%.2f\n", effort.left_motor_voltage, effort.right_motor_voltage);
+        }
+    }    
+}
+
+
 float GetOmegaFromTime(float t) {
-	return 1.0f * sinf(2*t);
+	float theta = 0.5f * t;  // Угол (рад/с)
+    float v = 0.10f;         // Постоянная линейная скорость
+    return v / 1.0f * sinf(theta);  // ω = (v/R) * sin(θ)
+}
+
+RobotControl::MotionCommand getCosineTrajectory(float t) {
+    // Параметры волны
+    float Vx = 0.20f;         // Скорость продвижения робота вперед (по оси X)
+    float A = 2.0f;           // Амплитуда косинуса (1 метр в сторону)
+    float k = M_PI / 2.0f;    // Частота волны (полная волна каждые 4 метра)
+    
+    // Текущая координата x(t)
+    float x = Vx * t;
+    
+    // Производные для y = A * cos(k * x)
+    // Так как x(t) = Vx * t, то y(t) = A * cos(k * Vx * t)
+    
+    float dy_dt = -A * k * Vx * sinf(k * Vx * t);             // Первая производная (скорость по y)
+    float d2y_dt2 = -A * k * k * Vx * Vx * cosf(k * Vx * t);  // Вторая производная (ускорение по y)
+    
+    // 1. Линейная скорость робота (касательная к кривой)
+    float v_linear = sqrtf(Vx * Vx + dy_dt * dy_dt);
+    
+    // 2. Угловая скорость робота (зависит от кривизны)
+    // Формула: (dx*d2y - dy*d2x) / (v^2). Так как d2x = 0 (Vx постоянна), формула упрощается:
+    float w_angular = (Vx * d2y_dt2) / (v_linear * v_linear);
+    
+    return {v_linear, w_angular};
 }
 
 int main(int argc, char** argv) {
@@ -169,18 +240,17 @@ int main(int argc, char** argv) {
 	RobotControl::RobotController controller(robot_lib, ff_model, lin_pid, ang_pid);
 
 	//run_square_test(robot.get(), robot_lib, controller, gps);
-	
+	//run_circle_test(robot.get(), robot_lib, controller, gps);
 	double time_step = robot->getBasicTimeStep();
 	float global_time = 0.0f;
 	while (robot->step(time_step) != -1) {
     	float linear_velocity = 0.200f;   // м/с
-    	float angular_velocity = 0.4f;  // рад/с 
+    	float angular_velocity = 0.0f;  // рад/с 
 		float time_step = robot->getBasicTimeStep() / 1000.0;  // ms → секунды
 		global_time += time_step;
 		const float DT = time_step;
 
     	//float angular_velocity = GetOmegaFromTime(global_time);  // рад/с 
-
    		RobotControl::MotionCommand cmd {linear_velocity, angular_velocity};
 		robot_lib.UpdateSensors();
 		Robot::ControlEffort effort = controller.GetAdjustedControlEffort(cmd, DT);
