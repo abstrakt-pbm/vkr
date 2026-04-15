@@ -1,0 +1,302 @@
+[
+{
+  "directory": "/home/pablo/devel/vkr/code/build/robot",
+  "command": "/usr/bin/c++  -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/robot/hal -I/home/pablo/devel/vkr/code/robot/math -I/home/pablo/devel/vkr/code/robot/logger -I/home/pablo/devel/vkr/code/robot/math/include -I/home/pablo/devel/vkr/code/robot/hal/.. -std=gnu++17 -o CMakeFiles/robot.dir/robot.cpp.o -c /home/pablo/devel/vkr/code/robot/robot.cpp",
+  "file": "/home/pablo/devel/vkr/code/robot/robot.cpp",
+  "output": "robot/CMakeFiles/robot.dir/robot.cpp.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/robot",
+  "command": "/usr/bin/c++  -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/robot/hal -I/home/pablo/devel/vkr/code/robot/math -I/home/pablo/devel/vkr/code/robot/logger -I/home/pablo/devel/vkr/code/robot/math/include -I/home/pablo/devel/vkr/code/robot/hal/.. -std=gnu++17 -o CMakeFiles/robot.dir/robot_control.cpp.o -c /home/pablo/devel/vkr/code/robot/robot_control.cpp",
+  "file": "/home/pablo/devel/vkr/code/robot/robot_control.cpp",
+  "output": "robot/CMakeFiles/robot.dir/robot_control.cpp.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/robot",
+  "command": "/usr/bin/c++  -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/robot/hal -I/home/pablo/devel/vkr/code/robot/math -I/home/pablo/devel/vkr/code/robot/logger -I/home/pablo/devel/vkr/code/robot/math/include -I/home/pablo/devel/vkr/code/robot/hal/.. -std=gnu++17 -o CMakeFiles/robot.dir/robot_ekf.cpp.o -c /home/pablo/devel/vkr/code/robot/robot_ekf.cpp",
+  "file": "/home/pablo/devel/vkr/code/robot/robot_ekf.cpp",
+  "output": "robot/CMakeFiles/robot.dir/robot_ekf.cpp.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/robot",
+  "command": "/usr/bin/c++  -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/robot/hal -I/home/pablo/devel/vkr/code/robot/math -I/home/pablo/devel/vkr/code/robot/logger -I/home/pablo/devel/vkr/code/robot/math/include -I/home/pablo/devel/vkr/code/robot/hal/.. -std=gnu++17 -o CMakeFiles/robot.dir/encoder.cpp.o -c /home/pablo/devel/vkr/code/robot/encoder.cpp",
+  "file": "/home/pablo/devel/vkr/code/robot/encoder.cpp",
+  "output": "robot/CMakeFiles/robot.dir/encoder.cpp.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/robot",
+  "command": "/usr/bin/c++  -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/robot/hal -I/home/pablo/devel/vkr/code/robot/math -I/home/pablo/devel/vkr/code/robot/logger -I/home/pablo/devel/vkr/code/robot/math/include -I/home/pablo/devel/vkr/code/robot/hal/.. -std=gnu++17 -o CMakeFiles/robot.dir/imu.cpp.o -c /home/pablo/devel/vkr/code/robot/imu.cpp",
+  "file": "/home/pablo/devel/vkr/code/robot/imu.cpp",
+  "output": "robot/CMakeFiles/robot.dir/imu.cpp.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/robot",
+  "command": "/usr/bin/c++  -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/robot/hal -I/home/pablo/devel/vkr/code/robot/math -I/home/pablo/devel/vkr/code/robot/logger -I/home/pablo/devel/vkr/code/robot/math/include -I/home/pablo/devel/vkr/code/robot/hal/.. -std=gnu++17 -o CMakeFiles/robot.dir/motor.cpp.o -c /home/pablo/devel/vkr/code/robot/motor.cpp",
+  "file": "/home/pablo/devel/vkr/code/robot/motor.cpp",
+  "output": "robot/CMakeFiles/robot.dir/motor.cpp.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/robot",
+  "command": "/usr/bin/c++  -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/robot/hal -I/home/pablo/devel/vkr/code/robot/math -I/home/pablo/devel/vkr/code/robot/logger -I/home/pablo/devel/vkr/code/robot/math/include -I/home/pablo/devel/vkr/code/robot/hal/.. -std=gnu++17 -o CMakeFiles/robot.dir/odometry.cpp.o -c /home/pablo/devel/vkr/code/robot/odometry.cpp",
+  "file": "/home/pablo/devel/vkr/code/robot/odometry.cpp",
+  "output": "robot/CMakeFiles/robot.dir/odometry.cpp.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/robot/math",
+  "command": "/usr/bin/c++  -I/home/pablo/devel/vkr/code/robot/math/include -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/robot/hal -I/home/pablo/devel/vkr/code/robot/math -I/home/pablo/devel/vkr/code/robot/logger -std=gnu++17 -o CMakeFiles/robotmath.dir/pid.cpp.o -c /home/pablo/devel/vkr/code/robot/math/pid.cpp",
+  "file": "/home/pablo/devel/vkr/code/robot/math/pid.cpp",
+  "output": "robot/math/CMakeFiles/robotmath.dir/pid.cpp.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/robot/math",
+  "command": "/usr/bin/c++  -I/home/pablo/devel/vkr/code/robot/math/include -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/robot/hal -I/home/pablo/devel/vkr/code/robot/math -I/home/pablo/devel/vkr/code/robot/logger -std=gnu++17 -o CMakeFiles/robotmath.dir/ffmodel.cpp.o -c /home/pablo/devel/vkr/code/robot/math/ffmodel.cpp",
+  "file": "/home/pablo/devel/vkr/code/robot/math/ffmodel.cpp",
+  "output": "robot/math/CMakeFiles/robotmath.dir/ffmodel.cpp.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/robot/hal",
+  "command": "/usr/bin/c++  -I/home/pablo/devel/vkr/code/robot/hal/.. -std=gnu++17 -o CMakeFiles/hal.dir/hal_encoder.cpp.o -c /home/pablo/devel/vkr/code/robot/hal/hal_encoder.cpp",
+  "file": "/home/pablo/devel/vkr/code/robot/hal/hal_encoder.cpp",
+  "output": "robot/hal/CMakeFiles/hal.dir/hal_encoder.cpp.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/tests",
+  "command": "/usr/bin/c++  -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/robot/hal -I/home/pablo/devel/vkr/code/robot/math -I/home/pablo/devel/vkr/code/robot/logger -I/home/pablo/devel/vkr/code/robot/math/include -I/home/pablo/devel/vkr/code/robot/hal/.. -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest/include -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest -std=gnu++17 -o CMakeFiles/test_robot.dir/mocks/hal/mock_motor.cpp.o -c /home/pablo/devel/vkr/code/tests/mocks/hal/mock_motor.cpp",
+  "file": "/home/pablo/devel/vkr/code/tests/mocks/hal/mock_motor.cpp",
+  "output": "tests/CMakeFiles/test_robot.dir/mocks/hal/mock_motor.cpp.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/tests",
+  "command": "/usr/bin/c++  -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/robot/hal -I/home/pablo/devel/vkr/code/robot/math -I/home/pablo/devel/vkr/code/robot/logger -I/home/pablo/devel/vkr/code/robot/math/include -I/home/pablo/devel/vkr/code/robot/hal/.. -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest/include -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest -std=gnu++17 -o CMakeFiles/test_robot.dir/mocks/hal/mock_encoder.cpp.o -c /home/pablo/devel/vkr/code/tests/mocks/hal/mock_encoder.cpp",
+  "file": "/home/pablo/devel/vkr/code/tests/mocks/hal/mock_encoder.cpp",
+  "output": "tests/CMakeFiles/test_robot.dir/mocks/hal/mock_encoder.cpp.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/tests",
+  "command": "/usr/bin/c++  -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/robot/hal -I/home/pablo/devel/vkr/code/robot/math -I/home/pablo/devel/vkr/code/robot/logger -I/home/pablo/devel/vkr/code/robot/math/include -I/home/pablo/devel/vkr/code/robot/hal/.. -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest/include -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest -std=gnu++17 -o CMakeFiles/test_robot.dir/mocks/hal/mock_imu.cpp.o -c /home/pablo/devel/vkr/code/tests/mocks/hal/mock_imu.cpp",
+  "file": "/home/pablo/devel/vkr/code/tests/mocks/hal/mock_imu.cpp",
+  "output": "tests/CMakeFiles/test_robot.dir/mocks/hal/mock_imu.cpp.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/tests",
+  "command": "/usr/bin/c++  -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/robot/hal -I/home/pablo/devel/vkr/code/robot/math -I/home/pablo/devel/vkr/code/robot/logger -I/home/pablo/devel/vkr/code/robot/math/include -I/home/pablo/devel/vkr/code/robot/hal/.. -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest/include -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest -std=gnu++17 -o CMakeFiles/test_robot.dir/ekf_tests.cpp.o -c /home/pablo/devel/vkr/code/tests/ekf_tests.cpp",
+  "file": "/home/pablo/devel/vkr/code/tests/ekf_tests.cpp",
+  "output": "tests/CMakeFiles/test_robot.dir/ekf_tests.cpp.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/tests",
+  "command": "/usr/bin/c++  -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/robot/hal -I/home/pablo/devel/vkr/code/robot/math -I/home/pablo/devel/vkr/code/robot/logger -I/home/pablo/devel/vkr/code/robot/math/include -I/home/pablo/devel/vkr/code/robot/hal/.. -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest/include -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest -std=gnu++17 -o CMakeFiles/test_robot.dir/motor_tests.cpp.o -c /home/pablo/devel/vkr/code/tests/motor_tests.cpp",
+  "file": "/home/pablo/devel/vkr/code/tests/motor_tests.cpp",
+  "output": "tests/CMakeFiles/test_robot.dir/motor_tests.cpp.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/tests",
+  "command": "/usr/bin/c++  -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/robot/hal -I/home/pablo/devel/vkr/code/robot/math -I/home/pablo/devel/vkr/code/robot/logger -I/home/pablo/devel/vkr/code/robot/math/include -I/home/pablo/devel/vkr/code/robot/hal/.. -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest/include -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest -std=gnu++17 -o CMakeFiles/test_robot.dir/odometry_tests.cpp.o -c /home/pablo/devel/vkr/code/tests/odometry_tests.cpp",
+  "file": "/home/pablo/devel/vkr/code/tests/odometry_tests.cpp",
+  "output": "tests/CMakeFiles/test_robot.dir/odometry_tests.cpp.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/tests",
+  "command": "/usr/bin/c++  -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/robot/hal -I/home/pablo/devel/vkr/code/robot/math -I/home/pablo/devel/vkr/code/robot/logger -I/home/pablo/devel/vkr/code/robot/math/include -I/home/pablo/devel/vkr/code/robot/hal/.. -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest/include -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest -std=gnu++17 -o CMakeFiles/test_robot.dir/pid_tests.cpp.o -c /home/pablo/devel/vkr/code/tests/pid_tests.cpp",
+  "file": "/home/pablo/devel/vkr/code/tests/pid_tests.cpp",
+  "output": "tests/CMakeFiles/test_robot.dir/pid_tests.cpp.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/tests",
+  "command": "/usr/bin/c++  -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/robot/hal -I/home/pablo/devel/vkr/code/robot/math -I/home/pablo/devel/vkr/code/robot/logger -I/home/pablo/devel/vkr/code/robot/math/include -I/home/pablo/devel/vkr/code/robot/hal/.. -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest/include -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest -std=gnu++17 -o CMakeFiles/test_robot.dir/encoder_tests.cpp.o -c /home/pablo/devel/vkr/code/tests/encoder_tests.cpp",
+  "file": "/home/pablo/devel/vkr/code/tests/encoder_tests.cpp",
+  "output": "tests/CMakeFiles/test_robot.dir/encoder_tests.cpp.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/tests",
+  "command": "/usr/bin/c++  -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/robot/hal -I/home/pablo/devel/vkr/code/robot/math -I/home/pablo/devel/vkr/code/robot/logger -I/home/pablo/devel/vkr/code/robot/math/include -I/home/pablo/devel/vkr/code/robot/hal/.. -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest/include -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest -std=gnu++17 -o CMakeFiles/test_robot.dir/ffmodel_tests.cpp.o -c /home/pablo/devel/vkr/code/tests/ffmodel_tests.cpp",
+  "file": "/home/pablo/devel/vkr/code/tests/ffmodel_tests.cpp",
+  "output": "tests/CMakeFiles/test_robot.dir/ffmodel_tests.cpp.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/tests",
+  "command": "/usr/bin/c++  -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/robot/hal -I/home/pablo/devel/vkr/code/robot/math -I/home/pablo/devel/vkr/code/robot/logger -I/home/pablo/devel/vkr/code/robot/math/include -I/home/pablo/devel/vkr/code/robot/hal/.. -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest/include -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest -std=gnu++17 -o CMakeFiles/test_robot.dir/imu_tests.cpp.o -c /home/pablo/devel/vkr/code/tests/imu_tests.cpp",
+  "file": "/home/pablo/devel/vkr/code/tests/imu_tests.cpp",
+  "output": "tests/CMakeFiles/test_robot.dir/imu_tests.cpp.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/tests",
+  "command": "/usr/bin/c++  -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/robot/hal -I/home/pablo/devel/vkr/code/robot/math -I/home/pablo/devel/vkr/code/robot/logger -I/home/pablo/devel/vkr/code/robot/math/include -I/home/pablo/devel/vkr/code/robot/hal/.. -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest/include -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest -std=gnu++17 -o CMakeFiles/test_robot.dir/robot_tests.cpp.o -c /home/pablo/devel/vkr/code/tests/robot_tests.cpp",
+  "file": "/home/pablo/devel/vkr/code/tests/robot_tests.cpp",
+  "output": "tests/CMakeFiles/test_robot.dir/robot_tests.cpp.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/tests",
+  "command": "/usr/bin/c++  -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/robot/hal -I/home/pablo/devel/vkr/code/robot/math -I/home/pablo/devel/vkr/code/robot/logger -I/home/pablo/devel/vkr/code/robot/math/include -I/home/pablo/devel/vkr/code/robot/hal/.. -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest/include -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest -std=gnu++17 -o CMakeFiles/test_robot.dir/robot_control_tests.cpp.o -c /home/pablo/devel/vkr/code/tests/robot_control_tests.cpp",
+  "file": "/home/pablo/devel/vkr/code/tests/robot_control_tests.cpp",
+  "output": "tests/CMakeFiles/test_robot.dir/robot_control_tests.cpp.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/_deps/googletest-build/googlemock",
+  "command": "/usr/bin/c++  -I/home/pablo/devel/vkr/code/build/_deps/googletest-src/googlemock/include -I/home/pablo/devel/vkr/code/build/_deps/googletest-src/googlemock -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest/include -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest -std=c++17 -Wall -Wshadow -Wundef -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=0 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gmock.dir/src/gmock-all.cc.o -c /home/pablo/devel/vkr/code/build/_deps/googletest-src/googlemock/src/gmock-all.cc",
+  "file": "/home/pablo/devel/vkr/code/build/_deps/googletest-src/googlemock/src/gmock-all.cc",
+  "output": "_deps/googletest-build/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/_deps/googletest-build/googlemock",
+  "command": "/usr/bin/c++  -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googlemock/include -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googlemock -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest/include -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest -std=c++17 -Wall -Wshadow -Wundef -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=0 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gmock_main.dir/src/gmock_main.cc.o -c /home/pablo/devel/vkr/code/build/_deps/googletest-src/googlemock/src/gmock_main.cc",
+  "file": "/home/pablo/devel/vkr/code/build/_deps/googletest-src/googlemock/src/gmock_main.cc",
+  "output": "_deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/_deps/googletest-build/googletest",
+  "command": "/usr/bin/c++  -I/home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest/include -I/home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest -std=c++17 -Wall -Wshadow -Wundef -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=0 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gtest.dir/src/gtest-all.cc.o -c /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest/src/gtest-all.cc",
+  "file": "/home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest/src/gtest-all.cc",
+  "output": "_deps/googletest-build/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/_deps/googletest-build/googletest",
+  "command": "/usr/bin/c++  -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest/include -isystem /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest -std=c++17 -Wall -Wshadow -Wundef -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=0 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gtest_main.dir/src/gtest_main.cc.o -c /home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest/src/gtest_main.cc",
+  "file": "/home/pablo/devel/vkr/code/build/_deps/googletest-src/googletest/src/gtest_main.cc",
+  "output": "_deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/firmware",
+  "command": "/usr/bin/c++ -DSTM32F411xE -DUSE_HAL_DRIVER -I/home/pablo/devel/vkr/code/firmware/stm32 -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/robot/hal -I/home/pablo/devel/vkr/code/robot/math -I/home/pablo/devel/vkr/code/robot/logger -I/home/pablo/devel/vkr/code/robot/math/include -I/home/pablo/devel/vkr/code/firmware/stm32/cmsis/include -I/home/pablo/devel/vkr/code/firmware/stm32/platform/include -I/home/pablo/devel/vkr/code/firmware/stm32/hal/include -std=gnu++17 -o CMakeFiles/firmware.elf.dir/main.cpp.o -c /home/pablo/devel/vkr/code/firmware/main.cpp",
+  "file": "/home/pablo/devel/vkr/code/firmware/main.cpp",
+  "output": "firmware/CMakeFiles/firmware.elf.dir/main.cpp.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/firmware/stm32",
+  "command": "/usr/bin/cc -DSTM32F411xE -DUSE_HAL_DRIVER -I/home/pablo/devel/vkr/code/firmware/stm32/cmsis/include -I/home/pablo/devel/vkr/code/firmware/stm32/platform/include -I/home/pablo/devel/vkr/code/firmware/stm32/hal/include  -o CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal.c.o -c /home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal.c",
+  "file": "/home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal.c",
+  "output": "firmware/stm32/CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal.c.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/firmware/stm32",
+  "command": "/usr/bin/cc -DSTM32F411xE -DUSE_HAL_DRIVER -I/home/pablo/devel/vkr/code/firmware/stm32/cmsis/include -I/home/pablo/devel/vkr/code/firmware/stm32/platform/include -I/home/pablo/devel/vkr/code/firmware/stm32/hal/include  -o CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_cortex.c.o -c /home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_cortex.c",
+  "file": "/home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_cortex.c",
+  "output": "firmware/stm32/CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_cortex.c.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/firmware/stm32",
+  "command": "/usr/bin/cc -DSTM32F411xE -DUSE_HAL_DRIVER -I/home/pablo/devel/vkr/code/firmware/stm32/cmsis/include -I/home/pablo/devel/vkr/code/firmware/stm32/platform/include -I/home/pablo/devel/vkr/code/firmware/stm32/hal/include  -o CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_dma.c.o -c /home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_dma.c",
+  "file": "/home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_dma.c",
+  "output": "firmware/stm32/CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_dma.c.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/firmware/stm32",
+  "command": "/usr/bin/cc -DSTM32F411xE -DUSE_HAL_DRIVER -I/home/pablo/devel/vkr/code/firmware/stm32/cmsis/include -I/home/pablo/devel/vkr/code/firmware/stm32/platform/include -I/home/pablo/devel/vkr/code/firmware/stm32/hal/include  -o CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_dma_ex.c.o -c /home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_dma_ex.c",
+  "file": "/home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_dma_ex.c",
+  "output": "firmware/stm32/CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_dma_ex.c.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/firmware/stm32",
+  "command": "/usr/bin/cc -DSTM32F411xE -DUSE_HAL_DRIVER -I/home/pablo/devel/vkr/code/firmware/stm32/cmsis/include -I/home/pablo/devel/vkr/code/firmware/stm32/platform/include -I/home/pablo/devel/vkr/code/firmware/stm32/hal/include  -o CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_flash.c.o -c /home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_flash.c",
+  "file": "/home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_flash.c",
+  "output": "firmware/stm32/CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_flash.c.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/firmware/stm32",
+  "command": "/usr/bin/cc -DSTM32F411xE -DUSE_HAL_DRIVER -I/home/pablo/devel/vkr/code/firmware/stm32/cmsis/include -I/home/pablo/devel/vkr/code/firmware/stm32/platform/include -I/home/pablo/devel/vkr/code/firmware/stm32/hal/include  -o CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_flash_ex.c.o -c /home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_flash_ex.c",
+  "file": "/home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_flash_ex.c",
+  "output": "firmware/stm32/CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_flash_ex.c.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/firmware/stm32",
+  "command": "/usr/bin/cc -DSTM32F411xE -DUSE_HAL_DRIVER -I/home/pablo/devel/vkr/code/firmware/stm32/cmsis/include -I/home/pablo/devel/vkr/code/firmware/stm32/platform/include -I/home/pablo/devel/vkr/code/firmware/stm32/hal/include  -o CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_flash_ramfunc.c.o -c /home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_flash_ramfunc.c",
+  "file": "/home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_flash_ramfunc.c",
+  "output": "firmware/stm32/CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_flash_ramfunc.c.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/firmware/stm32",
+  "command": "/usr/bin/cc -DSTM32F411xE -DUSE_HAL_DRIVER -I/home/pablo/devel/vkr/code/firmware/stm32/cmsis/include -I/home/pablo/devel/vkr/code/firmware/stm32/platform/include -I/home/pablo/devel/vkr/code/firmware/stm32/hal/include  -o CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_gpio.c.o -c /home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_gpio.c",
+  "file": "/home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_gpio.c",
+  "output": "firmware/stm32/CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_gpio.c.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/firmware/stm32",
+  "command": "/usr/bin/cc -DSTM32F411xE -DUSE_HAL_DRIVER -I/home/pablo/devel/vkr/code/firmware/stm32/cmsis/include -I/home/pablo/devel/vkr/code/firmware/stm32/platform/include -I/home/pablo/devel/vkr/code/firmware/stm32/hal/include  -o CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_i2c.c.o -c /home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_i2c.c",
+  "file": "/home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_i2c.c",
+  "output": "firmware/stm32/CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_i2c.c.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/firmware/stm32",
+  "command": "/usr/bin/cc -DSTM32F411xE -DUSE_HAL_DRIVER -I/home/pablo/devel/vkr/code/firmware/stm32/cmsis/include -I/home/pablo/devel/vkr/code/firmware/stm32/platform/include -I/home/pablo/devel/vkr/code/firmware/stm32/hal/include  -o CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_i2c_ex.c.o -c /home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_i2c_ex.c",
+  "file": "/home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_i2c_ex.c",
+  "output": "firmware/stm32/CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_i2c_ex.c.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/firmware/stm32",
+  "command": "/usr/bin/cc -DSTM32F411xE -DUSE_HAL_DRIVER -I/home/pablo/devel/vkr/code/firmware/stm32/cmsis/include -I/home/pablo/devel/vkr/code/firmware/stm32/platform/include -I/home/pablo/devel/vkr/code/firmware/stm32/hal/include  -o CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_pwr.c.o -c /home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_pwr.c",
+  "file": "/home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_pwr.c",
+  "output": "firmware/stm32/CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_pwr.c.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/firmware/stm32",
+  "command": "/usr/bin/cc -DSTM32F411xE -DUSE_HAL_DRIVER -I/home/pablo/devel/vkr/code/firmware/stm32/cmsis/include -I/home/pablo/devel/vkr/code/firmware/stm32/platform/include -I/home/pablo/devel/vkr/code/firmware/stm32/hal/include  -o CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_pwr_ex.c.o -c /home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_pwr_ex.c",
+  "file": "/home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_pwr_ex.c",
+  "output": "firmware/stm32/CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_pwr_ex.c.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/firmware/stm32",
+  "command": "/usr/bin/cc -DSTM32F411xE -DUSE_HAL_DRIVER -I/home/pablo/devel/vkr/code/firmware/stm32/cmsis/include -I/home/pablo/devel/vkr/code/firmware/stm32/platform/include -I/home/pablo/devel/vkr/code/firmware/stm32/hal/include  -o CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_rcc.c.o -c /home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_rcc.c",
+  "file": "/home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_rcc.c",
+  "output": "firmware/stm32/CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_rcc.c.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/firmware/stm32",
+  "command": "/usr/bin/cc -DSTM32F411xE -DUSE_HAL_DRIVER -I/home/pablo/devel/vkr/code/firmware/stm32/cmsis/include -I/home/pablo/devel/vkr/code/firmware/stm32/platform/include -I/home/pablo/devel/vkr/code/firmware/stm32/hal/include  -o CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_rcc_ex.c.o -c /home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_rcc_ex.c",
+  "file": "/home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_rcc_ex.c",
+  "output": "firmware/stm32/CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_rcc_ex.c.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/firmware/stm32",
+  "command": "/usr/bin/cc -DSTM32F411xE -DUSE_HAL_DRIVER -I/home/pablo/devel/vkr/code/firmware/stm32/cmsis/include -I/home/pablo/devel/vkr/code/firmware/stm32/platform/include -I/home/pablo/devel/vkr/code/firmware/stm32/hal/include  -o CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_tim.c.o -c /home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_tim.c",
+  "file": "/home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_tim.c",
+  "output": "firmware/stm32/CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_tim.c.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/firmware/stm32",
+  "command": "/usr/bin/cc -DSTM32F411xE -DUSE_HAL_DRIVER -I/home/pablo/devel/vkr/code/firmware/stm32/cmsis/include -I/home/pablo/devel/vkr/code/firmware/stm32/platform/include -I/home/pablo/devel/vkr/code/firmware/stm32/hal/include  -o CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_tim_ex.c.o -c /home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_tim_ex.c",
+  "file": "/home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_tim_ex.c",
+  "output": "firmware/stm32/CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_tim_ex.c.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/firmware/stm32",
+  "command": "/usr/bin/cc -DSTM32F411xE -DUSE_HAL_DRIVER -I/home/pablo/devel/vkr/code/firmware/stm32/cmsis/include -I/home/pablo/devel/vkr/code/firmware/stm32/platform/include -I/home/pablo/devel/vkr/code/firmware/stm32/hal/include  -o CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_uart.c.o -c /home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_uart.c",
+  "file": "/home/pablo/devel/vkr/code/firmware/stm32/hal/stm32f4xx_hal_uart.c",
+  "output": "firmware/stm32/CMakeFiles/stm32_platform.dir/hal/stm32f4xx_hal_uart.c.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/firmware/stm32",
+  "command": "/usr/bin/cc -DSTM32F411xE -DUSE_HAL_DRIVER -I/home/pablo/devel/vkr/code/firmware/stm32/cmsis/include -I/home/pablo/devel/vkr/code/firmware/stm32/platform/include -I/home/pablo/devel/vkr/code/firmware/stm32/hal/include  -o CMakeFiles/stm32_platform.dir/platform/startup_stm32f411xe.s.o -c /home/pablo/devel/vkr/code/firmware/stm32/platform/startup_stm32f411xe.s",
+  "file": "/home/pablo/devel/vkr/code/firmware/stm32/platform/startup_stm32f411xe.s",
+  "output": "firmware/stm32/CMakeFiles/stm32_platform.dir/platform/startup_stm32f411xe.s.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/firmware/stm32",
+  "command": "/usr/bin/cc -DSTM32F411xE -DUSE_HAL_DRIVER -I/home/pablo/devel/vkr/code/firmware/stm32/cmsis/include -I/home/pablo/devel/vkr/code/firmware/stm32/platform/include -I/home/pablo/devel/vkr/code/firmware/stm32/hal/include  -o CMakeFiles/stm32_platform.dir/platform/system_stm32f4xx.c.o -c /home/pablo/devel/vkr/code/firmware/stm32/platform/system_stm32f4xx.c",
+  "file": "/home/pablo/devel/vkr/code/firmware/stm32/platform/system_stm32f4xx.c",
+  "output": "firmware/stm32/CMakeFiles/stm32_platform.dir/platform/system_stm32f4xx.c.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/simulation/controllers/webots_sil",
+  "command": "/usr/bin/c++  -I/usr/local/webots/include/controller/cpp -I/usr/local/webots/include/controller/c -I/home/pablo/devel/vkr/code/simulation/controllers/webots_sil/.. -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/robot/hal -I/home/pablo/devel/vkr/code/robot/math -I/home/pablo/devel/vkr/code/robot/logger -I/home/pablo/devel/vkr/code/robot/math/include -std=gnu++17 -o CMakeFiles/webots_sil.dir/main.cpp.o -c /home/pablo/devel/vkr/code/simulation/controllers/webots_sil/main.cpp",
+  "file": "/home/pablo/devel/vkr/code/simulation/controllers/webots_sil/main.cpp",
+  "output": "simulation/controllers/webots_sil/CMakeFiles/webots_sil.dir/main.cpp.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/simulation/controllers/webots_sil",
+  "command": "/usr/bin/c++  -I/usr/local/webots/include/controller/cpp -I/usr/local/webots/include/controller/c -I/home/pablo/devel/vkr/code/simulation/controllers/webots_sil/.. -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/robot/hal -I/home/pablo/devel/vkr/code/robot/math -I/home/pablo/devel/vkr/code/robot/logger -I/home/pablo/devel/vkr/code/robot/math/include -std=gnu++17 -o CMakeFiles/webots_sil.dir/webots_encoder.cpp.o -c /home/pablo/devel/vkr/code/simulation/controllers/webots_sil/webots_encoder.cpp",
+  "file": "/home/pablo/devel/vkr/code/simulation/controllers/webots_sil/webots_encoder.cpp",
+  "output": "simulation/controllers/webots_sil/CMakeFiles/webots_sil.dir/webots_encoder.cpp.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/simulation/controllers/webots_sil",
+  "command": "/usr/bin/c++  -I/usr/local/webots/include/controller/cpp -I/usr/local/webots/include/controller/c -I/home/pablo/devel/vkr/code/simulation/controllers/webots_sil/.. -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/robot/hal -I/home/pablo/devel/vkr/code/robot/math -I/home/pablo/devel/vkr/code/robot/logger -I/home/pablo/devel/vkr/code/robot/math/include -std=gnu++17 -o CMakeFiles/webots_sil.dir/webots_imu.cpp.o -c /home/pablo/devel/vkr/code/simulation/controllers/webots_sil/webots_imu.cpp",
+  "file": "/home/pablo/devel/vkr/code/simulation/controllers/webots_sil/webots_imu.cpp",
+  "output": "simulation/controllers/webots_sil/CMakeFiles/webots_sil.dir/webots_imu.cpp.o"
+},
+{
+  "directory": "/home/pablo/devel/vkr/code/build/simulation/controllers/webots_sil",
+  "command": "/usr/bin/c++  -I/usr/local/webots/include/controller/cpp -I/usr/local/webots/include/controller/c -I/home/pablo/devel/vkr/code/simulation/controllers/webots_sil/.. -I/home/pablo/devel/vkr/code/robot/.. -I/home/pablo/devel/vkr/code/robot/hal -I/home/pablo/devel/vkr/code/robot/math -I/home/pablo/devel/vkr/code/robot/logger -I/home/pablo/devel/vkr/code/robot/math/include -std=gnu++17 -o CMakeFiles/webots_sil.dir/webots_motor.cpp.o -c /home/pablo/devel/vkr/code/simulation/controllers/webots_sil/webots_motor.cpp",
+  "file": "/home/pablo/devel/vkr/code/simulation/controllers/webots_sil/webots_motor.cpp",
+  "output": "simulation/controllers/webots_sil/CMakeFiles/webots_sil.dir/webots_motor.cpp.o"
+}
+]

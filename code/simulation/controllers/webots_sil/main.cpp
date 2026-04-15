@@ -1,271 +1,446 @@
-#include <webots_sil/webots_imu.hpp>
 #include <webots_sil/webots_encoder.hpp>
+#include <webots_sil/webots_imu.hpp>
 #include <webots_sil/webots_motor.hpp>
 
 #include <webots/GPS.hpp>
 #include <webots/Robot.hpp>
 
-#include <robot/robot.hpp>
-#include <robot/robot_control.hpp>
 #include <robot/encoder.hpp>
 #include <robot/imu.hpp>
 #include <robot/motor.hpp>
+#include <robot/robot.hpp>
+#include <robot/robot_control.hpp>
 
-#include <pid.hpp>
 #include <ffmodel.hpp>
+#include <pid.hpp>
 
-#include <iostream>
+#include <algorithm>
 #include <cmath>
+#include <cstddef>
+#include <cstdint>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <limits>
+#include <string>
 #include <vector>
 
 struct TrajectoryPhase {
-    float linear_vel;  // м/с
-    float angular_vel; // рад/с
-    float duration;    // сек
+  float linear_vel;  // м/с
+  float angular_vel; // рад/с
+  float duration;    // сек
 };
 
-void run_square_test(webots::Robot* robot, Robot::Robot& robot_lib, 
-                     RobotControl::RobotController& controller, webots::GPS* gps) {
-	float turn_time = 0.784f;
-    float stop_time = 0.50f;
+enum class ScenarioType { Straight, TurnInPlace, Circle, Square };
 
-    std::vector<TrajectoryPhase> square = {
-        {0.20f, 0.0f, 5.0f},       // Прямо 1м
-        {0.00f, 0.0f, stop_time},  // Пауза (сброс инерции)
-        {0.0f,  2.0f, turn_time},  // Поворот 90° (1)
-        {0.00f, 0.0f, stop_time},  // Пауза
-        {0.20f, 0.0f, 5.0f},       // Прямо 2м
-        {0.00f, 0.0f, stop_time},  // Пауза
-        {0.0f,  2.0f, turn_time},  // Поворот 90° (2)
-        {0.00f, 0.0f, stop_time},  // Пауза
-        {0.20f, 0.0f, 5.0f},
-        {0.00f, 0.0f, stop_time},
-        {0.0f,  2.0f, turn_time},  // Поворот 90° (3)
-        {0.00f, 0.0f, stop_time},
-        {0.20f, 0.0f, 5.0f},
-        {0.00f, 0.0f, stop_time},
-        {0.0f,  2.0f, turn_time},  // Поворот 90° (4)
-        {0.00f, 0.0f, stop_time}   // Финальная остановка
-    };
-    
-    double time_step_ms = robot->getBasicTimeStep();
-    double time_step_s = time_step_ms / 1000.0;
-    
-    float current_phase_time = 0.0f;
-    size_t phase_idx = 0;
-    int tick = 0;
-    
-    // Для логирования углов поворотов
-    double angle_integral = 0.0;
-    bool is_turn_phase = false;
-    int turn_number = 0;
+struct ScenarioConfig {
+  ScenarioType type;
+  std::string name;
+  float duration_s = 0.0f;
 
-    printf("🚀 Старт движения по квадрату! (с логами углов)\n");
+  // Для straight / turn / circle
+  float linear_vel = 0.0f;
+  float angular_vel = 0.0f;
 
-    while (robot->step(time_step_ms) != -1 && phase_idx < square.size()) {
-        robot_lib.UpdateSensors();
-        current_phase_time += time_step_s;
+  // Для circle
+  float radius = 0.0f;
 
-        const auto& phase = square[phase_idx];
-        
-        // Смена фазы
-        if (current_phase_time >= phase.duration) {
-            printf("[КВАДРАТ] Этап %zu завершен.\n", phase_idx + 1);
-            
-            // Если завершили поворот — логируем угол
-            if (is_turn_phase) {
-                float degrees = angle_integral * 180.0f / M_PI;
-                printf("🔄 Поворот #%d: %.3f рад (%.1f°) | X: %.3f Y: %.3f\n", 
-                       turn_number, angle_integral, degrees, gps ? gps->getValues()[0] : 0, gps ? gps->getValues()[1] : 0);
-                angle_integral = 0.0;
-                is_turn_phase = false;
-            }
-            
-            phase_idx++;
-            current_phase_time = 0.0f;
-            continue;
-        }
+  // Для square
+  std::vector<TrajectoryPhase> phases;
+};
 
-        // Проверяем начало поворота (angular_vel != 0)
-        if (!is_turn_phase && phase.angular_vel != 0.0f && phase_idx % 3 == 2) {  // Фазы поворотов: 2,6,10,14
-            angle_integral = 0.0;
-            is_turn_phase = true;
-            turn_number++;
-            printf("🔄 Начало поворота #%d (цель 90°)\n", turn_number);
-        }
+struct TelemetrySample {
+  float t = 0.0f;
 
-        // Интеграция угла во время поворота (от IMU angular_vel)
-        if (is_turn_phase) {
-            double imu_angular = robot_lib.m_imu.GetGyroZ();  // Твоя функция из UpdateSensors!
-            angle_integral += imu_angular * time_step_s;
-        }
-        
-        RobotControl::MotionCommand cmd{phase.linear_vel, phase.angular_vel};
-        Robot::ControlEffort effort = controller.GetAdjustedControlEffort(cmd, time_step_s);
-        std::cout << "Усилие на левом моторе: " << effort.left_motor_voltage << std::endl;
-        std::cout << "Усилие на правом моторе: " << effort.right_motor_voltage << std::endl;
+  float v_cmd = 0.0f;
+  float w_cmd = 0.0f;
 
-        robot_lib.TransferToNewState(effort, time_step_s);
+  float v_meas = 0.0f;
+  float w_meas = 0.0f;
 
-        // Логируем GPS каждые 15 тиков (~0.5 сек)
-        if (gps && tick++ % 15 == 0) {
-            const double* pos = gps->getValues();
-            printf("[POS] X: %6.3f | Y: %6.3f | cmd: L=%.2f, A=%.2f", 
-                   pos[0], pos[1], cmd.linear_velocity, cmd.angular_velocity);
-            if (is_turn_phase) {
-                printf(" | angle_now=%.1f°", angle_integral * 180.0 / M_PI);
-            }
-            printf("\n");
-        }
-    }
-    
-    // Финальный итог всех поворотов
-    printf("🏁 Тест 'Квадрат' завершен! Всего 4 поворота по ~90°.\n");
+  float e_v = 0.0f;
+  float e_w = 0.0f;
+
+  float left_voltage = 0.0f;
+  float right_voltage = 0.0f;
+
+  double x_gt = 0.0;
+  double y_gt = 0.0;
+  double yaw_gt = 0.0; // если потом появится источник yaw ground truth
+};
+
+struct ErrorSummary {
+  float mean_abs_ev = 0.0f;
+  float mean_abs_ew = 0.0f;
+
+  float max_abs_ev = 0.0f;
+  float max_abs_ew = 0.0f;
+
+  float rms_ev = 0.0f;
+  float rms_ew = 0.0f;
+
+  float final_position_error = 0.0f;
+};
+
+static float wrap_to_pi(float angle) {
+  while (angle > static_cast<float>(M_PI)) {
+    angle -= 2.0f * static_cast<float>(M_PI);
+  }
+  while (angle <= -static_cast<float>(M_PI)) {
+    angle += 2.0f * static_cast<float>(M_PI);
+  }
+  return angle;
 }
 
-void run_circle_test(webots::Robot* robot, Robot::Robot& robot_lib, 
-                     RobotControl::RobotController& controller, webots::GPS* gps) {
-    
-    // --- Настройки круга ---
-    float radius = 5.0f;               // Радиус круга (в метрах)
-    float linear_vel = 0.2f;          // Линейная скорость (м/с) - можно увеличить, если едет рывками
-    float angular_vel = linear_vel / radius; // Угловая скорость (ω = v / R)
-    
-    double time_step_ms = robot->getBasicTimeStep();
-    double time_step_s = time_step_ms / 1000.0;
-    
-    float current_time = 0.0f;
-    int tick = 0;
+static void save_csv(const std::string &filename,
+                     const std::vector<TelemetrySample> &log) {
+  std::ofstream out(filename);
+  if (!out.is_open()) {
+    std::cerr << "Failed to open CSV file: " << filename << std::endl;
+    return;
+  }
 
-    printf("🚀 Старт БЕСКОНЕЧНОГО движения по кругу!\n");
-    printf("📊 Параметры: R = %.2f м, v = %.2f м/с, ω = %.2f рад/с\n", radius, linear_vel, angular_vel);
-    printf("Нажми Паузу или Стоп в Webots, чтобы прервать тест.\n");
+  out << "t,"
+      << "v_cmd,w_cmd,"
+      << "v_meas,w_meas,"
+      << "e_v,e_w,"
+      << "left_voltage,right_voltage,"
+      << "x_gt,y_gt,yaw_gt\n";
 
-    // БЕСКОНЕЧНЫЙ ЦИКЛ: работает пока работает симуляция
-    while (robot->step(time_step_ms) != -1) {
-        robot_lib.UpdateSensors();
-        current_time += time_step_s;
+  out << std::fixed << std::setprecision(6);
 
-        // Постоянная команда для круга
-        RobotControl::MotionCommand cmd{linear_vel, angular_vel};
-        
-        // Получаем усилия на моторы (напряжение/ШИМ от ПИД)
-        Robot::ControlEffort effort = controller.GetAdjustedControlEffort(cmd, time_step_s);
-        robot_lib.TransferToNewState(effort, time_step_s);
-
-        // Логируем данные каждые 15 тиков (~0.5 сек)
-        if (gps && tick++ % 15 == 0) {
-            const double* pos = gps->getValues();
-            double imu_val = robot_lib.m_imu.GetGyroZ(); 
-            printf("[POS] X: %6.3f | Y: %6.3f | Время: %.1f сек | Датчик Z: %.3f\n", 
-                   pos[0], pos[1], current_time, imu_val);
-            
-            // Если нужно следить за моторами для настройки ПИД:
-            // printf("Моторы: Лев=%.2f, Прав=%.2f\n", effort.left_motor_voltage, effort.right_motor_voltage);
-        }
-    }    
+  for (const auto &s : log) {
+    out << s.t << "," << s.v_cmd << "," << s.w_cmd << "," << s.v_meas << ","
+        << s.w_meas << "," << s.e_v << "," << s.e_w << "," << s.left_voltage
+        << "," << s.right_voltage << "," << s.x_gt << "," << s.y_gt << ","
+        << s.yaw_gt << "\n";
+  }
 }
 
+static ErrorSummary
+compute_error_summary(const std::vector<TelemetrySample> &log) {
+  ErrorSummary summary{};
 
-float GetOmegaFromTime(float t) {
-	float theta = 0.5f * t;  // Угол (рад/с)
-    float v = 0.10f;         // Постоянная линейная скорость
-    return v / 1.0f * sinf(theta);  // ω = (v/R) * sin(θ)
+  if (log.empty()) {
+    return summary;
+  }
+
+  float sum_abs_ev = 0.0f;
+  float sum_abs_ew = 0.0f;
+  float sum_sq_ev = 0.0f;
+  float sum_sq_ew = 0.0f;
+
+  for (const auto &sample : log) {
+    const float abs_ev = std::fabs(sample.e_v);
+    const float abs_ew = std::fabs(sample.e_w);
+
+    sum_abs_ev += abs_ev;
+    sum_abs_ew += abs_ew;
+
+    sum_sq_ev += sample.e_v * sample.e_v;
+    sum_sq_ew += sample.e_w * sample.e_w;
+
+    summary.max_abs_ev = std::max(summary.max_abs_ev, abs_ev);
+    summary.max_abs_ew = std::max(summary.max_abs_ew, abs_ew);
+  }
+
+  const float n = static_cast<float>(log.size());
+
+  summary.mean_abs_ev = sum_abs_ev / n;
+  summary.mean_abs_ew = sum_abs_ew / n;
+  summary.rms_ev = std::sqrt(sum_sq_ev / n);
+  summary.rms_ew = std::sqrt(sum_sq_ew / n);
+
+  // Ошибка возврата в начальную точку / конечная позиционная ошибка
+  const double x0 = log.front().x_gt;
+  const double y0 = log.front().y_gt;
+  const double x1 = log.back().x_gt;
+  const double y1 = log.back().y_gt;
+
+  summary.final_position_error = static_cast<float>(
+      std::sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0)));
+
+  return summary;
 }
 
-RobotControl::MotionCommand getCosineTrajectory(float t) {
-    // Параметры волны
-    float Vx = 0.20f;         // Скорость продвижения робота вперед (по оси X)
-    float A = 2.0f;           // Амплитуда косинуса (1 метр в сторону)
-    float k = M_PI / 2.0f;    // Частота волны (полная волна каждые 4 метра)
-    
-    // Текущая координата x(t)
-    float x = Vx * t;
-    
-    // Производные для y = A * cos(k * x)
-    // Так как x(t) = Vx * t, то y(t) = A * cos(k * Vx * t)
-    
-    float dy_dt = -A * k * Vx * sinf(k * Vx * t);             // Первая производная (скорость по y)
-    float d2y_dt2 = -A * k * k * Vx * Vx * cosf(k * Vx * t);  // Вторая производная (ускорение по y)
-    
-    // 1. Линейная скорость робота (касательная к кривой)
-    float v_linear = sqrtf(Vx * Vx + dy_dt * dy_dt);
-    
-    // 2. Угловая скорость робота (зависит от кривизны)
-    // Формула: (dx*d2y - dy*d2x) / (v^2). Так как d2x = 0 (Vx постоянна), формула упрощается:
-    float w_angular = (Vx * d2y_dt2) / (v_linear * v_linear);
-    
-    return {v_linear, w_angular};
+static void print_summary(const std::string &scenario_name,
+                          const ErrorSummary &summary) {
+  std::cout << std::fixed << std::setprecision(6);
+  std::cout << "\n=== " << scenario_name << " summary ===\n";
+  std::cout << "mean |e_v|      = " << summary.mean_abs_ev << " m/s\n";
+  std::cout << "mean |e_w|      = " << summary.mean_abs_ew << " rad/s\n";
+  std::cout << "max  |e_v|      = " << summary.max_abs_ev << " m/s\n";
+  std::cout << "max  |e_w|      = " << summary.max_abs_ew << " rad/s\n";
+  std::cout << "rms  e_v        = " << summary.rms_ev << " m/s\n";
+  std::cout << "rms  e_w        = " << summary.rms_ew << " rad/s\n";
+  std::cout << "final pos error = " << summary.final_position_error << " m\n";
 }
 
-int main(int argc, char** argv) {
-	auto robot = std::shared_ptr<webots::Robot>(new webots::Robot());
-	WebotsIImuHAL imu_hal(robot, "imu", "accelerometer");
-    WebotsIEncoderHAL encoder_hal_l(robot, "left_wheel_encoder", 0.025f);
-    WebotsIEncoderHAL encoder_hal_r(robot, "right_wheel_encoder", 0.025f);
-    WebotsIMotorHAL motor_hal_l(robot, "left_wheel_motor");
-    WebotsIMotorHAL motor_hal_r(robot, "right_wheel_motor");
+static RobotControl::MotionCommand
+command_from_scenario(const ScenarioConfig &scenario, float t,
+                      std::size_t &phase_idx, float &phase_time) {
 
-	webots::GPS* gps =  robot->getGPS("gps_ground_truth");
-	if (gps) {
-      gps->enable(static_cast<int>(robot->getBasicTimeStep()));
-      printf("[GPS✓] Ground truth enabled\n");
+  switch (scenario.type) {
+  case ScenarioType::Straight:
+    return {scenario.linear_vel, 0.0f};
+
+  case ScenarioType::TurnInPlace:
+    return {0.0f, scenario.angular_vel};
+
+  case ScenarioType::Circle:
+    return {scenario.linear_vel, scenario.angular_vel};
+
+  case ScenarioType::Square: {
+    if (scenario.phases.empty()) {
+      return {0.0f, 0.0f};
     }
 
-	Robot::IMU imu(imu_hal);
-    Robot::Encoder enc_l(encoder_hal_l);
-    Robot::Encoder enc_r(encoder_hal_r);
-    Robot::Motor motor_l(motor_hal_l, 200.0f, 12.0f, 0.0f);
-    Robot::Motor motor_r(motor_hal_r, 200.0f, 12.0f, 0.0f);
+    if (phase_idx >= scenario.phases.size()) {
+      return {0.0f, 0.0f};
+    }
 
-    Robot::ActuatorLimits limits{};
-    Robot::RobotKinematics kinematics{0.100f};
+    const auto &phase = scenario.phases[phase_idx];
+    (void)t;
+    return {phase.linear_vel, phase.angular_vel};
+  }
+  }
 
-    Robot::Robot robot_lib(
-        imu, motor_l, enc_l, motor_r, enc_r, limits, kinematics);
-
-    //Инициализируем новую FFModel (base_width=0.3, wheel_radius=0.05, kS=1.0, kV=0.02)
-	RobotControl::FFModel ff_model(0.100f, 0.025f, 0.06f, 0.232f, 12.0f);
-    
-    //Math::PID lin_pid (3.2f, 1.2f, 0.0f, 1.0f, 12.0f);
-    //Math::PID ang_pid (2.8f, 1.8f, 0.0f, 1.0f, 12.0f);
-
-	Math::PID lin_pid (0.8f, 0.4f, 0.0f, 1.0f, 12.0f);
-    Math::PID ang_pid (0.4f, 0.2f, 0.0f, 1.0f, 12.0f);
-
-
-    //Math::PID lin_pid (0.0f, 0.0f, 0.0f, 0.0f, 12.0f);
-    //Math::PID ang_pid (0.0f, 0.0f, 0.0f, 0.0f, 12.0f);
-
-	RobotControl::RobotController controller(robot_lib, ff_model, lin_pid, ang_pid);
-
-	run_square_test(robot.get(), robot_lib, controller, gps);
-	run_circle_test(robot.get(), robot_lib, controller, gps);
-	/*
-	double time_step = robot->getBasicTimeStep();
-	float global_time = 0.0f;
-	while (robot->step(time_step) != -1) {
-    	float linear_velocity = 0.200f;   // м/с
-    	float angular_velocity = 0.0f;  // рад/с 
-		float time_step = robot->getBasicTimeStep() / 1000.0;  // ms → секунды
-		global_time += time_step;
-		const float DT = time_step;
-
-    	//float angular_velocity = GetOmegaFromTime(global_time);  // рад/с 
-   		RobotControl::MotionCommand cmd {linear_velocity, angular_velocity};
-		robot_lib.UpdateSensors();
-		Robot::ControlEffort effort = controller.GetAdjustedControlEffort(cmd, DT);
-
-		std::cout << "Усилие на левом моторе: " << effort.left_motor_voltage << std::endl;
-		std::cout << "Усилие на правом моторе: " << effort.right_motor_voltage << std::endl;
-
-        robot_lib.TransferToNewState(effort, DT);
-		if (gps) {
-      		double gps_speed = gps->getSpeed();  // World frame [m/s]
-      		printf("GPS_truth=%.3f m/s | Error=%.1f%%\n",gps_speed);
-    	}
-	}
-	*/
-    return 0;
+  return {0.0f, 0.0f};
 }
 
+static bool advance_square_phase_if_needed(const ScenarioConfig &scenario,
+                                           std::size_t &phase_idx,
+                                           float &phase_time, float dt) {
+  if (scenario.type != ScenarioType::Square || scenario.phases.empty()) {
+    return false;
+  }
+
+  phase_time += dt;
+
+  while (phase_idx < scenario.phases.size() &&
+         phase_time >= scenario.phases[phase_idx].duration) {
+    phase_time -= scenario.phases[phase_idx].duration;
+    ++phase_idx;
+  }
+
+  return phase_idx >= scenario.phases.size();
+}
+
+static TelemetrySample
+make_telemetry_sample(float global_time, const RobotControl::MotionCommand &cmd,
+                      const Robot::ControlEffort &effort,
+                      Robot::Robot &robot_lib, webots::GPS *gps) {
+
+  TelemetrySample sample{};
+  sample.t = global_time;
+
+  sample.v_cmd = cmd.linear_velocity;
+  sample.w_cmd = cmd.angular_velocity;
+
+  // Фактическая линейная скорость.
+  // Для первого рабочего SIL-варианта можно брать GPS speed.
+  sample.v_meas = gps ? static_cast<float>(gps->getSpeed()) : 0.0f;
+
+  // Фактическая угловая скорость.
+  // Берём из оценённого состояния системы.
+  sample.w_meas = robot_lib.m_last_state.current_angular_speed;
+
+  sample.e_v = sample.v_cmd - sample.v_meas;
+  sample.e_w = sample.w_cmd - sample.w_meas;
+
+  sample.left_voltage = effort.left_motor_voltage;
+  sample.right_voltage = effort.right_motor_voltage;
+
+  if (gps) {
+    const double *pos = gps->getValues();
+    sample.x_gt = pos[0];
+    sample.y_gt = pos[1];
+  }
+
+  return sample;
+}
+
+static std::vector<TelemetrySample>
+run_sil_scenario(webots::Robot *robot, Robot::Robot &robot_lib,
+                 RobotControl::RobotController &controller, webots::GPS *gps,
+                 const ScenarioConfig &scenario) {
+
+  std::vector<TelemetrySample> log;
+  log.reserve(4096);
+
+  const int step_ms = static_cast<int>(robot->getBasicTimeStep());
+  const float dt = static_cast<float>(step_ms) / 1000.0f;
+
+  float global_time = 0.0f;
+  int tick = 0;
+
+  std::size_t phase_idx = 0;
+  float phase_time = 0.0f;
+
+  std::cout << "\n=== Start scenario: " << scenario.name << " ===\n";
+
+  while (robot->step(step_ms) != -1) {
+    global_time += dt;
+
+    // Для square сценария проверяем завершение фаз.
+    if (scenario.type == ScenarioType::Square) {
+      if (phase_idx >= scenario.phases.size()) {
+        break;
+      }
+    } else {
+      if (global_time > scenario.duration_s) {
+        break;
+      }
+    }
+
+    RobotControl::MotionCommand cmd =
+        command_from_scenario(scenario, global_time, phase_idx, phase_time);
+
+    robot_lib.UpdateSensors();
+
+    Robot::ControlEffort effort = controller.GetAdjustedControlEffort(cmd, dt);
+
+    robot_lib.TransferToNewState(effort, dt);
+
+    TelemetrySample sample =
+        make_telemetry_sample(global_time, cmd, effort, robot_lib, gps);
+
+    log.push_back(sample);
+
+    if (tick++ % 15 == 0) {
+      std::cout << std::fixed << std::setprecision(3) << "t=" << sample.t
+                << " | v_cmd=" << sample.v_cmd << " | v_meas=" << sample.v_meas
+                << " | e_v=" << sample.e_v << " | w_cmd=" << sample.w_cmd
+                << " | w_meas=" << sample.w_meas << " | e_w=" << sample.e_w
+                << " | U_L=" << sample.left_voltage
+                << " | U_R=" << sample.right_voltage;
+
+      if (gps) {
+        std::cout << " | x=" << sample.x_gt << " | y=" << sample.y_gt;
+      }
+
+      std::cout << "\n";
+    }
+
+    if (scenario.type == ScenarioType::Square) {
+      const bool finished =
+          advance_square_phase_if_needed(scenario, phase_idx, phase_time, dt);
+      if (finished) {
+        break;
+      }
+    }
+  }
+
+  return log;
+}
+
+static ScenarioConfig make_straight_scenario(float v_cmd, float duration_s) {
+  ScenarioConfig cfg{};
+  cfg.type = ScenarioType::Straight;
+  cfg.name = "straight";
+  cfg.linear_vel = v_cmd;
+  cfg.duration_s = duration_s;
+  return cfg;
+}
+
+static ScenarioConfig make_turn_scenario(float w_cmd, float duration_s) {
+  ScenarioConfig cfg{};
+  cfg.type = ScenarioType::TurnInPlace;
+  cfg.name = "turn_in_place";
+  cfg.angular_vel = w_cmd;
+  cfg.duration_s = duration_s;
+  return cfg;
+}
+
+static ScenarioConfig make_circle_scenario(float radius, float v_cmd,
+                                           float duration_s) {
+  ScenarioConfig cfg{};
+  cfg.type = ScenarioType::Circle;
+  cfg.name = "circle";
+  cfg.radius = radius;
+  cfg.linear_vel = v_cmd;
+  cfg.angular_vel = v_cmd / radius;
+  cfg.duration_s = duration_s;
+  return cfg;
+}
+
+static ScenarioConfig make_square_scenario() {
+  ScenarioConfig cfg{};
+  cfg.type = ScenarioType::Square;
+  cfg.name = "square";
+
+  const float turn_time = 0.784f;
+  const float stop_time = 0.50f;
+
+  cfg.phases = {
+      {0.20f, 0.0f, 5.0f},      {0.00f, 0.0f, stop_time},
+      {0.00f, 2.0f, turn_time}, {0.00f, 0.0f, stop_time},
+
+      {0.20f, 0.0f, 5.0f},      {0.00f, 0.0f, stop_time},
+      {0.00f, 2.0f, turn_time}, {0.00f, 0.0f, stop_time},
+
+      {0.20f, 0.0f, 5.0f},      {0.00f, 0.0f, stop_time},
+      {0.00f, 2.0f, turn_time}, {0.00f, 0.0f, stop_time},
+
+      {0.20f, 0.0f, 5.0f},      {0.00f, 0.0f, stop_time},
+      {0.00f, 2.0f, turn_time}, {0.00f, 0.0f, stop_time},
+  };
+
+  return cfg;
+}
+
+int main(int argc, char **argv) {
+  (void)argc;
+  (void)argv;
+
+  auto robot = std::shared_ptr<webots::Robot>(new webots::Robot());
+
+  WebotsIImuHAL imu_hal(robot, "imu", "accelerometer");
+  WebotsIEncoderHAL encoder_hal_l(robot, "left_wheel_encoder", 0.025f);
+  WebotsIEncoderHAL encoder_hal_r(robot, "right_wheel_encoder", 0.025f);
+  WebotsIMotorHAL motor_hal_l(robot, "left_wheel_motor");
+  WebotsIMotorHAL motor_hal_r(robot, "right_wheel_motor");
+
+  webots::GPS *gps = robot->getGPS("gps_ground_truth");
+  if (gps) {
+    gps->enable(static_cast<int>(robot->getBasicTimeStep()));
+    std::cout << "[GPS] ground truth enabled\n";
+  }
+
+  Robot::IMU imu(imu_hal);
+  Robot::Encoder enc_l(encoder_hal_l);
+  Robot::Encoder enc_r(encoder_hal_r);
+  Robot::Motor motor_l(motor_hal_l, 200.0f, 12.0f, 0.0f);
+  Robot::Motor motor_r(motor_hal_r, 200.0f, 12.0f, 0.0f);
+
+  Robot::ActuatorLimits limits{};
+  Robot::RobotKinematics kinematics{0.100f};
+
+  Robot::Robot robot_lib(imu, motor_l, enc_l, motor_r, enc_r, limits,
+                         kinematics);
+
+  RobotControl::FFModel ff_model(0.100f, 0.025f, 0.06f, 0.232f, 12.0f);
+
+  Math::PID lin_pid(0.8f, 0.4f, 0.0f, 1.0f, 12.0f);
+  Math::PID ang_pid(0.4f, 0.2f, 0.0f, 1.0f, 12.0f);
+
+  RobotControl::RobotController controller(robot_lib, ff_model, lin_pid,
+                                           ang_pid);
+
+  // Выбирай один сценарий на запуск, чтобы логи не смешивались.
+  // Потом можно сделать CLI-параметр и выбирать через argv.
+  // const ScenarioConfig scenario = make_turn_scenario(1.0f, 10.0f);
+  const ScenarioConfig scenario = make_straight_scenario(0.2f, 10.0f);
+  // const ScenarioConfig scenario = make_circle_scenario(5.0f, 0.2f, 158.0f);
+  // const ScenarioConfig scenario = make_square_scenario();
+
+  std::vector<TelemetrySample> log =
+      run_sil_scenario(robot.get(), robot_lib, controller, gps, scenario);
+
+  const ErrorSummary summary = compute_error_summary(log);
+  print_summary(scenario.name, summary);
+
+  save_csv(scenario.name + ".csv", log);
+
+  return 0;
+}
