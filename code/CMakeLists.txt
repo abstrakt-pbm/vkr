@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Подключаем модули
 add_subdirectory(robot)
+add_subdirectory(robot_hil)
 add_subdirectory(tests)
 add_subdirectory(firmware)
 add_subdirectory(simulation)

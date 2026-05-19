@@ -430,9 +430,9 @@ int main(int argc, char **argv) {
   // Выбирай один сценарий на запуск, чтобы логи не смешивались.
   // Потом можно сделать CLI-параметр и выбирать через argv.
   // const ScenarioConfig scenario = make_turn_scenario(1.0f, 10.0f);
-  const ScenarioConfig scenario = make_straight_scenario(0.2f, 10.0f);
+  // const ScenarioConfig scenario = make_straight_scenario(0.2f, 10.0f);
   // const ScenarioConfig scenario = make_circle_scenario(5.0f, 0.2f, 158.0f);
-  // const ScenarioConfig scenario = make_square_scenario();
+  const ScenarioConfig scenario = make_square_scenario();
 
   std::vector<TelemetrySample> log =
       run_sil_scenario(robot.get(), robot_lib, controller, gps, scenario);
