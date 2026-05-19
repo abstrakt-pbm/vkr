@@ -1,1 +1,2 @@
 add_subdirectory(controllers/webots_sil)
+add_subdirectory(controllers/webots_hil)

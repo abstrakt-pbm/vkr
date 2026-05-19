@@ -20,7 +20,7 @@
     {
       "name": "tests",
       "configurePreset": "host",
-      "targets": ["test_robot", "webots_sil"]
+      "targets": ["test_robot", "webots_sil", "webots_hil"]
     },
     {
       "name": "armware", 
