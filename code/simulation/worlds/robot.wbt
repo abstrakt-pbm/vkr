@@ -252,7 +252,7 @@ Robot {
     density -1
     mass 0.5
   }
-  controller "webots_hil"
+  controller "webots_sil"
 }
 
 

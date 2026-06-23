@@ -300,10 +300,11 @@ run_sil_scenario(webots::Robot *robot, Robot::Robot &robot_lib,
 
     Robot::ControlEffort effort = controller.GetAdjustedControlEffort(cmd, dt);
 
-    robot_lib.TransferToNewState(effort, dt);
-
     TelemetrySample sample =
         make_telemetry_sample(global_time, cmd, effort, robot_lib, gps);
+
+    log.push_back(sample);
+    robot_lib.TransferToNewState(effort, dt);
 
     log.push_back(sample);
 
@@ -369,7 +370,7 @@ static ScenarioConfig make_square_scenario() {
   cfg.type = ScenarioType::Square;
   cfg.name = "square";
 
-  const float turn_time = 0.784f;
+  const float turn_time = 0.801f;
   const float stop_time = 0.50f;
 
   cfg.phases = {
@@ -422,7 +423,7 @@ int main(int argc, char **argv) {
   RobotControl::FFModel ff_model(0.100f, 0.025f, 0.06f, 0.232f, 12.0f);
 
   Math::PID lin_pid(0.8f, 0.4f, 0.0f, 1.0f, 12.0f);
-  Math::PID ang_pid(0.4f, 0.2f, 0.0f, 1.0f, 12.0f);
+  Math::PID ang_pid(0.0f, 0.0f, 0.0f, 1.0f, 12.0f);
 
   RobotControl::RobotController controller(robot_lib, ff_model, lin_pid,
                                            ang_pid);
