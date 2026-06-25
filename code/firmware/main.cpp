@@ -41,12 +41,12 @@ constexpr float kMotorRampCoeff = 200.0f;
 constexpr float kFeedForwardKs = 0.06f;
 constexpr float kFeedForwardKv = 0.232f;
 
-constexpr float kLinearKp = 0.8f;
-constexpr float kLinearKi = 0.4f;
+constexpr float kLinearKp = 0.0f;
+constexpr float kLinearKi = 6.0f;
 constexpr float kLinearKd = 0.0f;
 
-constexpr float kAngularKp = 0.4f;
-constexpr float kAngularKi = 0.2f;
+constexpr float kAngularKp = 0.0f;
+constexpr float kAngularKi = 2.0f;
 constexpr float kAngularKd = 0.0f;
 
 constexpr float kPidBackCalculation = 1.0f;

@@ -6,62 +6,63 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/project
 
 WorldInfo {
   info [
-    "The MyBot robot, the robot used in the tutorial of Webots"
+    "SIL model of a differential-drive mobile robot."
   ]
-  title "MyBot"
+  title "Differential Drive Robot"
   basicTimeStep 16
-  maxStep 1
 }
+
 Viewpoint {
   orientation 0.10441349581936693 -0.969606685129755 -0.2212706443305736 5.382793309990334
   position -1.0665288896708753 -0.30238952230022664 1.3427364367002363
 }
+
 TexturedBackground {
 }
+
 TexturedBackgroundLight {
 }
+
 RectangleArena {
-	floorSize 20 20
-	floorTileSize 20 20
-  	wallHeight 0.1
-	floorAppearance PBRAppearance {
-    baseColor 0.8 0.8 0.8  # <- ТВОЙ ЖЕЛАЕМЫЙ СПЛОШНОЙ ЦВЕТ ПОЛА
-    roughness 1            # Чтобы пол не блестел как зеркало
+  floorSize 20 20
+  floorTileSize 20 20
+  wallHeight 0.1
+
+  floorAppearance PBRAppearance {
+    baseColor 0.8 0.8 0.8
+    roughness 1
     metalness 0
-    baseColorMap ImageTexture {
-      url [
-        "textures/white.png" # Твоя однотонная картинка (создай 10x10 px в Paint)
-      ]
-    }
   }
 }
 
 Robot {
   translation 0 0 0
-  rotation 0 0 1 0
+  name "MyBot"
+  controller "webots_sil"
+
   children [
-    
-    # --- 1. КОРПУС РОБОТА (Прямоугольный "Box") ---
+    # Корпус.
     Pose {
       translation 0 0 0.035
+
       children [
         Shape {
-          appearance PBRAppearance {
+          appearance DEF BODY_APPEARANCE PBRAppearance {
             baseColor 0.2 0.2 0.2
             roughness 0.8
             metalness 0.2
           }
-          geometry DEF BODY Box {
+
+          geometry DEF BODY_GEOMETRY Box {
             size 0.12 0.08 0.05
           }
         }
       ]
     }
 
-    # --- 2. КАРАНДАШ ДЛЯ ОТРИСОВКИ ТРАЕКТОРИИ ---
+    # Отрисовка траектории.
     Pen {
       translation 0 0 0.05
-      rotation 1 0 0 0.0
       name "pen"
       inkColor 1 0 0
       inkDensity 1
@@ -70,143 +71,152 @@ Robot {
       write TRUE
     }
 
-    # --- 3. ЛЕВОЕ КОЛЕСО (Ведущее) ---
+    # Левое ведущее колесо.
     HingeJoint {
       jointParameters HingeJointParameters {
         axis 0 1 0
-        anchor 0 0 0.025
-		maxVelocity 50
+
+        # Центр левого колеса.
+        anchor 0 0.05 0.025
       }
+
       device [
         RotationalMotor {
           name "left_wheel_motor"
-		  maxVelocity 100.0
-      	  maxTorque 100.0
+          maxVelocity 100
+          maxTorque 100
         }
+
         PositionSensor {
           name "left_wheel_encoder"
-		  resolution -1
+          resolution -1
         }
       ]
+
       endPoint Solid {
-        translation 0 0.045 0.025
-        rotation 0 0 1 0
+        translation 0 0.05 0.025
+        name "left wheel"
+
         children [
-          DEF WHEEL Pose {
-            rotation 1 0 0 -1.570796
+          Pose {
+            rotation 1 0 0 -1.57079632679
+
             children [
               Shape {
-                appearance PBRAppearance {
+                appearance DEF WHEEL_APPEARANCE PBRAppearance {
                   baseColor 1 0 0
                   roughness 1
                   metalness 0
                 }
-                geometry Cylinder {
-                  height 0.01
+
+                geometry DEF WHEEL_GEOMETRY Cylinder {
                   radius 0.025
+                  height 0.01
                 }
               }
             ]
           }
         ]
-        name "left wheel"
-        boundingObject USE WHEEL
-        physics DEF PHYSICS_WHEEL Physics {
+
+        boundingObject Pose {
+          rotation 1 0 0 -1.57079632679
+
+          children [
+            USE WHEEL_GEOMETRY
+          ]
+        }
+
+        physics Physics {
           density -1
           mass 0.05
         }
       }
     }
 
-    # --- 4. ПРАВОЕ КОЛЕСО (Ведущее) ---
+    # Правое ведущее колесо.
     HingeJoint {
       jointParameters HingeJointParameters {
         axis 0 1 0
-        anchor 0 0 0.025
-		maxVelocity 50
+
+        # Центр правого колеса.
+        anchor 0 -0.05 0.025
       }
+
       device [
         RotationalMotor {
           name "right_wheel_motor"
-		  maxVelocity 100.0
-      	  maxTorque 100.0
+          maxVelocity 100
+          maxTorque 100
         }
+
         PositionSensor {
           name "right_wheel_encoder"
-		  resolution -1
+          resolution -1
         }
       ]
-      endPoint Solid {
-        translation 0 -0.045 0.025
-        rotation 0 0 1 0
-        children [
-          USE WHEEL
-        ]
-        name "right wheel"
-        boundingObject USE WHEEL
-        physics USE PHYSICS_WHEEL
-      }
-    }
 
-    # --- 5. ПЕРЕДНИЙ КАСТЕР (Пассивный) ---
-    Solid {
-      translation 0.055 0 0.01  # Вынесен на самый нос
-      children [
-        # Само колесико (шарик)
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0.9 0.9 0.9   # Светло-стальной, хорошо видно
-            roughness 0.3
-            metalness 0.8
-          }
-          geometry Sphere {
-            radius 0.01
-          }
-        }
-        # Декоративная стойка крепления (идет от шарика вверх к днищу)
-        Pose {
-          translation 0 0 0.005
-          children [
-            Shape {
-              appearance PBRAppearance { baseColor 0.1 0.1 0.1 roughness 1 }
-              geometry Cylinder {
-                height 0.01
-                radius 0.008
+      endPoint Solid {
+        translation 0 -0.05 0.025
+        name "right wheel"
+
+        children [
+          Pose {
+            rotation 1 0 0 -1.57079632679
+
+            children [
+              Shape {
+                appearance USE WHEEL_APPEARANCE
+                geometry USE WHEEL_GEOMETRY
               }
-            }
+            ]
+          }
+        ]
+
+        boundingObject Pose {
+          rotation 1 0 0 -1.57079632679
+
+          children [
+            USE WHEEL_GEOMETRY
           ]
         }
-      ]
-      name "front_caster"
-      boundingObject Sphere {
-        radius 0.01
-      }
-      physics Physics {
-        density -1
-        mass 0.02
+
+        physics Physics {
+          density -1
+          mass 0.05
+        }
       }
     }
 
-    # --- 6. ЗАДНИЙ КАСТЕР (Пассивный) ---
-     Solid {
-      translation -0.055 0 0.01  # Вынесен на самую корму
+    # Передняя пассивная опора.
+    Solid {
+      translation 0.055 0 0.01
+      name "front_caster"
+
       children [
         Shape {
-          appearance PBRAppearance {
+          appearance DEF CASTER_APPEARANCE PBRAppearance {
             baseColor 0.9 0.9 0.9
             roughness 0.3
             metalness 0.8
           }
-          geometry Sphere {
+
+          geometry DEF CASTER_GEOMETRY Sphere {
             radius 0.01
           }
         }
+
         Pose {
           translation 0 0 0.005
+
           children [
             Shape {
-              appearance PBRAppearance { baseColor 0.1 0.1 0.1 roughness 1 }
-              geometry Cylinder {
+              appearance DEF CASTER_SUPPORT_APPEARANCE PBRAppearance {
+                baseColor 0.1 0.1 0.1
+                roughness 1
+                metalness 0
+              }
+
+              geometry DEF CASTER_SUPPORT_GEOMETRY Cylinder {
                 height 0.01
                 radius 0.008
               }
@@ -214,19 +224,52 @@ Robot {
           ]
         }
       ]
-      name "back_caster"
-      boundingObject Sphere {
-        radius 0.01
-      }
+
+      boundingObject USE CASTER_GEOMETRY
+
       physics Physics {
         density -1
         mass 0.02
       }
-    }    # --- 7. ДАТЧИКИ И СЕНСОРЫ ---
+    }
+
+    # Задняя пассивная опора.
+    Solid {
+      translation -0.055 0 0.01
+      name "back_caster"
+
+      children [
+        Shape {
+          appearance USE CASTER_APPEARANCE
+          geometry USE CASTER_GEOMETRY
+        }
+
+        Pose {
+          translation 0 0 0.005
+
+          children [
+            Shape {
+              appearance USE CASTER_SUPPORT_APPEARANCE
+              geometry USE CASTER_SUPPORT_GEOMETRY
+            }
+          ]
+        }
+      ]
+
+      boundingObject USE CASTER_GEOMETRY
+
+      physics Physics {
+        density -1
+        mass 0.02
+      }
+    }
+
+    # Датчики состояния.
     InertialUnit {
       translation 0 0 0.05
       name "imu"
     }
+
     Accelerometer {
       translation 0 0 0.05
       name "accelerometer"
@@ -234,25 +277,23 @@ Robot {
       yAxis TRUE
       zAxis TRUE
     }
+
     GPS {
       translation 0 0 0.08
       name "gps_ground_truth"
     }
   ]
-  
-  # --- 8. ОБЩИЕ ПАРАМЕТРЫ РОБОТА ---
-  name "MyBot"
+
   boundingObject Pose {
     translation 0 0 0.035
+
     children [
-      USE BODY
+      USE BODY_GEOMETRY
     ]
   }
+
   physics Physics {
     density -1
     mass 0.5
   }
-  controller "webots_sil"
 }
-
-

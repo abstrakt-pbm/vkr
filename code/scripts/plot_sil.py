@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 # ===== НАСТРОЙКИ =====
-CSV_FILE = "square.csv"   # имя входного CSV-файла
+CSV_FILE = "square_hil.csv"   # имя входного CSV-файла
 OUTPUT_DIR = "plots"      # каталог для сохранения графиков
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)

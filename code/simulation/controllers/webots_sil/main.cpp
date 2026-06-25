@@ -370,7 +370,7 @@ static ScenarioConfig make_square_scenario() {
   cfg.type = ScenarioType::Square;
   cfg.name = "square";
 
-  const float turn_time = 0.801f;
+  const float turn_time = 0.840f;
   const float stop_time = 0.50f;
 
   cfg.phases = {
@@ -422,15 +422,23 @@ int main(int argc, char **argv) {
 
   RobotControl::FFModel ff_model(0.100f, 0.025f, 0.06f, 0.232f, 12.0f);
 
-  Math::PID lin_pid(0.8f, 0.4f, 0.0f, 1.0f, 12.0f);
-  Math::PID ang_pid(0.0f, 0.0f, 0.0f, 1.0f, 12.0f);
+  Math::PID lin_pid(0.0f, // Kp
+                    6.0f, // Ki
+                    0.0f, // Kd
+                    0.5f, // Kback
+                    12.0f);
 
+  Math::PID ang_pid(0.0f, // Kp
+                    2.0f, // Ki
+                    0.0f, // Kd
+                    0.5f, // Kback
+                    12.0f);
   RobotControl::RobotController controller(robot_lib, ff_model, lin_pid,
                                            ang_pid);
 
   // Выбирай один сценарий на запуск, чтобы логи не смешивались.
   // Потом можно сделать CLI-параметр и выбирать через argv.
-  // const ScenarioConfig scenario = make_turn_scenario(1.0f, 10.0f);
+  // const ScenarioConfig scenario = make_turn_scenario(2.0f, 2.0f);
   // const ScenarioConfig scenario = make_straight_scenario(0.2f, 10.0f);
   // const ScenarioConfig scenario = make_circle_scenario(5.0f, 0.2f, 158.0f);
   const ScenarioConfig scenario = make_square_scenario();

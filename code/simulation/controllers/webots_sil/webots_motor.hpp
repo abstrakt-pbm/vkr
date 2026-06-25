@@ -3,6 +3,7 @@
 #include <robot/hal/hal_motor.hpp>
 
 #include <memory>
+#include <string>
 
 namespace webots {
 class Robot;
@@ -13,6 +14,7 @@ class WebotsIMotorHAL : public HAL::IMotorHAL {
 public:
   WebotsIMotorHAL(std::shared_ptr<webots::Robot> robot,
                   const std::string &motor_name);
+
   ~WebotsIMotorHAL() = default;
 
   bool SetRawVoltage(float voltage) override;
@@ -26,8 +28,9 @@ public:
   float GetMaxVelocity() const;
 
 private:
-  webots::Motor *m_motor;
+  webots::Motor *m_motor = nullptr;
   std::shared_ptr<webots::Robot> m_robot;
-  double m_time_step;
-  float m_current_voltage;
+
+  double m_time_step = 0.0;
+  float m_current_voltage = 0.0f;
 };
